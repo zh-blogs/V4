@@ -1,5 +1,5 @@
 <template>
-  <footer class="w-full mt-auto my-10 py-10">
+  <footer class="w-full mt-auto pt-10 pb-20">
     <div class="max-w-6xl mx-auto">
       <div class="flex flex-col justify-center text-neutral-500 dark:text-neutral-500 text-lg leading-10">
         <div class="w-full text-center"><span>尝试链接几乎所有的中文博客</span></div>
