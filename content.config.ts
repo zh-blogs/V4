@@ -4,7 +4,7 @@ export default defineContentConfig({
   collections: {
     page: defineCollection({
       type: 'page',
-      source: '/*.md',
+      source: '*.md',
       schema: z.object({
         create: z.date(),
         update: z.date(),
