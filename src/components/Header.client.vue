@@ -3,7 +3,7 @@
     <div class="h-full max-w-6xl mx-auto flex flex-row items-center justify-center">
       <div class="h-full mx-10">
         <a href="/">
-          <img class="h-full" src="/logo-dark.webp" alt="logo">
+          <img class="h-full" :src="logoPath" alt="logo">
         </a>
       </div>
       <div class="h-full mx-10 flex ">
@@ -55,12 +55,11 @@
 
 <script lang="ts" setup>
 const colorMode = useColorMode();
-colorMode.preference = 'light'
-const iconMode = computed(() => {
-  if (import.meta.client) {
-    return `/logo-${colorMode.value}.webp`
+const logoPath = computed(() => {
+  if (colorMode.preference === "system") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches === true ? "/logo-dark.webp" : "/logo-light.webp"
   }
-  return `/logo-light.webp`
+  return colorMode.preference === "dark" ? "/logo-dark.webp" : "/logo-light.webp"
 })
 </script>
 
