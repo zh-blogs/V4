@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   srcDir: 'src/',
+  serverDir: 'server/',
   css: ['~/assets/css/main.css', 'remixicon/fonts/remixicon.css'],
   app: {
     head: {
@@ -32,6 +33,10 @@ export default defineNuxtConfig({
         }
       }
     },
+    database: {
+      type: 'd1',
+      bindingName: "zhblogs"
+    }
   },
   postcss: {
     plugins: {
