@@ -8,19 +8,28 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@nuxt/content": "3.1.0",
+    "@libsql/client": "^0.14.0",
+    "@nuxt/content": "3.1.1",
     "@nuxtjs/color-mode": "3.5.2",
     "@nuxtjs/tailwindcss": "6.13.1",
+    "drizzle-orm": "^0.39.3",
+    "drizzle-zod": "^0.7.0",
     "nuxt": "^3.15.4",
     "remixicon": "^4.6.0",
+    "uuid": "^11.0.5",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16"
+    "@tailwindcss/typography": "^0.5.16",
+    "drizzle-kit": "^0.30.4"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
