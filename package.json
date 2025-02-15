@@ -6,7 +6,6 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
@@ -25,7 +24,9 @@
     "@nuxtjs/tailwindcss": "6.13.1",
     "drizzle-orm": "^0.39.3",
     "drizzle-zod": "^0.7.0",
+    "jose": "^5.9.6",
     "nuxt": "^3.15.4",
+    "nuxt-auth-utils": "0.5.15",
     "remixicon": "^4.6.0",
     "uuid": "^11.0.5",
     "vue": "latest",

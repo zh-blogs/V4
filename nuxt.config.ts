@@ -1,6 +1,7 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import { checkEnv } from "./env.check"
+
 export default defineNuxtConfig({
-  modules: ['@nuxt/content', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
+  modules: ['@nuxt/content', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', 'nuxt-auth-utils'],
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   srcDir: 'src/',
@@ -15,6 +16,11 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon.png' }
       ]
+    }
+  },
+  hooks: {
+    'ready': () => {
+      checkEnv()
     }
   },
   content: {
@@ -54,5 +60,14 @@ export default defineNuxtConfig({
     storageKey: 'color-mode',
     classPrefix: '',
     classSuffix: ''
+  },
+  runtimeConfig: {
+    oauth: {
+      github: {
+        clientId: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        redirectURL: process.env.REDIRECT_URL
+      }
+    }
   }
 })
