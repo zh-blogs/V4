@@ -1,12 +1,8 @@
+import { UserSession } from "#auth-utils"
+
 interface GithubMembership {
   state: 'active' | 'pending'
   role: 'admin' | 'member'
-}
-
-interface UserSession {
-  github: string
-  hasPermission: boolean
-  isAdmin: boolean
 }
 
 const GITHUB_API_VERSION = '2022-11-28'
@@ -23,9 +19,11 @@ export default defineOAuthGitHubEventHandler({
     }
 
     const userSession: UserSession = {
-      github: `${user.login}${user.id}${user.name}`,
-      hasPermission: false,
-      isAdmin: false
+      user: {
+        github: `${user.login}+${user.id}+${user.name}`,
+        hasPermission: false,
+        isAdmin: false
+      }
     }
 
     try {
@@ -38,12 +36,12 @@ export default defineOAuthGitHubEventHandler({
       }
 
       const membership = await getOrgMembershipDetails(user.login, headers)
-      if (membership.state === 'active') {
-        userSession.hasPermission = true
-        userSession.isAdmin = membership.role === 'admin'
+      if (membership.state === 'active' && userSession.user) {
+        userSession.user.hasPermission = true
+        userSession.user.isAdmin = membership.role === 'admin'
       }
 
-      await setUserSession(event, { user: userSession })
+      await setUserSession(event, userSession, { maxAge: 60 * 60 * 8 })
       return sendRedirect(event, '/admin')
 
     } catch (error) {
