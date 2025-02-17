@@ -16,8 +16,8 @@ export interface Blog {
   status: string;
   passed: boolean;
   recommen: boolean;
+  saveweb_id: string;
 }
-
 export type WebSubmit = Omit<Blog, 'id' | 'idx' | 'join_time' | 'update_time' | 'status' | 'passed' | 'recommen'> & {
   name: string;
   url: string;
@@ -29,6 +29,7 @@ export type WebSubmit = Omit<Blog, 'id' | 'idx' | 'join_time' | 'update_time' | 
   sitemap?: string;
   arch?: string;
   link_page?: string;
+  saveweb_id?: string;
 };
 
 export type WebUpdate = Partial<WebSubmit>
