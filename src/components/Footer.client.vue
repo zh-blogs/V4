@@ -1,11 +1,9 @@
 <template>
-  <footer class="w-full mt-auto pt-10 pb-20">
-    <div class="max-w-6xl mx-auto">
+  <footer class="w-full mt-auto py-12">
+    <div class="max-w-7xl mx-auto">
       <div class="flex flex-col justify-center text-neutral-500 dark:text-neutral-500 text-lg leading-10">
         <div class="w-full text-center"><span>尝试链接几乎所有的中文博客</span></div>
-        <div class="w-full text-center"><span>© 中文博客导航 2022 - {{ year }}</span></div>
-        <div class="w-full text-center"><a href="https://github.com/zh-blogs"><i
-              class="ri-github-fill"></i><span>zh-blogs/blog-daohang</span></a></div>
+        <div class="w-full text-center"><span>Copyright © 2022 - {{ year }} | 中文博客列表导航项目</span></div>
       </div>
     </div>
   </footer>
