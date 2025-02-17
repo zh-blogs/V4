@@ -20,7 +20,8 @@ export default defineOAuthGitHubEventHandler({
 
     const userSession: UserSession = {
       user: {
-        github: `${user.login}+${user.id}+${user.name}`,
+        id: user.id,
+        name: user.name,
         hasPermission: false,
         isAdmin: false
       }

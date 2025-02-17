@@ -5,7 +5,8 @@ declare module '#auth-utils' {
   }
 
   interface User {
-    github: string
+    id: string
+    name: string
     hasPermission: boolean
     isAdmin: boolean
   }
