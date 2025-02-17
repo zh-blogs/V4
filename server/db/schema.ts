@@ -1,6 +1,5 @@
-import { sql } from "drizzle-orm";
-import { sqliteTable } from "drizzle-orm/sqlite-core";
 import * as type from "drizzle-orm/sqlite-core";
+import { sqliteTable } from "drizzle-orm/sqlite-core";
 import { v4 as uuid } from "uuid";
 
 export const blogs = sqliteTable(
@@ -22,7 +21,8 @@ export const blogs = sqliteTable(
     update_time: type.integer('update_time', { mode: 'timestamp_ms' }).$default(() => new Date()).$onUpdate(() => new Date()),
     status: type.text().default('OK').notNull(),
     passed: type.integer({ mode: 'boolean' }).default(false).notNull(),
-    recommen: type.integer({ mode: 'boolean' }).default(false).notNull()
+    recommen: type.integer({ mode: 'boolean' }).default(false).notNull(),
+    saveweb_id: type.text().unique().default(''),
   },
   (table) => [
     type.uniqueIndex('id_index').on(table.id),
