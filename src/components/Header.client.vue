@@ -45,10 +45,10 @@
               <i class="ri-arrow-down-s-line ml-1"></i>
             </button>
             <div
-              class=" absolute hidden group-hover:block right-0 whitespace-nowrap bg-white dark:bg-neutral-800 rounded-lg shadow-lg border dark:border-neutral-700">
+              class="absolute hidden group-hover:block top-full right-0 whitespace-nowrap bg-white dark:bg-neutral-800 rounded-lg shadow-lg border dark:border-neutral-700">
               <NuxtLink to="https://github.com/zh-blogs/blog-daohang/issues/new?template=03-Blog+Information+Report.yml"
                 target="_blank" rel="noopener noreferrer"
-                class="flex items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-t-lg">
+                class="flex w-full items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-t-lg">
                 <i class="ri-error-warning-line mr-1"></i>
                 博客问题反馈
                 <i class="ri-external-link-line ml-1 text-xs text-neutral-500 self-end"></i>
@@ -56,7 +56,7 @@
               <NuxtLink
                 to="https://github.com/zh-blogs/blog-daohang/issues/new?template=04-Modify+%26+Improve+Blog+Information+Report.yml"
                 target="_blank" rel="noopener noreferrer"
-                class="flex items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700">
+                class="flex w-full items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700">
                 <i class="ri-edit-line mr-1"></i>
                 修改博客信息
                 <i class="ri-external-link-line ml-1 text-xs text-neutral-500 self-end"></i>
@@ -64,7 +64,7 @@
               <NuxtLink
                 to="https://github.com/zh-blogs/blog-daohang/issues/new?template=05-Selected+Blog+Application.yml"
                 target="_blank" rel="noopener noreferrer"
-                class="flex items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-b-lg">
+                class="flex w-full items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-b-lg">
                 <i class="ri-hand mr-1"></i>
                 精选博客推荐
                 <i class="ri-external-link-line ml-1 text-xs text-neutral-500 self-end"></i>
@@ -91,27 +91,46 @@
           </button>
         </div>
         <div v-if="!session.user"
-          class="flex flex-row items-center justify-center before:content-[''] before:h-6 before:w-px before:bg-neutral-500 before:mx-3">
+          class="w-auto flex flex-row items-center justify-center before:content-[''] before:h-6 before:w-px before:bg-neutral-500 before:mx-3">
           <button type="button" title="GitHub 登录" @click="openInPopup('/auth/github')"
             class="p-1 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-700">
             <i class="ri-admin-line"></i>
           </button>
         </div>
         <div v-if="session.user"
-          class="w-auto flex flex-row items-center justify-center before:content-[''] before:h-6 before:w-px before:bg-neutral-500 before:mx-3 text-sm text-center font-normal">
-          <NuxtLink to="/admin" class="px-3 py-1 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-700">
+          class="group relative w-auto whitespace-nowrap flex flex-row items-center justify-center before:content-[''] before:h-6 before:w-px before:bg-neutral-500 before:mx-3 text-sm text-center font-normal">
+          <div class="px-3 py-1 rounded-lg hover:bg-neutral-300 dark:hover:bg-neutral-700">
             <p>欢迎你，管理员</p>
-            <p>{{ session.user.name }}</p>
-          </NuxtLink>
+            <p>{{ session.user.name }}<i class="ri-arrow-down-s-line ml-1"></i></p>
+          </div>
+          <div
+            class="absolute top-full hidden group-hover:block right-0 whitespace-nowrap bg-white dark:bg-neutral-800 rounded-lg shadow-lg border dark:border-neutral-700">
+            <NuxtLink to="/admin"
+              class="flex w-full items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-t-lg">
+              <i class="ri-speed-up-line mr-1"></i>
+              进入控制台
+            </NuxtLink>
+            <button @click="handleLogout"
+              class="flex w-full items-center px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-b-lg">
+              <i class="ri-logout-box-r-line mr-1"></i>
+              退出登录
+            </button>
+          </div>
         </div>
       </div>
-      <!-- <div class="w-full text-center"><a href="https://github.com/zh-blogs"><i
-        class="ri-github-fill"></i><span>zh-blogs/blog-daohang</span></a></div> -->
     </div>
   </header>
 </template>
 
 <script lang="ts" setup>
 const colorMode = useColorMode();
-const { openInPopup, session } = useUserSession();
+const { openInPopup, clear, session } = useUserSession();
+
+const handleLogout = async () => {
+  await clear();
+  const route = useRoute();
+  if (route.path.startsWith('/admin')) {
+    await navigateTo('/');
+  }
+};
 </script>
