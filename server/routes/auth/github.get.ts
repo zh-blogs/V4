@@ -43,7 +43,7 @@ export default defineOAuthGitHubEventHandler({
       }
 
       await setUserSession(event, userSession, { maxAge: 60 * 60 * 8 })
-      return sendRedirect(event, '/admin')
+      return sendRedirect(event, '/')
 
     } catch (error) {
       if (isPermissionError(error)) {
