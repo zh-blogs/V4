@@ -1,12 +1,18 @@
 import { checkEnv } from "./env.check"
+import tailwindcss from "@tailwindcss/vite"
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/content', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', 'nuxt-auth-utils'],
+  modules: ['@nuxt/content', '@nuxtjs/color-mode', 'nuxt-auth-utils'],
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   srcDir: 'src/',
   serverDir: 'server/',
   css: ['~/assets/css/main.css', 'remixicon/fonts/remixicon.css'],
+  vite: {
+    plugins: [
+      tailwindcss(),
+    ],
+  },
   app: {
     head: {
       htmlAttrs: {
@@ -43,12 +49,6 @@ export default defineNuxtConfig({
       type: 'd1',
       bindingName: "zhblogs"
     }
-  },
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
   },
   colorMode: {
     preference: 'system',
