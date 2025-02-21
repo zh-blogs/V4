@@ -12,7 +12,7 @@ const props = defineProps({
       <section class="h-96 w-full flex flex-col items-center justify-center">
         <div class="w-full max-w-5xl grid grid-cols-[1fr_auto_1fr] items-center">
           <div class="w-48 justify-self-end">
-            <Logo class="h-full w-full" />
+            <ElementsLogo class="h-full w-full" />
           </div>
           <div class="h-40 w-1 bg-gray-500 justify-self-center mx-8"></div>
           <div class="flex flex-col">
