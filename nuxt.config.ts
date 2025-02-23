@@ -2,7 +2,7 @@ import { checkEnv } from "./env.check"
 import tailwindcss from "@tailwindcss/vite"
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/content', '@nuxtjs/color-mode', 'nuxt-auth-utils'],
+  modules: ['@nuxt/content', '@nuxtjs/color-mode', 'nuxt-auth-utils', '@nuxt/fonts'],
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   srcDir: 'src/',
@@ -58,8 +58,20 @@ export default defineNuxtConfig({
     componentName: 'ColorScheme',
     storage: 'localStorage',
     storageKey: 'color-mode',
+    dataValue: 'theme',
     classPrefix: '',
     classSuffix: ''
+  },
+  fonts: {
+    provider: 'google',
+    devtools: true,
+    defaults: {
+      weights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
+      styles: ['normal', 'italic'],
+    },
+    experimental: {
+      processCSSVariables: true
+    }
   },
   runtimeConfig: {
     oauth: {
