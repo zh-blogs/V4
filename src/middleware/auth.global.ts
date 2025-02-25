@@ -3,7 +3,7 @@ export default defineNuxtRouteMiddleware((to) => {
 
   if (to.path.startsWith('/admin')) {
     if (!userSession) {
-      return abortNavigation('请使用管理员 Github 账户进行登录')
+      return abortNavigation('请使用含有管理员权限的 Github 账户进行登录')
     }
 
     if (!userSession.hasPermission) {
