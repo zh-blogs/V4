@@ -6,7 +6,7 @@ export const blogs = sqliteTable(
   'blogs',
   {
     id: type.integer({ mode: 'number' }).primaryKey({ autoIncrement: true }).unique(),
-    idx: type.text().$default(() => uuid()).unique().notNull(),
+    idx: type.text().$default(() => uuid()).unique(),
     name: type.text().unique().notNull(),
     url: type.text().unique().notNull(),
     sign: type.text().default(''),
@@ -19,9 +19,9 @@ export const blogs = sqliteTable(
     link_page: type.text().default(''),
     join_time: type.integer('join_time', { mode: 'timestamp_ms' }).$default(() => new Date()),
     update_time: type.integer('update_time', { mode: 'timestamp_ms' }).$default(() => new Date()).$onUpdate(() => new Date()),
-    status: type.text().default('OK').notNull(),
-    passed: type.integer({ mode: 'boolean' }).default(false).notNull(),
-    recommen: type.integer({ mode: 'boolean' }).default(false).notNull(),
+    status: type.text().default('OK'),
+    passed: type.integer({ mode: 'boolean' }).default(false),
+    recommen: type.integer({ mode: 'boolean' }).default(false),
     saveweb_id: type.text().unique().default(''),
   },
   (table) => [
