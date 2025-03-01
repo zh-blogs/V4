@@ -27,4 +27,4 @@ logs
 .vscode
 
 # database
-migrations
+drizzle

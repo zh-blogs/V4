@@ -3,7 +3,8 @@ import { logger } from "nuxt/kit";
 const requiredEnvVariables = [
   'GITHUB_CLIENT_ID',
   'GITHUB_CLIENT_SECRET',
-  'REDIRECT_URL'
+  'NUXT_SESSION_PASSWORD',
+  'DATABASE_URL'
 ] as const;
 
 export function checkEnv() {
