@@ -46,8 +46,8 @@ export default defineNuxtConfig({
       }
     },
     database: {
-      type: 'd1',
-      bindingName: "zhblogs"
+      type: 'postgres',
+      url: process.env.DATABASE_URL!
     }
   },
   colorMode: {
@@ -78,7 +78,6 @@ export default defineNuxtConfig({
       github: {
         clientId: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        redirectURL: process.env.REDIRECT_URL
       }
     }
   }
