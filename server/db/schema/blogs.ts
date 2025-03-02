@@ -1,14 +1,13 @@
-import { boolean, index, jsonb, pgEnum, pgSchema, pgTable, serial, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
+import { boolean, index, integer, jsonb, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
 import { v7 } from "uuid";
 
+export const mainTagEnum = pgEnum('main_tag', ['生活', '技术', '知识', '整合', '采集', '综合', ''])
 
-export const mainTagEnum = pgEnum('main_tag', ['生活', '技术', '知识', '整合', '采集', '综合'])
-
-export const blogs = pgTable(
+export const Blogs = pgTable(
   'blogs',
   {
-    id: serial().primaryKey(),
-    idx: uuid().$default(() => v7()),
+    id: uuid().$default(() => v7()).primaryKey(),
+    bid: integer().unique().notNull(),
     name: varchar({ length: 256 }).unique().notNull(),
     url: varchar({ length: 256 }).unique().notNull(),
     sign: text().default(''),
@@ -22,16 +21,16 @@ export const blogs = pgTable(
     join_time: timestamp({ withTimezone: true, precision: 6 }).$default(() => new Date()),
     update_time: timestamp({ withTimezone: true, precision: 6 }).$default(() => new Date()).$onUpdate(() => new Date()),
     status: varchar({ length: 64 }).default('OK'),// TODO: Using enums for type narrowing
-    saveweb_id: varchar({ length: 256 }).unique().default(''),
     passed: boolean().default(false),
     recommen: boolean().default(false),
+    //TODO: saveweb_id: varchar({ length: 256 }),
   },
   (table) => [
     uniqueIndex('id_index').on(table.id),
-    uniqueIndex('idx_index').on(table.idx),
+    uniqueIndex('bid_index').on(table.bid),
     uniqueIndex('name_index').on(table.name),
     uniqueIndex('url_index').on(table.url),
     index('main_tag_index').on(table.main_tag),
-    index('sub_tag_index').on(table.sub_tag)
+    index('sub_tag_index').on(table.sub_tag),
   ]
 );

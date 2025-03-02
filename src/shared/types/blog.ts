@@ -1,39 +1,43 @@
-import { createInsertSchema } from 'drizzle-zod';
 import { z } from "zod";
-import { blogs } from "~~/server/db/schema";
 
-export const WebSubmit = z.object({
-  name: z.string(),
-  url: z.string().url(),
-  sign: z.string(),
-  main_tag: z.string(),
-  sub_tag: z.array(z.string()).optional(),
-  feed: z.array(z.string()).optional(),
-  sitemap: z.string().optional(),
-  arch: z.string().optional(),
-  link_page: z.string().optional(),
-  saveweb_id: z.string().optional(),
-  from: z.array(z.string()).optional(),
+const mainTagEnum = ['生活', '技术', '知识', '整合', '采集', '综合', ''] as const;
+
+const BID = z.object({
+  bid: z.number()
 })
 
-export type WebSubmit = z.infer<typeof WebSubmit>
+export const WebSubmit = z.object({
+  name: z.string().min(1).max(256),
+  url: z.string().url().max(256),
+  sign: z.string().default(''),
+  main_tag: z.enum(mainTagEnum),
+  sub_tag: z.array(z.string()).default([]),
+  feed: z.array(z.string()).default([]),
+  from: z.array(z.string()).default(['SelfSubmit']),
+  sitemap: z.string().max(256).default(''),
+  link_page: z.string().max(256).default(''),
+  arch: z.string().max(128).default(''),
+  // TODO: saveweb_id: z.string().max(256).default(''),
+})
+
+export type WebIntert = z.infer<typeof WebSubmit> & z.infer<typeof BID>
 
 export const BotUpdate = z.object({
   blogs: z.array(z.object({
-    name: z.string(),
-    url: z.string().url(),
-    sign: z.string().optional(),
-    main_tag: z.string().optional(),
-    sub_tag: z.array(z.string()).optional(),
-    feed: z.array(z.string()).optional(),
-    sitemap: z.string().optional(),
-    arch: z.string().optional(),
+    name: z.string().min(1).max(256),
+    url: z.string().url().max(256),
+    sign: z.string().default(''),
+    main_tag: z.enum(mainTagEnum),
+    sub_tag: z.array(z.string()).default([]),
+    feed: z.array(z.string()).default([]),
     from: z.array(z.string()),
-    status: z.string(),
-    passed: z.boolean(),
-    recommen: z.boolean().optional(),
-    saveweb_id: z.string().optional(),
+    status: z.string().max(64).default('OK'),
+    passed: z.boolean().default(false),
+    recommen: z.boolean().default(false),
+    sitemap: z.string().max(256).default(''),
+    arch: z.string().max(128).default(''),
+    // TODO: saveweb_id: z.string().max(256).default(''),
   }))
 })
 
-export type BotUpdate = z.infer<typeof BotUpdate>
+export type BotInsert = z.infer<typeof BotUpdate> & z.infer<typeof BID>
