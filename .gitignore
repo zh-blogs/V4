@@ -24,7 +24,8 @@ logs
 !.env.example
 
 # vscode
-.vscode
+.vscode/*
+!.vscode/settings.json
 
 # database
 drizzle
