@@ -1,0 +1,12 @@
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+logs
+*.log
+.env
+.env.*
+.vscode
+drizzle
