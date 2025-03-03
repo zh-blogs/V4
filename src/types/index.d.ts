@@ -1,4 +1,4 @@
-import type { AlertOptions } from "./components"
+import type { AlertOptions } from './components'
 
 declare module '#app' {
   interface NuxtApp {
@@ -22,4 +22,4 @@ declare module 'vue' {
   }
 }
 
-export { }
+export {}
