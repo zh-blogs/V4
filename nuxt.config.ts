@@ -1,55 +1,25 @@
-import { checkEnv } from "./env.check"
-import tailwindcss from "@tailwindcss/vite"
+import tailwindcss from '@tailwindcss/vite'
+import { checkEnv } from './env.check'
 
 export default defineNuxtConfig({
-  modules: ['@nuxt/content', '@nuxtjs/color-mode', 'nuxt-auth-utils', '@nuxt/fonts'],
-  compatibilityDate: '2024-11-01',
+  modules: [
+    '@nuxt/content',
+    '@nuxtjs/color-mode',
+    'nuxt-auth-utils',
+    '@nuxt/fonts',
+    '@nuxt/eslint',
+  ],
   devtools: { enabled: true },
-  srcDir: 'src/',
-  serverDir: 'server/',
-  css: ['~/assets/css/main.css', 'remixicon/fonts/remixicon.css'],
-  vite: {
-    plugins: [
-      tailwindcss(),
-    ],
-  },
   app: {
     head: {
       htmlAttrs: {
-        lang: 'zh'
+        lang: 'zh',
       },
-      title: "中文博客列表导航",
-      link: [
-        { rel: 'icon', type: 'image/png', href: '/favicon.png' }
-      ]
-    }
-  },
-  hooks: {
-    'ready': () => {
-      checkEnv()
-    }
-  },
-  content: {
-    build: {
-      markdown: {
-        toc: {
-          depth: 3,
-          searchDepth: 3
-        },
-        highlight: {
-          theme: {
-            default: 'github-light',
-            dark: 'github-dark',
-          },
-          langs: ['js', 'jsx', 'json', 'ts', 'tsx', 'vue', 'css', 'html', 'vue', 'bash', 'md', 'mdc', 'yaml', 'java']
-        }
-      }
+      title: '中文博客列表导航',
+      link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
     },
-    database: {
-      type: 'postgres',
-      url: process.env.DATABASE_URL!
-    }
   },
+  css: ['~/assets/css/main.css', 'remixicon/fonts/remixicon.css'],
   colorMode: {
     preference: 'system',
     fallback: 'light',
@@ -60,7 +30,71 @@ export default defineNuxtConfig({
     storageKey: 'color-mode',
     dataValue: 'theme',
     classPrefix: '',
-    classSuffix: ''
+    classSuffix: '',
+  },
+  content: {
+    build: {
+      markdown: {
+        toc: {
+          depth: 3,
+          searchDepth: 3,
+        },
+        highlight: {
+          theme: {
+            default: 'github-light',
+            dark: 'github-dark',
+          },
+          langs: [
+            'js',
+            'jsx',
+            'json',
+            'ts',
+            'tsx',
+            'vue',
+            'css',
+            'html',
+            'vue',
+            'bash',
+            'md',
+            'mdc',
+            'yaml',
+            'java',
+          ],
+        },
+      },
+    },
+    database: {
+      type: 'postgres',
+      url: process.env.DATABASE_URL!,
+    },
+  },
+  runtimeConfig: {
+    oauth: {
+      github: {
+        clientId: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      },
+    },
+  },
+  srcDir: 'src/',
+  serverDir: 'server/',
+  compatibilityDate: '2024-11-01',
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  hooks: {
+    ready: () => {
+      checkEnv()
+    },
+  },
+  eslint: {
+    config: {
+      stylistic: {
+        semi: false,
+        indent: 2,
+        quotes: 'single',
+      },
+    },
   },
   fonts: {
     provider: 'google',
@@ -70,15 +104,7 @@ export default defineNuxtConfig({
       styles: ['normal', 'italic'],
     },
     experimental: {
-      processCSSVariables: true
-    }
+      processCSSVariables: true,
+    },
   },
-  runtimeConfig: {
-    oauth: {
-      github: {
-        clientId: process.env.GITHUB_CLIENT_ID,
-        clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      }
-    }
-  }
 })
