@@ -63,5 +63,10 @@
   },
   "lint-staged": {
     "*": "pnpm lint:fix"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
