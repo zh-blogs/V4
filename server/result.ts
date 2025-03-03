@@ -1,4 +1,4 @@
-class Result<T = any> {
+class Result<T> {
   private code: number
   private message: string
   private data: T | null
@@ -19,7 +19,11 @@ class Result<T = any> {
     return new Result<T>(200, message, data ?? null)
   }
 
-  static error<T>(message: string = '操作失败', code: number = 500, data?: T | null) {
+  static error<T>(
+    message: string = '操作失败',
+    code: number = 500,
+    data?: T | null,
+  ) {
     return new Result<T>(code, message, data ?? null)
   }
 
@@ -39,7 +43,7 @@ class Result<T = any> {
     return {
       code: this.code,
       message: this.message,
-      data: this.data
+      data: this.data,
     }
   }
 }

@@ -11,7 +11,7 @@ declare module '#auth-utils' {
     isAdmin: boolean
   }
 
-  interface SecureSessionData {
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface SecureSessionData {}
 }
 export {}

@@ -1,4 +1,4 @@
-import { defineContentConfig, defineCollection, z } from "@nuxt/content";
+import { defineContentConfig, defineCollection, z } from '@nuxt/content'
 
 export default defineContentConfig({
   collections: {
@@ -8,8 +8,8 @@ export default defineContentConfig({
       schema: z.object({
         create: z.date(),
         update: z.date(),
-        editor: z.array(z.string())
-      })
+        editor: z.array(z.string()),
+      }),
     }),
     blog: defineCollection({
       type: 'page',
@@ -18,17 +18,17 @@ export default defineContentConfig({
         top: z.boolean(),
         date: z.date(),
         tags: z.array(z.string()),
-        category: z.string()
-      })
+        category: z.string(),
+      }),
     }),
     docs: defineCollection({
       type: 'page',
-      source: "docs/**/*.md",
+      source: 'docs/**/*.md',
       schema: z.object({
         create: z.date(),
         update: z.date(),
-        editor: z.array(z.string())
-      })
-    })
-  }
+        editor: z.array(z.string()),
+      }),
+    }),
+  },
 })

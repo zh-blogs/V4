@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware((to) => {
     if (!userSession.hasPermission) {
       return abortNavigation({
         statusCode: 403,
-        message: '对不起，您没有权限访问此页面，请联系管理员处理此问题'
+        message: '对不起，您没有权限访问此页面，请联系管理员处理此问题',
       })
     }
 
