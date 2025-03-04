@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import type { NuxtError } from '#app'
+import type { NuxtError } from '#app'
 
-  const props = defineProps({
-    error: Object as () => NuxtError,
-  })
+const props = defineProps({
+  error: Object as () => NuxtError,
+})
 </script>
 
 <template>
@@ -42,8 +42,8 @@
 </template>
 
 <style lang="css" scoped>
-  [class^='ri-']::before,
-  [class*='ri-']::before {
-    margin: 0;
-  }
+[class^='ri-']::before,
+[class*='ri-']::before {
+  margin: 0;
+}
 </style>

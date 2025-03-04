@@ -35,82 +35,82 @@
 </template>
 
 <script lang="ts" setup>
-  import type { AlertOptions } from '~/types/components'
+import type { AlertOptions } from '~/types/components'
 
-  const alertVisible = ref<boolean>(true)
+const alertVisible = ref<boolean>(true)
 
-  const innerOptions = computed<AlertOptions>(() => ({
-    alertIconVisible: props.options.alertIconVisible ?? true,
-    closeIconVisible: props.options.closeIconVisible ?? true,
-    title: props.options.title ?? '',
-    message: props.options.message ?? '',
-    type: props.options.type ?? 'tips',
-    duration: props.options.duration ?? 5000,
-  }))
+const innerOptions = computed<AlertOptions>(() => ({
+  alertIconVisible: props.options.alertIconVisible ?? true,
+  closeIconVisible: props.options.closeIconVisible ?? true,
+  title: props.options.title ?? '',
+  message: props.options.message ?? '',
+  type: props.options.type ?? 'tips',
+  duration: props.options.duration ?? 5000,
+}))
 
-  const typeClasses = {
-    info: {
-      alert: 'alert-info alert-soft',
-      icon: 'ri-information-line text-blue-500',
-    },
-    success: {
-      alert: 'alert-success alert-soft',
-      icon: 'ri-checkbox-circle-line text-green-500',
-    },
-    warning: {
-      alert: 'alert-warning alert-soft',
-      icon: 'ri-error-warning-line text-yellow-500',
-    },
-    error: {
-      alert: 'alert-error alert-soft',
-      icon: 'ri-close-circle-line text-red-500',
-    },
-    tips: {
-      alert: '',
-      icon: 'ri-lightbulb-line text-neutral-500',
-    },
-  }
+const typeClasses = {
+  info: {
+    alert: 'alert-info alert-soft',
+    icon: 'ri-information-line text-blue-500',
+  },
+  success: {
+    alert: 'alert-success alert-soft',
+    icon: 'ri-checkbox-circle-line text-green-500',
+  },
+  warning: {
+    alert: 'alert-warning alert-soft',
+    icon: 'ri-error-warning-line text-yellow-500',
+  },
+  error: {
+    alert: 'alert-error alert-soft',
+    icon: 'ri-close-circle-line text-red-500',
+  },
+  tips: {
+    alert: '',
+    icon: 'ri-lightbulb-line text-neutral-500',
+  },
+}
 
-  const emit = defineEmits(['destroy'])
+const emit = defineEmits(['destroy'])
 
-  const closeAlert = () => {
-    alertVisible.value = false
-    // 添加延时确保动画完成后再销毁
-    setTimeout(() => {
-      emit('destroy')
-    }, 500)
-  }
+const closeAlert = () => {
+  alertVisible.value = false
+  // 添加延时确保动画完成后再销毁
+  setTimeout(() => {
+    emit('destroy')
+  }, 500)
+}
 
-  const props = defineProps<{
-    options: AlertOptions
-  }>()
+const props = defineProps<{
+  options: AlertOptions
+}>()
 
-  onMounted(() => {
-    setTimeout(() => {
-      closeAlert()
-    }, innerOptions.value.duration)
-  })
+onMounted(() => {
+  setTimeout(() => {
+    closeAlert()
+  }, innerOptions.value.duration)
+})
 </script>
 
 <style>
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: all 0.5s ease;
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
 
-  .fade-enter-from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+.fade-enter-from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
 
-  .fade-leave-to {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+.fade-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
 
-  .fade-enter-to,
-  .fade-leave-from {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
 </style>

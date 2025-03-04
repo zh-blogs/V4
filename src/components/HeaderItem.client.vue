@@ -190,14 +190,14 @@
 </template>
 
 <script lang="ts" setup>
-  const colorMode = useColorMode()
-  const { openInPopup, clear, session } = useUserSession()
+const colorMode = useColorMode()
+const { openInPopup, clear, session } = useUserSession()
 
-  const handleLogout = async () => {
-    await clear()
-    const route = useRoute()
-    if (route.path.startsWith('/admin')) {
-      await navigateTo('/')
-    }
+const handleLogout = async () => {
+  await clear()
+  const route = useRoute()
+  if (route.path.startsWith('/admin')) {
+    await navigateTo('/')
   }
+}
 </script>

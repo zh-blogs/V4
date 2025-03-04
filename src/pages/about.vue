@@ -9,8 +9,8 @@
 </template>
 
 <script lang="ts" setup>
-  const pageName = '/about'
-  const { data: page } = await useAsyncData(pageName, () => {
-    return queryCollection('page').path('/about').first()
-  })
+const pageName = '/about'
+const { data: page } = await useAsyncData(pageName, () => {
+  return queryCollection('page').path('/about').first()
+})
 </script>
