@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-  const year = computed(() => {
-    return new Date().toLocaleDateString().split('/')[0]
-  })
+const year = computed(() => {
+  return new Date().toLocaleDateString().split('/')[0]
+})
 </script>

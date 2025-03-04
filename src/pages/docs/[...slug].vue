@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-const COLLECTION_NAME = 'blog'
+const COLLECTION_NAME = 'docs'
 const route = useRoute()
 const slug = route.params.slug
 const path = computed(() => {

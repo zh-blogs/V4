@@ -5,5 +5,5 @@
   "semi": false,
   "singleQuote": true,
   "singleAttributePerLine": true,
-  "vueIndentScriptAndStyle": true
+  "vueIndentScriptAndStyle": false
 }
