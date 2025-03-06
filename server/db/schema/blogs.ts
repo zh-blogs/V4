@@ -13,7 +13,7 @@ import {
 } from 'drizzle-orm/pg-core'
 import { v7 } from 'uuid'
 
-export const mainTagEnum = pgEnum('main_tag', [
+export const mainTagsEnum = pgEnum('main_tag', [
   '生活',
   '技术',
   '知识',
@@ -22,6 +22,17 @@ export const mainTagEnum = pgEnum('main_tag', [
   '综合',
   '',
 ])
+export const fromSources = pgEnum('from', [
+  'CIB',
+  'BoYouQuan',
+  'BlogFinder',
+  'BKZ',
+  'Travellings',
+  'WebSubmit',
+  'AdminAdd',
+  'LinkPageSearch',
+])
+export const statusTypes = pgEnum('status', ['OK', 'ERROR', 'DELETED'])
 
 export const Blogs = pgTable(
   'blogs',
@@ -30,23 +41,23 @@ export const Blogs = pgTable(
       .$default(() => v7())
       .primaryKey(),
     bid: integer().unique().notNull(),
-    name: varchar({ length: 256 }).unique().notNull(),
-    url: varchar({ length: 256 }).unique().notNull(),
+    name: varchar({ length: 16 }).unique().notNull(),
+    url: varchar({ length: 64 }).unique().notNull(),
     sign: text().default(''),
-    main_tag: mainTagEnum(),
+    main_tag: mainTagsEnum(),
     sub_tag: jsonb().$type<string[]>().default([]),
     feed: jsonb().$type<string[]>().default([]),
-    from: jsonb().$type<string[]>().notNull(), // TODO: Using enums for type narrowing
-    sitemap: varchar({ length: 256 }).default(''),
-    link_page: varchar({ length: 256 }).default(''),
-    arch: varchar({ length: 128 }).default(''),
+    from: fromSources().$type<string[]>().default([]),
+    sitemap: varchar({ length: 128 }).default(''),
+    link_page: varchar({ length: 128 }).default(''),
+    arch: varchar({ length: 32 }).default(''),
     join_time: timestamp({ withTimezone: true, precision: 6 }).$default(
       () => new Date(),
     ),
     update_time: timestamp({ withTimezone: true, precision: 6 })
       .$default(() => new Date())
       .$onUpdate(() => new Date()),
-    status: varchar({ length: 64 }).default('OK'), // TODO: Using enums for type narrowing
+    status: statusTypes().default('OK'),
     passed: boolean().default(false),
     recommen: boolean().default(false),
     // TODO: saveweb_id: varchar({ length: 256 }),

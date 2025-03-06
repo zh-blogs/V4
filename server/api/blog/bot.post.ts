@@ -1,11 +1,11 @@
 import { eq, or } from 'drizzle-orm'
 import { DatabaseError } from 'pg-protocol'
 import { db } from '../../db/database'
-import { BotUpdate } from '~/shared/types/blog'
-import { PG_ERRORS } from '~~/server/db/error'
+import { BotUpdateSchema } from '~/shared/types/blog'
 import { Blogs } from '~~/server/db/schema/blogs'
 import { generateBID } from '~~/server/db/util'
 import Result from '~~/server/result'
+import { handleDatabaseError } from '~~/server/utils/handleDatabaseError'
 
 interface InsertResult {
   success: boolean
@@ -14,51 +14,10 @@ interface InsertResult {
   error?: string
 }
 
-const handleDatabaseError = (
-  e: DatabaseError,
-  blog: { name: string; url: string },
-): InsertResult => {
-  const errorDetails = {
-    code: e.code,
-    detail: e.detail,
-    constraint: e.constraint,
-    table: e.table,
-    schema: e.schema,
-  }
-  console.error('数据库错误:', errorDetails)
-
-  switch (e.code) {
-    case PG_ERRORS.UNIQUE_VIOLATION: {
-      const field = e.constraint?.includes('url')
-        ? 'URL'
-        : e.constraint?.includes('name')
-          ? '名称'
-          : '记录'
-      return {
-        success: false,
-        blog,
-        error: `该${field}已存在`,
-      }
-    }
-    case PG_ERRORS.NOT_NULL_VIOLATION:
-      return {
-        success: false,
-        blog,
-        error: `缺少必要字段: ${e.column}`,
-      }
-    default:
-      return {
-        success: false,
-        blog,
-        error: '数据库操作失败',
-      }
-  }
-}
-
 export default defineEventHandler(async (event) => {
   // TODO: Automated Bot Script Verification
   const result = await readValidatedBody(event, (body) =>
-    BotUpdate.safeParseAsync(body),
+    BotUpdateSchema.safeParseAsync(body),
   )
   if (result.error) {
     const errors = result.error.errors
@@ -102,9 +61,15 @@ export default defineEventHandler(async (event) => {
       processResults.push(result)
     } catch (e) {
       if (e instanceof DatabaseError) {
-        processResults.push(
-          handleDatabaseError(e, { name: blog.name, url: blog.url }),
-        )
+        const errorResult = handleDatabaseError(e, {
+          includeMetadata: true,
+          blog: { name: blog.name, url: blog.url },
+        })
+        processResults.push({
+          success: false,
+          blog: errorResult.blog!,
+          error: errorResult.error,
+        })
       } else {
         processResults.push({
           success: false,

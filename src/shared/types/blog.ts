@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
-const mainTagEnum = [
+// 定义常量枚举值
+export const MAIN_TAGS = [
   '生活',
   '技术',
   '知识',
@@ -9,45 +10,134 @@ const mainTagEnum = [
   '综合',
   '',
 ] as const
+export const FROM_SOURCES = [
+  'CIB',
+  'BoYouQuan',
+  'BlogFinder',
+  'BKZ',
+  'Travellings',
+  'WebSubmit',
+  'AdminAdd',
+  'LinkPageSearch',
+] as const
+export const STATUS_TYPES = ['OK', 'ERROR', 'DELETED'] as const
 
-const _BID = z.object({
-  bid: z.number(),
+export type MainTag = (typeof MAIN_TAGS)[number]
+export type StatusType = (typeof STATUS_TYPES)[number]
+export type FromSource = (typeof FROM_SOURCES)[number]
+
+const BaseBlogSchema = z.object({
+  id: z
+    .string({ message: '不正确的数据格式' })
+    .uuid({ message: '该字段为什么会不正确？' }),
+  bid: z.number({ message: '该字段为什么会不正确？' }),
+  name: z
+    .string({ message: '不正确的数据格式' })
+    .min(2, { message: '博客名称不得小于 2 字符' })
+    .max(16, { message: '博客名称不得大于 16 字符' }),
+  url: z
+    .string({ message: '不正确的数据格式' })
+    .url({ message: 'URL 格式不正确' })
+    .max(64, { message: 'URL 长度不得超过 64 字符' }),
+  sign: z.string({ message: '不正确的数据格式' }).default(''),
+  main_tag: z.enum(MAIN_TAGS, {
+    errorMap: () => ({ message: '无效的主标签类型' }),
+  }),
+  sub_tag: z
+    .array(z.string({ message: '不正确的数据格式' }), {
+      errorMap: () => ({ message: '无效的子标签类型' }),
+    })
+    .length(10)
+    .default([]),
+  feed: z
+    .array(
+      z
+        .string({ message: '不正确的数据格式' })
+        .url({ message: 'Feed URL 格式不正确' }),
+      {
+        errorMap: () => ({ message: '无效的 Feed URL 类型' }),
+      },
+    )
+    .default([]),
+  from: z
+    .array(
+      z.enum(FROM_SOURCES, {
+        message: '来源不存在于预定数据中，请联系网站管理员进行处理',
+      }),
+      {
+        errorMap: () => ({ message: '无效的数据来源类型' }),
+      },
+    )
+    .min(1, { message: '数据来源不能为空' })
+    .default(['WebSubmit']),
+  sitemap: z
+    .string({ message: '不正确的数据格式' })
+    .url({ message: 'Sitemap URL 格式不正确' })
+    .max(128, { message: 'Sitemap URL 长度不得超过 128 字符' })
+    .default(''),
+  link_page: z
+    .string()
+    .url({ message: '友链页面 URL 格式不正确' })
+    .max(128, { message: '友链页面 URL 长度不得超过 128 字符' })
+    .default(''),
+  arch: z
+    .string({ message: '不正确的数据格式' })
+    .max(32, { message: '博客架构名称不超过 16 字符' })
+    .default(''),
+  status: z
+    .enum(STATUS_TYPES, {
+      errorMap: () => ({ message: '无效的状态码类型' }),
+    })
+    .default('OK'),
+  passed: z.boolean().default(false),
+  recommen: z.boolean().default(false),
+  join_time: z.date().default(() => new Date()),
+  update_time: z.date().default(() => new Date()),
 })
 
-export const WebSubmit = z.object({
-  name: z.string().min(1).max(256),
-  url: z.string().url().max(256),
-  sign: z.string().default(''),
-  main_tag: z.enum(mainTagEnum),
-  sub_tag: z.array(z.string()).default([]),
-  feed: z.array(z.string()).default([]),
-  from: z.array(z.string()).default(['SelfSubmit']),
-  sitemap: z.string().max(256).default(''),
-  link_page: z.string().max(256).default(''),
-  arch: z.string().max(128).default(''),
-  // TODO: saveweb_id: z.string().max(256).default(''),
+export type BaseBlog = z.infer<typeof BaseBlogSchema>
+
+export const WebSubmitSchema = BaseBlogSchema.pick({
+  name: true,
+  url: true,
+  sign: true,
+  main_tag: true,
+  sub_tag: true,
+  feed: true,
+  from: true,
+  sitemap: true,
+  link_page: true,
+  arch: true,
 })
 
-export type WebIntert = z.infer<typeof WebSubmit> & z.infer<typeof _BID>
+export type WebSubmit = z.infer<typeof WebSubmitSchema>
 
-export const BotUpdate = z.object({
+export const WebIntertSchema = WebSubmitSchema.merge(
+  BaseBlogSchema.pick({
+    bid: true,
+  }),
+)
+
+export type WebIntert = z.infer<typeof WebIntertSchema>
+
+export const BotUpdateSchema = z.object({
   blogs: z.array(
-    z.object({
-      name: z.string().min(1).max(256),
-      url: z.string().url().max(256),
-      sign: z.string().default(''),
-      main_tag: z.enum(mainTagEnum),
-      sub_tag: z.array(z.string()).default([]),
-      feed: z.array(z.string()).default([]),
-      from: z.array(z.string()),
-      status: z.string().max(64).default('OK'),
-      passed: z.boolean().default(false),
-      recommen: z.boolean().default(false),
-      sitemap: z.string().max(256).default(''),
-      arch: z.string().max(128).default(''),
-      // TODO: saveweb_id: z.string().max(256).default(''),
+    BaseBlogSchema.omit({
+      id: true,
+      arch: true,
+      link_page: true,
+      join_time: true,
+      update_time: true,
     }),
   ),
 })
 
-export type BotInsert = z.infer<typeof BotUpdate> & z.infer<typeof _BID>
+export type BotUpdate = z.infer<typeof BotUpdateSchema>
+
+export const BotInsertSchema = BotUpdateSchema.merge(
+  BaseBlogSchema.pick({
+    bid: true,
+  }),
+)
+
+export type BotInsert = z.infer<typeof WebIntertSchema>
