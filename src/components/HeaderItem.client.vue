@@ -1,44 +1,42 @@
 <template>
-  <header
-    class="mb-12 h-14 w-full bg-neutral-100 shadow-xl dark:bg-neutral-800 dark:text-neutral-200"
-  >
-    <div class="navbar mx-auto h-full max-w-7xl">
+  <header class="bg-base-200 mb-12 h-16 w-full shadow-xl">
+    <div class="navbar mx-auto h-full max-w-7xl p-0">
       <div class="flex h-full flex-none">
         <NuxtLink to="/">
           <ElementsLogo class="h-full w-full object-contain" />
         </NuxtLink>
       </div>
       <div class="flex h-full flex-1">
-        <div class="flex h-10 w-full self-end">
-          <button class="btn btn-sm btn-ghost font-medium">
+        <div class="flex flex-row items-center justify-center">
+          <button class="btn btn-sm btn-ghost h-full font-medium">
             <NuxtLink
               to="/list"
               class="text-base"
               >博客列表</NuxtLink
             >
           </button>
-          <button class="btn btn-sm btn-ghost font-medium">
+          <button class="btn btn-sm btn-ghost h-full font-medium">
             <NuxtLink
               to="/charts"
               class="text-base"
               >数据统计</NuxtLink
             >
           </button>
-          <button class="btn btn-sm btn-ghost font-medium">
+          <button class="btn btn-sm btn-ghost h-full font-medium">
             <NuxtLink
               to="/docs"
               class="text-base"
               >项目文档</NuxtLink
             >
           </button>
-          <button class="btn btn-sm btn-ghost font-medium">
+          <button class="btn btn-sm btn-ghost h-full font-medium">
             <NuxtLink
               to="/blog"
               class="text-base"
               >项目博客</NuxtLink
             >
           </button>
-          <button class="btn btn-sm btn-ghost font-medium">
+          <button class="btn btn-sm btn-ghost h-full font-medium">
             <NuxtLink
               to="/about"
               class="text-base"
@@ -48,21 +46,21 @@
         </div>
       </div>
       <div class="flex h-full flex-none">
-        <div class="flex h-10 w-full self-end">
-          <button class="btn btn-sm btn-ghost font-medium">
+        <div class="flex flex-row items-center justify-center">
+          <button class="btn btn-sm btn-ghost h-full font-medium">
             <NuxtLink
               to="/about"
               class="text-base"
             >
               <i class="ri-add-line" />
-              博客加入
+              提交博客
             </NuxtLink>
           </button>
-          <div class="dropdown-hover dropdown">
+          <div class="dropdown-hover dropdown h-full">
             <button
               tabindex="0"
               role="button"
-              class="btn btn-sm btn-ghost !text-base font-medium"
+              class="btn btn-sm btn-ghost !h-full !text-base font-medium"
             >
               <i class="ri-feedback-line" />
               项目反馈
@@ -107,7 +105,7 @@
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <i class="ri-hand mr-1" />
+                  <i class="ri-hand" />
                   精选博客推荐
                   <i
                     class="ri-external-link-line ml-1 self-end text-xs text-neutral-500"
