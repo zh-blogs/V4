@@ -7,3 +7,8 @@ export interface AlertOptions {
   type?: 'info' | 'success' | 'warning' | 'error' | 'tips'
   duration?: number
 }
+
+export type LinkItems = {
+  name: string
+  path: string
+}[]

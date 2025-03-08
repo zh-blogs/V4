@@ -6,7 +6,7 @@
           <ElementsLogo class="h-full w-full object-contain" />
         </NuxtLink>
       </div>
-      <div class="hidden h-full flex-1 md:flex">
+      <div class="hidden h-full flex-1 lg:flex">
         <div class="flex flex-row items-center justify-center">
           <template
             v-for="item in leftMenuItems"
@@ -22,7 +22,38 @@
           </template>
         </div>
       </div>
-      <div class="flex flex-row items-center justify-center">
+      <div class="hidden h-full flex-1 md:flex lg:hidden">
+        <div class="dropdown-hover dropdown">
+          <button
+            tabindex="0"
+            role="button"
+            class="btn-sm btn-ghost !h-full !text-base font-medium"
+          >
+            站内导航
+            <i class="ri-arrow-down-s-line" />
+          </button>
+          <ul
+            tabindex="0"
+            class="dropdown-content menu rounded-box z-1 bg-neutral-100 shadow-sm dark:bg-neutral-800"
+          >
+            <template
+              v-for="item in leftMenuItems"
+              :key="item.path"
+            >
+              <li>
+                <NuxtLink
+                  class="whitespace-nowrap"
+                  :to="item.path"
+                >
+                  {{ item.name }}
+                </NuxtLink>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+
+      <div class="hidden flex-row items-center justify-center md:flex">
         <button class="btn btn-sm btn-ghost h-full font-medium">
           <NuxtLink
             to="/about"
@@ -233,7 +264,7 @@
             </li>
           </ul>
         </div>
-        <div class="hidden md:block">
+        <div class="hidden h-full items-center md:flex">
           <div
             v-if="!session.user"
             class="flex flex-row items-center justify-center before:mx-1 before:h-6 before:w-px before:bg-neutral-500 before:content-['']"
@@ -247,33 +278,42 @@
           </div>
           <div
             v-if="session.user"
-            class="group relative flex w-auto flex-row items-center justify-center text-center text-sm font-normal whitespace-nowrap before:mx-1 before:h-6 before:w-px before:bg-neutral-500 before:content-['']"
+            class="dropdown-hover dropdown group relative flex h-full w-auto flex-row items-center justify-center text-center text-sm font-normal whitespace-nowrap before:mx-1 before:h-6 before:w-px before:bg-neutral-500 before:content-['']"
           >
-            <div
-              class="rounded-lg px-2 py-1 text-end hover:bg-neutral-300 dark:hover:bg-neutral-700"
-            >
-              <p>欢迎你，管理员</p>
-              <p>
-                {{ session.user.name }}<i class="ri-arrow-down-s-line ml-1" />
-              </p>
-            </div>
-            <div
-              class="absolute top-full right-0 hidden rounded-lg border bg-white whitespace-nowrap shadow-lg group-hover:block dark:border-neutral-700 dark:bg-neutral-800"
-            >
-              <NuxtLink
-                to="/admin"
-                class="flex w-full items-center rounded-t-lg px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+            <div class="dropdown dropdown-end h-full">
+              <div
+                tabindex="0"
+                role="button"
+                class="btn btn-ghost flex h-full flex-col text-sm leading-3 font-normal opacity-50"
               >
-                <i class="ri-speed-up-line mr-1" />
-                进入控制台
-              </NuxtLink>
-              <button
-                class="flex w-full items-center rounded-b-lg px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                @click="handleLogout"
+                <p>欢迎你，管理员</p>
+                <p>
+                  {{ session.user.name }}<i class="ri-arrow-down-s-line ml-1" />
+                </p>
+              </div>
+              <ul
+                tabindex="0"
+                class="dropdown-content menu bg-base-200 rounded-box z-1 p-2 shadow-sm"
               >
-                <i class="ri-logout-box-r-line mr-1" />
-                退出登录
-              </button>
+                <li>
+                  <NuxtLink
+                    to="/admin"
+                    class="flex w-full items-center rounded-t-lg px-4 py-2 whitespace-nowrap hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                  >
+                    <i class="ri-speed-up-line mr-1" />
+                    进入控制台
+                  </NuxtLink>
+                </li>
+                <li>
+                  <button
+                    class="flex w-full items-center rounded-b-lg px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700"
+                    @click="handleLogout"
+                  >
+                    <i class="ri-logout-box-r-line mr-1" />
+                    退出登录
+                  </button>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
