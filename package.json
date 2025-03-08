@@ -23,33 +23,33 @@
     "commitlint": "commitlint --edit"
   },
   "dependencies": {
-    "@nuxt/content": "3.2.2",
+    "@nuxt/content": "3.3.0",
     "@nuxt/fonts": "0.10.3",
     "@nuxtjs/color-mode": "3.5.2",
-    "@tailwindcss/vite": "^4.0.9",
+    "@tailwindcss/vite": "^4.0.12",
     "daisyui": "5.0.0",
     "drizzle-orm": "^0.40.0",
     "jose": "^6.0.7",
-    "nuxt": "^3.15.4",
+    "nuxt": "^3.16.0",
     "nuxt-auth-utils": "0.5.16",
     "pg": "^8.13.3",
     "pg-protocol": "^1.7.1",
     "remixicon": "^4.6.0",
-    "tailwindcss": "^4.0.9",
+    "tailwindcss": "^4.0.12",
     "uuid": "^11.1.0",
     "vue": "latest",
     "vue-router": "latest",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.7.1",
-    "@commitlint/config-conventional": "^19.7.1",
-    "@nuxt/eslint": "^1.1.0",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
+    "@nuxt/eslint": "^1.2.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/pg": "^8.11.11",
     "drizzle-kit": "^0.30.5",
-    "eslint": "^9.21.0",
-    "eslint-config-prettier": "^10.0.2",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-unused-imports": "^4.1.4",
     "husky": "^9.1.7",
@@ -58,8 +58,8 @@
     "prettier-eslint": "^16.3.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tsx": "^4.19.3",
-    "typescript": "~5.7.3",
-    "vue-tsc": "2.1.6"
+    "typescript": "5.7.3",
+    "vue-tsc": "2.2.8"
   },
   "lint-staged": {
     "*": "pnpm lint:fix"
