@@ -12,27 +12,11 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core'
 import { v7 } from 'uuid'
+import { FROM_SOURCES, MAIN_TAGS, STATUS_TYPES } from '~/shared/types/blog'
 
-export const mainTagsEnum = pgEnum('main_tag', [
-  '生活',
-  '技术',
-  '知识',
-  '整合',
-  '采集',
-  '综合',
-  '',
-])
-export const fromSources = pgEnum('from', [
-  'CIB',
-  'BoYouQuan',
-  'BlogFinder',
-  'BKZ',
-  'Travellings',
-  'WebSubmit',
-  'AdminAdd',
-  'LinkPageSearch',
-])
-export const statusTypes = pgEnum('status', ['OK', 'ERROR', 'DELETED'])
+export const mainTagsEnum = pgEnum('main_tag_enum', MAIN_TAGS)
+export const fromSources = pgEnum('from_enum', FROM_SOURCES)
+export const statusTypes = pgEnum('status_enum', STATUS_TYPES)
 
 export const Blogs = pgTable(
   'blogs',
@@ -41,13 +25,13 @@ export const Blogs = pgTable(
       .$default(() => v7())
       .primaryKey(),
     bid: integer().unique().notNull(),
-    name: varchar({ length: 16 }).unique().notNull(),
+    name: varchar({ length: 32 }).unique().notNull(),
     url: varchar({ length: 64 }).unique().notNull(),
     sign: text().default(''),
     main_tag: mainTagsEnum(),
     sub_tag: jsonb().$type<string[]>().default([]),
     feed: jsonb().$type<string[]>().default([]),
-    from: fromSources().$type<string[]>().default([]),
+    from: fromSources().array(),
     sitemap: varchar({ length: 128 }).default(''),
     link_page: varchar({ length: 128 }).default(''),
     arch: varchar({ length: 32 }).default(''),

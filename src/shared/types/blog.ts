@@ -1,6 +1,5 @@
 import { z } from 'zod'
 
-// 定义常量枚举值
 export const MAIN_TAGS = [
   '生活',
   '技术',
@@ -10,6 +9,7 @@ export const MAIN_TAGS = [
   '综合',
   '',
 ] as const
+
 export const FROM_SOURCES = [
   'CIB',
   'BoYouQuan',
@@ -19,22 +19,24 @@ export const FROM_SOURCES = [
   'WebSubmit',
   'AdminAdd',
   'LinkPageSearch',
+  'OldData',
 ] as const
-export const STATUS_TYPES = ['OK', 'ERROR', 'DELETED'] as const
+
+export const STATUS_TYPES = ['OK', 'ERROR', 'SSLERROR', 'DELETED'] as const
 
 export type MainTag = (typeof MAIN_TAGS)[number]
 export type StatusType = (typeof STATUS_TYPES)[number]
 export type FromSource = (typeof FROM_SOURCES)[number]
 
-const BaseBlogSchema = z.object({
+export const BaseBlogSchema = z.object({
   id: z
     .string({ message: '不正确的数据格式' })
     .uuid({ message: '该字段为什么会不正确？' }),
   bid: z.number({ message: '该字段为什么会不正确？' }),
   name: z
     .string({ message: '不正确的数据格式' })
-    .min(2, { message: '博客名称不得小于 2 字符' })
-    .max(16, { message: '博客名称不得大于 16 字符' }),
+    .min(1, { message: '博客名称不得小于 1 字符' })
+    .max(32, { message: '博客名称不得大于 32 字符' }),
   url: z
     .string({ message: '不正确的数据格式' })
     .url({ message: 'URL 格式不正确' })
@@ -44,16 +46,13 @@ const BaseBlogSchema = z.object({
     errorMap: () => ({ message: '无效的主标签类型' }),
   }),
   sub_tag: z
-    .array(z.string({ message: '不正确的数据格式' }), {
-      errorMap: () => ({ message: '无效的子标签类型' }),
-    })
-    .length(10)
+    .array(z.string({ message: '不正确的数据格式' }))
+    .max(10)
     .default([]),
   feed: z
     .array(
-      z
-        .string({ message: '不正确的数据格式' })
-        .url({ message: 'Feed URL 格式不正确' }),
+      z.string({ message: '不正确的数据格式' }),
+      // .url({ message: 'Feed URL 格式不正确' }),
       {
         errorMap: () => ({ message: '无效的 Feed URL 类型' }),
       },
@@ -72,12 +71,12 @@ const BaseBlogSchema = z.object({
     .default(['WebSubmit']),
   sitemap: z
     .string({ message: '不正确的数据格式' })
-    .url({ message: 'Sitemap URL 格式不正确' })
+    // .url({ message: 'Sitemap URL 格式不正确' })
     .max(128, { message: 'Sitemap URL 长度不得超过 128 字符' })
     .default(''),
   link_page: z
     .string()
-    .url({ message: '友链页面 URL 格式不正确' })
+    // .url({ message: '友链页面 URL 格式不正确' })
     .max(128, { message: '友链页面 URL 长度不得超过 128 字符' })
     .default(''),
   arch: z
@@ -93,6 +92,7 @@ const BaseBlogSchema = z.object({
   recommen: z.boolean().default(false),
   join_time: z.date().default(() => new Date()),
   update_time: z.date().default(() => new Date()),
+  saveweb_id: z.string().default(''),
 })
 
 export type BaseBlog = z.infer<typeof BaseBlogSchema>
@@ -128,6 +128,7 @@ export const BotUpdateSchema = z.object({
       link_page: true,
       join_time: true,
       update_time: true,
+      saveweb_id: true,
     }),
   ),
 })
@@ -141,3 +142,13 @@ export const BotInsertSchema = BotUpdateSchema.merge(
 )
 
 export type BotInsert = z.infer<typeof WebIntertSchema>
+
+export const BlogVOSchema = BaseBlogSchema.omit({
+  id: true,
+  link_page: true,
+  passed: true,
+  recommen: true,
+  saveweb_id: true,
+})
+
+export type BlogVO = z.infer<typeof BlogVOSchema>
