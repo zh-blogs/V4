@@ -12,7 +12,30 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core'
 import { v7 } from 'uuid'
-import { FROM_SOURCES, MAIN_TAGS, STATUS_TYPES } from '~/shared/types/blog'
+
+export const MAIN_TAGS = [
+  '生活',
+  '技术',
+  '知识',
+  '整合',
+  '采集',
+  '综合',
+  '',
+] as const
+
+export const FROM_SOURCES = [
+  'CIB',
+  'BoYouQuan',
+  'BlogFinder',
+  'BKZ',
+  'Travellings',
+  'WebSubmit',
+  'AdminAdd',
+  'LinkPageSearch',
+  'OldData',
+] as const
+
+export const STATUS_TYPES = ['OK', 'ERROR', 'SSLERROR'] as const
 
 export const mainTagsEnum = pgEnum('main_tag_enum', MAIN_TAGS)
 export const fromSources = pgEnum('from_enum', FROM_SOURCES)
@@ -24,7 +47,7 @@ export const Blogs = pgTable(
     id: uuid()
       .$default(() => v7())
       .primaryKey(),
-    bid: integer().unique().notNull(),
+    bid: integer().unique(),
     name: varchar({ length: 32 }).unique().notNull(),
     url: varchar({ length: 64 }).unique().notNull(),
     sign: text().default(''),
