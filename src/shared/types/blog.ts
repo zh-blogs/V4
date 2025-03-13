@@ -1,28 +1,9 @@
 import { z } from 'zod'
-
-export const MAIN_TAGS = [
-  '生活',
-  '技术',
-  '知识',
-  '整合',
-  '采集',
-  '综合',
-  '',
-] as const
-
-export const FROM_SOURCES = [
-  'CIB',
-  'BoYouQuan',
-  'BlogFinder',
-  'BKZ',
-  'Travellings',
-  'WebSubmit',
-  'AdminAdd',
-  'LinkPageSearch',
-  'OldData',
-] as const
-
-export const STATUS_TYPES = ['OK', 'ERROR', 'SSLERROR', 'DELETED'] as const
+import {
+  FROM_SOURCES,
+  MAIN_TAGS,
+  STATUS_TYPES,
+} from '~~/server/db/schema/blogs'
 
 export type MainTag = (typeof MAIN_TAGS)[number]
 export type StatusType = (typeof STATUS_TYPES)[number]
