@@ -55,9 +55,9 @@ export const Blogs = pgTable(
     sub_tag: jsonb().$type<string[]>().default([]),
     feed: jsonb().$type<string[]>().default([]),
     from: fromSources().array(),
-    sitemap: varchar({ length: 128 }).default(''),
-    link_page: varchar({ length: 128 }).default(''),
-    arch: varchar({ length: 32 }).default(''),
+    sitemap: varchar({ length: 128 }),
+    link_page: varchar({ length: 128 }),
+    arch: varchar({ length: 32 }),
     join_time: timestamp({ withTimezone: true, precision: 6 }).$default(
       () => new Date(),
     ),
