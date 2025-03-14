@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-base-200 h-14 px-3 md:h-18">
+  <header class="bg-base-200 h-14 px-5 md:h-18">
     <div class="drawer mx-auto flex h-full max-w-7xl justify-between">
       <div class="h-full p-1">
         <NuxtLink to="/">
