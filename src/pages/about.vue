@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="page"
-    class="prose prose-neutral dark:prose-invert prose-a:no-underline max-w-none px-24"
+    class="prose prose-neutral dark:prose-invert prose-a:no-underline max-w-none px-30 py-20"
   >
     <ContentRenderer :value="page" />
   </div>
