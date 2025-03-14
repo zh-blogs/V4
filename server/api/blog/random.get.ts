@@ -1,22 +1,22 @@
-import { and, eq, sql } from 'drizzle-orm'
+import { and, eq, isNotNull, sql } from 'drizzle-orm'
 import { DatabaseError } from 'pg-protocol'
 import { z, ZodError } from 'zod'
-import { BlogVOSchema, MAIN_TAGS } from '~/shared/types/blog'
+import { BlogVOSchema } from '~/shared/types/blog'
 import { db } from '~~/server/db/database'
-import { Blogs } from '~~/server/db/schema/blogs'
+import { Blogs, MAIN_TAGS } from '~~/server/db/schema/blogs'
 import Result from '~~/server/result'
 
 const randomSchema = z.object({
   size: z.coerce
     .number({ message: '无效的参数' })
     .min(1, { message: '你是不打算查询吗？' })
-    .max(10, { message: '查询太多服务器要忙死啦QAQ' }),
+    .max(12, { message: '查询太多服务器要忙死啦QAQ' }),
   recommen: z
     .preprocess(
       (val) => {
         if (val === 'true') return true
       },
-      z.literal(true, { invalid_type_error: '参数错误' }),
+      z.literal(true, { message: '参数错误' }),
     )
     .optional(),
   type: z
@@ -45,6 +45,7 @@ export default defineEventHandler(async (event) => {
       .orderBy(sql`random()`)
       .where(
         and(
+          isNotNull(Blogs.bid),
           recommen ? eq(Blogs.recommen, recommen) : undefined,
           type ? eq(Blogs.main_tag, type) : undefined,
           eq(Blogs.status, 'OK'),

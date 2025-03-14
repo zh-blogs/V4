@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="footer sm:footer-horizontal text-base-content mx-auto max-w-7xl justify-evenly px-5 py-10 md:p-10"
+    class="footer sm:footer-horizontal text-base-content mx-auto max-w-7xl justify-evenly px-5 py-10 md:justify-between md:px-5 md:py-10"
   >
     <aside class="mx-auto flex flex-col">
       <div class="flex flex-row items-center gap-2 md:gap-5">
@@ -29,7 +29,7 @@
         </NuxtLink>
       </div>
     </aside>
-    <div class="mx-auto grid grid-cols-2">
+    <div class="mx-auto grid grid-cols-2 lg:gap-20">
       <nav class="grid grid-cols-1 pl-6 leading-7 md:pl-0">
         <h6 class="footer-title">快速访问</h6>
         <template
@@ -44,7 +44,7 @@
           </NuxtLink>
         </template>
       </nav>
-      <nav class="grid grid-cols-1 leading-7">
+      <nav class="grid grid-cols-1 text-center leading-7 sm:text-right">
         <h6 class="footer-title">友情链接</h6>
         <template
           v-for="item in friendLinks"
