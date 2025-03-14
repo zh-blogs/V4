@@ -1,10 +1,11 @@
 ---
-title: "关于我们"
-description: "一份来自中文博客导航项目组的自述"
+title: '关于我们'
+description: '一份来自中文博客导航项目组的自述'
 create: 2025-02-08
 update: 2025-02-08
-editor: ["MYXXTS"]
+editor: ['MYXXTS']
 ---
+
 # 关于我们
 
 > 我们尝试链接几乎所有的中文博客 —— 林林
@@ -60,7 +61,7 @@ editor: ["MYXXTS"]
 
 > 维护组：负责对本项目的项目数据进行维护，包括但不限于项目博客审核、信息完善、标准完善等。
 
-[@OhYee（技术组负责人）](https://github.com/OhYee) [@linlinzzo（项目整体负责人、维护组负责人）](https://github.com/linlinzzo) [@soxft（技术组负责人）](https://github.com/soxft) [@MYXXTS（维护组负责人、项目标准制定人）](https://github.com/MYXXTS)  [@Mabbs](https://github.com/Mabbs) [@aquausora](https://github.com/aquausora) [@wibus-wee](https://github.com/wibus-wee)   [@Lafcadia](https://github.com/Lafcadia) [@liangmiQwQ](https://github.com/liangmiQwQ) [@Redish101](https://github.com/Redish101) [@Innei](https://github.com/Innei) [@jsun969](https://github.com/jsun969) [@zkeq](https://github.com/zkeq) [@Dian-C](https://github.com/Dian-C) [@huziyan1](https://github.com/huziyan1) [@jonepengcn](https://github.com/jonepengcn) [@Kagurain](https://github.com/Kagurain) [@liangmis](https://github.com/liangmis) [@Timozaici](https://github.com/Timozaici) [@Changrui0101](https://github.com/Changrui0101) [@Lfhsheng](https://github.com/Lfhsheng) [@hydrogenoxide-user](https://github.com/hydrogenoxide-user) [@Amitabha](https://github.com/Amitabha)  [@waterelegance](https://github.com/waterelegance)  [@linhaii](https://github.com/linhaii) [@yzqzss](https://github.com/yzqzss) [@hilllei](https://github.com/hilllei)[@gtxykn0504](https://github.com/gtxykn0504/)
+[@OhYee（技术组负责人）](https://github.com/OhYee) [@linlinzzo（项目整体负责人、维护组负责人）](https://github.com/linlinzzo) [@soxft（技术组负责人）](https://github.com/soxft) [@MYXXTS（维护组负责人、项目标准制定人）](https://github.com/MYXXTS) [@Mabbs](https://github.com/Mabbs) [@aquausora](https://github.com/aquausora) [@wibus-wee](https://github.com/wibus-wee) [@Lafcadia](https://github.com/Lafcadia) [@liangmiQwQ](https://github.com/liangmiQwQ) [@Redish101](https://github.com/Redish101) [@Innei](https://github.com/Innei) [@jsun969](https://github.com/jsun969) [@zkeq](https://github.com/zkeq) [@Dian-C](https://github.com/Dian-C) [@huziyan1](https://github.com/huziyan1) [@jonepengcn](https://github.com/jonepengcn) [@Kagurain](https://github.com/Kagurain) [@liangmis](https://github.com/liangmis) [@Timozaici](https://github.com/Timozaici) [@Changrui0101](https://github.com/Changrui0101) [@Lfhsheng](https://github.com/Lfhsheng) [@hydrogenoxide-user](https://github.com/hydrogenoxide-user) [@Amitabha](https://github.com/Amitabha) [@waterelegance](https://github.com/waterelegance) [@linhaii](https://github.com/linhaii) [@yzqzss](https://github.com/yzqzss) [@hilllei](https://github.com/hilllei)[@gtxykn0504](https://github.com/gtxykn0504/)
 
 ## 感谢以下网站对本项目的宣传
 
@@ -72,9 +73,8 @@ editor: ["MYXXTS"]
 
 ## 感谢以下上游博客列表
 
-- [寻我 | 优秀个人独立博客收录](https://seekbetter.me/)
+- [开往](https://www.travellings.cn/)
+- [博友圈](https://www.boyouquan.com/)
+- [BlogFinder](https://bf.zzxworld.com/)
 - [中文独立博客列表](https://github.com/timqian/chinese-independent-blogs)
 - [优秀个人独立博客导航](http://www.jetli.com.cn/)
-- [博客联盟](https://blorg.cn/)
-- [BlogFinder - 发现优秀的个人博客](https://bf.zzxworld.com/)
-- [十年之约](https://www.foreverblog.cn/)
