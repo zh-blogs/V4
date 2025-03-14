@@ -7,11 +7,9 @@ const props = defineProps({
 </script>
 
 <template>
-  <div
-    class="h-screen w-full bg-slate-200 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100"
-  >
+  <div class="h-screen w-full">
     <div
-      class="mx-auto flex h-screen max-w-7xl items-center justify-center bg-neutral-100 dark:bg-neutral-900"
+      class="bg-base-200 mx-auto flex h-screen max-w-7xl items-center justify-center"
     >
       <section class="flex h-96 w-full flex-col items-center justify-center">
         <div
@@ -20,7 +18,7 @@ const props = defineProps({
           <div class="w-48 justify-self-end">
             <ElementsLogo class="h-full w-full" />
           </div>
-          <div class="mx-8 h-40 w-1 justify-self-center bg-gray-500" />
+          <div class="mx-8 h-40 w-1 justify-self-center bg-neutral-500" />
           <div class="flex flex-col">
             <h2 class="mb-2 text-4xl">
               {{ props.error?.statusCode }}
@@ -32,7 +30,7 @@ const props = defineProps({
         </div>
         <NuxtLink
           to="/"
-          class="mt-8 border-2 border-neutral-200 p-3 text-2xl text-neutral-600 hover:border-neutral-500 dark:border-neutral-800 dark:text-neutral-400"
+          class="btn btn-xl btn-outline"
         >
           <i class="ri-arrow-go-back-fill" /> 回到主页
         </NuxtLink>
