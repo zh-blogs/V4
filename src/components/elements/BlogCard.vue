@@ -28,27 +28,29 @@
     <div class="flex justify-between">
       <!-- eslint-disable vue/no-v-html -->
       <div class="flex gap-2">
-        <div class="tooltip">
+        <div class="tooltip tooltip-right">
           <div
             class="tooltip-content text-left"
             v-html="getFromContent(blog.from)"
           ></div>
           <i class="ri-arrow-left-right-fill opacity-40"></i>
         </div>
-        <div class="tooltip">
+        <div
+          v-if="blog.feed[0]"
+          class="tooltip tooltip-right"
+        >
           <div
-            v-if="!!blog.feed"
             class="tooltip-content text-left"
-            v-html="blog.feed.join('<br />')"
+            v-html="'订阅链接：' + blog.feed.join('<br />')"
           ></div>
           <i class="ri-rss-fill opacity-40"></i>
         </div>
         <div
-          v-if="!!blog.sitemap"
-          class="tooltip"
+          v-if="blog.sitemap"
+          class="tooltip tooltip-right"
         >
           <div class="tooltip-content text-left">
-            {{ blog.sitemap }}
+            站点地图： {{ blog.sitemap }}
           </div>
           <i class="ri-map-2-fill opacity-40"></i>
         </div>
@@ -108,6 +110,6 @@ const getFromContent = (from: FromSource[]): string => {
     LinkPageSearch: '友链发现',
     OldData: '旧版本数据',
   }
-  return from.map((item) => fromMap[item]).join('<br/>')
+  return '来源：' + from.map((item) => fromMap[item]).join('<br/>')
 }
 </script>
