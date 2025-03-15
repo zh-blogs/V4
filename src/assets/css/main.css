@@ -34,3 +34,7 @@ body {
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+.tooltip-left-top > .tooltip-content {
+  transform: translateX(-10%) translateY(var(--tt-pos, 0.25rem)) !important;
+}

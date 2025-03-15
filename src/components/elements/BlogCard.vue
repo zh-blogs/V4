@@ -26,23 +26,22 @@
       <div class="flex justify-between">
         <!-- eslint-disable vue/no-v-html -->
         <div class="hidden gap-2 sm:flex">
-          <div class="tooltip tooltip-top">
-            <div
-              class="tooltip-content text-left"
-              v-html="getJoinTime(blog.join_time)"
-            ></div>
+          <div class="tooltip tooltip-left-top">
+            <div class="tooltip-content text-left">
+              加入时间：{{ formatDate(blog.join_time) }}
+            </div>
             <i class="ri-time-fill opacity-40"></i>
           </div>
-          <div class="tooltip tooltip-top">
+          <div class="tooltip tooltip-left-top">
             <div
               class="tooltip-content text-left"
-              v-html="getFromContent(blog.from)"
+              v-html="'来源：' + getFromContent(blog.from)"
             ></div>
             <i class="ri-arrow-left-right-fill opacity-40"></i>
           </div>
           <div
-            v-if="blog.feed[0]"
-            class="tooltip tooltip-top"
+            v-if="blog.feed.length !== 0"
+            class="tooltip tooltip-left-top"
           >
             <div
               class="tooltip-content text-left"
@@ -52,7 +51,7 @@
           </div>
           <div
             v-if="blog.sitemap"
-            class="tooltip tooltip-top"
+            class="tooltip tooltip-left-top"
           >
             <div class="tooltip-content text-left">
               站点地图： {{ blog.sitemap }}
@@ -75,8 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import type { BlogVO, FromSource, MainTag } from '~/shared/types/blog'
-import formateDate from '~/shared/utils/formateDate'
+import type { BlogVO } from '~/shared/types/blog'
 
 defineEmits(['click'])
 defineProps({
@@ -85,45 +83,4 @@ defineProps({
     required: true,
   },
 })
-
-type TagMap = {
-  [k in MainTag]: string
-}
-
-type FromMap = {
-  [k in FromSource]: string
-}
-
-const getMainTagClass = (tag: MainTag): string => {
-  const tagMap: TagMap = {
-    生活: 'badge-success',
-    技术: 'badge-info',
-    知识: 'badge-primary',
-    整合: 'badge-neutral',
-    采集: 'badge-warning',
-    综合: 'badge-accent',
-    '': 'opacity-40',
-  }
-
-  return tagMap[tag]
-}
-
-const getFromContent = (from: FromSource[]): string => {
-  const fromMap: FromMap = {
-    CIB: '中文独立博客列表',
-    BoYouQuan: '博友圈',
-    BlogFinder: 'BlogFinder',
-    BKZ: '优秀个人独立博客导航',
-    Travellings: '开往',
-    WebSubmit: '网站提交',
-    AdminAdd: '管理员添加',
-    LinkPageSearch: '友链发现',
-    OldData: '旧版本数据',
-  }
-  return '来源：' + from.map((item) => fromMap[item]).join('<br/>')
-}
-
-const getJoinTime = (join_time: Date): string => {
-  return '加入时间：' + formateDate(join_time)
-}
 </script>

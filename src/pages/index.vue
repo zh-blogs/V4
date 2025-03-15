@@ -2,9 +2,9 @@
   <div class="py-10">
     <section class="lg w-full overflow-hidden px-[10%] py-10 md:px-[20%]">
       <div
-        class="mx-auto mb-10 w-full border-x-[#ce161c] px-0 pt-7 pb-9 md:border-x-[20px]"
+        class="mx-auto mb-10 w-full border-x-[#ce161c] px-0 pt-7 pb-9 md:border-x-[20px] md:px-20"
       >
-        <h2 class="sm:text-base-content my-5 text-6xl font-bold text-[#ce161c]">
+        <h2 class="md:text-base-content my-5 text-6xl font-bold text-[#ce161c]">
           集博栈
         </h2>
         <h3 class="my-5 text-3xl opacity-30">原中文博客列表导航</h3>
@@ -64,8 +64,10 @@
     </section>
     <div class="divider mx-auto w-9/10"></div>
     <section class="my-10 flex w-full">
-      <div class="stats stats-horizontal mx-auto w-fit text-center">
-        <div class="stat">
+      <div
+        class="stats stats-horizontal mx-auto flex w-fit flex-wrap justify-center text-center"
+      >
+        <div class="stat w-fit !border-none">
           <div class="stat-title">
             巡检正常博客数量
             <div
@@ -78,16 +80,16 @@
           <div class="stat-value">{{ count?.data?.accessible }}</div>
           <!-- TODO: <div class="stat-desc">上次巡检时间：</div> -->
         </div>
-        <div class="stat">
+        <div class="stat w-fit !border-none">
           <div class="stat-title">总博客数量</div>
           <div class="stat-value">{{ count?.data?.total }}</div>
         </div>
 
-        <div class="stat">
+        <div class="stat w-fit !border-none">
           <div class="stat-title">审核通过博客数量</div>
           <div class="stat-value">{{ count?.data?.passed }}</div>
         </div>
-        <div class="stat">
+        <div class="stat w-fit !border-none">
           <div class="stat-title">精选博客数量</div>
           <div class="stat-value">{{ count?.data?.recommen }}</div>
         </div>
