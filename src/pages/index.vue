@@ -9,6 +9,7 @@
         <h4 class="my-3 text-2xl">尝试链接几乎所有的中文博客</h4>
       </div>
     </section>
+    <div class="divider mx-auto w-9/10"></div>
     <section class="w-full px-[10%] py-20 sm:px-15">
       <div class="mb-10 flex items-end justify-between px-10">
         <div class="leading-10">
@@ -35,6 +36,7 @@
         path="/api/blog/random"
       />
     </section>
+    <div class="divider mx-auto w-9/10"></div>
     <section class="my-10 flex w-full">
       <div class="stats stats-horizontal mx-auto w-fit text-center">
         <div class="stat">
