@@ -20,20 +20,20 @@
         :to="blog.url"
         rel="noopener"
         target="_blank"
-        class="text-primary text-xs"
+        class="text-primary w-fit text-xs"
         >{{ blog.url }}
       </NuxtLink>
       <div class="flex justify-between">
         <!-- eslint-disable vue/no-v-html -->
-        <div class="flex gap-2">
-          <div class="tooltip tooltip-right">
+        <div class="hidden gap-2 sm:flex">
+          <div class="tooltip tooltip-top">
             <div
               class="tooltip-content text-left"
               v-html="getJoinTime(blog.join_time)"
             ></div>
             <i class="ri-time-fill opacity-40"></i>
           </div>
-          <div class="tooltip tooltip-right">
+          <div class="tooltip tooltip-top">
             <div
               class="tooltip-content text-left"
               v-html="getFromContent(blog.from)"
@@ -42,7 +42,7 @@
           </div>
           <div
             v-if="blog.feed[0]"
-            class="tooltip tooltip-right"
+            class="tooltip tooltip-top"
           >
             <div
               class="tooltip-content text-left"
@@ -52,7 +52,7 @@
           </div>
           <div
             v-if="blog.sitemap"
-            class="tooltip tooltip-right"
+            class="tooltip tooltip-top"
           >
             <div class="tooltip-content text-left">
               站点地图： {{ blog.sitemap }}
@@ -60,10 +60,14 @@
             <i class="ri-map-2-fill opacity-40"></i>
           </div>
         </div>
+        <div class="flex gap-2 sm:hidden">
+          <i class="ri-time-fill opacity-40"></i>
+          <i class="ri-arrow-left-right-fill opacity-40"></i>
+          <i class="ri-rss-fill opacity-40"></i>
+          <i class="ri-map-2-fill opacity-40"></i>
+        </div>
         <div>
-          <button class="btn btn-ghost btn-xs btn-circle">
-            <i class="ri-more-fill text-base"></i>
-          </button>
+          <i class="ri-more-fill text-base"></i>
         </div>
       </div>
     </div>
