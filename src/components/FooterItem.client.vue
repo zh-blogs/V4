@@ -19,6 +19,7 @@
             Copyright © 2022 -
             {{ new Date().getFullYear() }}
           </p>
+          <p>当前程序版本：4.0.0-dev</p>
         </div>
       </div>
       <div
