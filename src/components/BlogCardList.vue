@@ -52,56 +52,6 @@ const {
   params: { size: 12 },
 })
 
-// const modalOpen = ref(false)
-// // 关闭模态框
-// const closeModal = () => {
-//   modalOpen.value = false
-// }
-
-// // 根据主标签返回对应的样式类
-// const getMainTagClass = (tag) => {
-//   const tagMap = {
-//     生活: 'bg-green-100 text-green-800',
-//     技术: 'bg-blue-100 text-blue-800',
-//     知识: 'bg-purple-100 text-purple-800',
-//     整合: 'bg-indigo-100 text-indigo-800',
-//     采集: 'bg-yellow-100 text-yellow-800',
-//     综合: 'bg-gray-100 text-gray-800',
-//     '': 'bg-gray-100 text-gray-800',
-//   }
-
-//   return tagMap[tag] || 'bg-gray-100 text-gray-800'
-// }
-
-// // 根据状态返回对应的样式类
-// const getStatusClass = (status) => {
-//   const statusMap = {
-//     OK: 'bg-green-100 text-green-800',
-//     待审核: 'bg-yellow-100 text-yellow-800',
-//     暂停更新: 'bg-red-100 text-red-800',
-//   }
-
-//   return statusMap[status] || 'bg-gray-100 text-gray-800'
-// }
-
-// // 格式化日期
-// const formatDate = (dateString) => {
-//   if (!dateString) return '未知'
-
-//   try {
-//     const date = new Date(dateString)
-//     return date.toLocaleDateString('zh-CN', {
-//       year: 'numeric',
-//       month: '2-digit',
-//       day: '2-digit',
-//       hour: '2-digit',
-//       minute: '2-digit',
-//     })
-//   } catch (e) {
-//     return '日期格式错误' + e.message
-//   }
-// }
-
 defineExpose({
   refresh,
 })

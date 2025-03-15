@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card bg-base-100 cursor-pointer p-5 transition-all hover:z-10 hover:scale-110 hover:border hover:border-neutral-500 hover:shadow-xs"
+    class="card bg-base-100 cursor-pointer px-5 pt-3 pb-2 transition-all hover:z-10 hover:scale-110 hover:border hover:border-neutral-500 hover:shadow-xs"
     @click="$emit('click', blog)"
   >
     <div class="mb-1 flex justify-between">
@@ -15,7 +15,7 @@
     <div class="card-title">
       <h2 class="flex-1 truncate">{{ blog.name }}</h2>
     </div>
-    <div class="card-body px-0 py-2">
+    <div class="card-body gap-1 p-0">
       <NuxtLink
         :to="blog.url"
         rel="noopener"
@@ -23,42 +23,48 @@
         class="text-primary text-xs"
         >{{ blog.url }}
       </NuxtLink>
-      <span>{{ blog.sign || '该博客还没有签名~' }}</span>
-    </div>
-    <div class="flex justify-between">
-      <!-- eslint-disable vue/no-v-html -->
-      <div class="flex gap-2">
-        <div class="tooltip tooltip-right">
-          <div
-            class="tooltip-content text-left"
-            v-html="getFromContent(blog.from)"
-          ></div>
-          <i class="ri-arrow-left-right-fill opacity-40"></i>
-        </div>
-        <div
-          v-if="blog.feed[0]"
-          class="tooltip tooltip-right"
-        >
-          <div
-            class="tooltip-content text-left"
-            v-html="'订阅链接：' + blog.feed.join('<br />')"
-          ></div>
-          <i class="ri-rss-fill opacity-40"></i>
-        </div>
-        <div
-          v-if="blog.sitemap"
-          class="tooltip tooltip-right"
-        >
-          <div class="tooltip-content text-left">
-            站点地图： {{ blog.sitemap }}
+      <div class="flex justify-between">
+        <!-- eslint-disable vue/no-v-html -->
+        <div class="flex gap-2">
+          <div class="tooltip tooltip-right">
+            <div
+              class="tooltip-content text-left"
+              v-html="getJoinTime(blog.join_time)"
+            ></div>
+            <i class="ri-time-fill opacity-40"></i>
           </div>
-          <i class="ri-map-2-fill opacity-40"></i>
+          <div class="tooltip tooltip-right">
+            <div
+              class="tooltip-content text-left"
+              v-html="getFromContent(blog.from)"
+            ></div>
+            <i class="ri-arrow-left-right-fill opacity-40"></i>
+          </div>
+          <div
+            v-if="blog.feed[0]"
+            class="tooltip tooltip-right"
+          >
+            <div
+              class="tooltip-content text-left"
+              v-html="'订阅链接：' + blog.feed.join('<br />')"
+            ></div>
+            <i class="ri-rss-fill opacity-40"></i>
+          </div>
+          <div
+            v-if="blog.sitemap"
+            class="tooltip tooltip-right"
+          >
+            <div class="tooltip-content text-left">
+              站点地图： {{ blog.sitemap }}
+            </div>
+            <i class="ri-map-2-fill opacity-40"></i>
+          </div>
         </div>
-      </div>
-      <div>
-        <button class="btn btn-ghost btn-xs btn-circle">
-          <i class="ri-more-fill text-base"></i>
-        </button>
+        <div>
+          <button class="btn btn-ghost btn-xs btn-circle">
+            <i class="ri-more-fill text-base"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -66,6 +72,7 @@
 
 <script setup lang="ts">
 import type { BlogVO, FromSource, MainTag } from '~/shared/types/blog'
+import formateDate from '~/shared/utils/formateDate'
 
 defineEmits(['click'])
 defineProps({
@@ -83,7 +90,6 @@ type FromMap = {
   [k in FromSource]: string
 }
 
-// 根据主标签返回对应的样式类
 const getMainTagClass = (tag: MainTag): string => {
   const tagMap: TagMap = {
     生活: 'badge-success',
@@ -111,5 +117,9 @@ const getFromContent = (from: FromSource[]): string => {
     OldData: '旧版本数据',
   }
   return '来源：' + from.map((item) => fromMap[item]).join('<br/>')
+}
+
+const getJoinTime = (join_time: Date): string => {
+  return '加入时间：' + formateDate(join_time)
 }
 </script>
