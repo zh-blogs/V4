@@ -61,14 +61,14 @@
               <i class="ri-global-line"></i>
               站点地址
             </span>
-            <NuxtLink
-              :to="blogDetailData?.url"
-              rel="noopener"
-              target="_blank"
+            <ElementsBlogLink
+              v-if="blogDetailData?.url && blogDetailData?.bid"
+              :url="blogDetailData.url"
+              :bid="blogDetailData.bid"
               class="text-primary break-all whitespace-normal"
             >
               {{ blogDetailData?.url }}
-            </NuxtLink>
+            </ElementsBlogLink>
           </div>
           <div>
             <span class="whitespace-nowrap opacity-50 after:content-['：']">
