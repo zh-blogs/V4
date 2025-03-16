@@ -46,6 +46,7 @@ export default defineEventHandler(async (event) => {
             .update(Blogs)
             .set({
               ...blog,
+              update_time: new Date(),
             })
             .where(eq(Blogs.id, existing[0].id))
           result.type = 'update'

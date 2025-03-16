@@ -61,12 +61,13 @@ export const Blogs = pgTable(
     join_time: timestamp({ withTimezone: true, precision: 6 }).$default(
       () => new Date(),
     ),
-    update_time: timestamp({ withTimezone: true, precision: 6 })
-      .$default(() => new Date())
-      .$onUpdate(() => new Date()),
+    update_time: timestamp({ withTimezone: true, precision: 6 }).$default(
+      () => new Date(),
+    ),
     status: statusTypes().default('OK'),
     passed: boolean().default(false),
     recommen: boolean().default(false),
+    access_count: integer().default(0),
     // TODO: saveweb_id: varchar({ length: 256 }),
   },
   (table) => [
