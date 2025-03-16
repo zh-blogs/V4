@@ -46,6 +46,19 @@
           </div>
           <div>
             <span class="whitespace-nowrap opacity-50 after:content-['：']">
+              <i class="ri-eye-line"></i>
+              访问量
+            </span>
+            <span>{{ blogDetailData?.access_count }}</span>
+            <div
+              class="tooltip ml-2"
+              data-tip="仅统计从本站点击的访问量"
+            >
+              <i class="ri-information-2-fill text-neutral-500"></i>
+            </div>
+          </div>
+          <div>
+            <span class="whitespace-nowrap opacity-50 after:content-['：']">
               <i class="ri-bookmark-line"></i>
               主要分类
             </span>

@@ -1,5 +1,4 @@
 import tailwindcss from '@tailwindcss/vite'
-import { checkEnv } from './env.check'
 
 export default defineNuxtConfig({
   modules: [
@@ -8,6 +7,7 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     '@nuxt/fonts',
     '@nuxt/eslint',
+    'nuxt-security',
   ],
   devtools: { enabled: true },
   app: {
@@ -82,11 +82,6 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  hooks: {
-    ready: () => {
-      checkEnv()
-    },
-  },
   eslint: {
     config: {
       stylistic: {
@@ -106,5 +101,8 @@ export default defineNuxtConfig({
     experimental: {
       processCSSVariables: true,
     },
+  },
+  security: {
+    enabled: process.env.NODE_ENV === 'production' ? true : false,
   },
 })
