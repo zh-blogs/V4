@@ -32,6 +32,7 @@
     "jose": "^6.0.10",
     "nuxt": "^3.16.0",
     "nuxt-auth-utils": "0.5.16",
+    "nuxt-security": "2.2.0",
     "pg": "^8.14.0",
     "pg-protocol": "^1.8.0",
     "remixicon": "^4.6.0",

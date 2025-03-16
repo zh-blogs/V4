@@ -24,46 +24,17 @@
         >{{ blog.url }}
       </ElementsBlogLink>
       <div class="flex justify-between">
-        <!-- eslint-disable vue/no-v-html -->
-        <div class="hidden gap-2 sm:flex">
-          <div class="tooltip tooltip-left-top">
-            <div class="tooltip-content text-left">
-              加入时间：{{ formatDate(blog.join_time) }}
-            </div>
-            <i class="ri-time-fill opacity-40"></i>
-          </div>
-          <div class="tooltip tooltip-left-top">
-            <div
-              class="tooltip-content text-left"
-              v-html="'来源：' + getFromContent(blog.from)"
-            ></div>
-            <i class="ri-arrow-left-right-fill opacity-40"></i>
-          </div>
-          <div
-            v-if="blog.feed.length !== 0"
-            class="tooltip tooltip-left-top"
-          >
-            <div
-              class="tooltip-content text-left"
-              v-html="'订阅链接：' + blog.feed.join('<br />')"
-            ></div>
-            <i class="ri-rss-fill opacity-40"></i>
-          </div>
-          <div
-            v-if="blog.sitemap"
-            class="tooltip tooltip-left-top"
-          >
-            <div class="tooltip-content text-left">
-              站点地图： {{ blog.sitemap }}
-            </div>
-            <i class="ri-map-2-fill opacity-40"></i>
-          </div>
-        </div>
-        <div class="flex gap-2 sm:hidden">
+        <div class="flex gap-2">
           <i class="ri-time-fill opacity-40"></i>
           <i class="ri-arrow-left-right-fill opacity-40"></i>
-          <i class="ri-rss-fill opacity-40"></i>
-          <i class="ri-map-2-fill opacity-40"></i>
+          <i
+            v-if="blog.feed.length !== 0"
+            class="ri-rss-fill opacity-40"
+          ></i>
+          <i
+            v-if="blog.sitemap"
+            class="ri-map-2-fill opacity-40"
+          ></i>
         </div>
         <div>
           <i class="ri-more-fill text-base"></i>
