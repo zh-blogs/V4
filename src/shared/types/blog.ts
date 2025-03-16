@@ -74,6 +74,7 @@ export const BaseBlogSchema = z.object({
   join_time: z.date().default(() => new Date()),
   update_time: z.date().default(() => new Date()),
   saveweb_id: z.string().default(''),
+  access_count: z.number().default(0),
 })
 
 export type BaseBlog = z.infer<typeof BaseBlogSchema>
@@ -110,6 +111,7 @@ export const BotUpdateSchema = z.object({
       join_time: true,
       update_time: true,
       saveweb_id: true,
+      access_count: true,
     }),
   ),
 })
