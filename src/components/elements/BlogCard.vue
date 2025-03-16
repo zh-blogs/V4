@@ -16,13 +16,13 @@
       <h2 class="flex-1 truncate">{{ blog.name }}</h2>
     </div>
     <div class="card-body gap-1 p-0">
-      <NuxtLink
-        :to="blog.url"
-        rel="noopener"
-        target="_blank"
+      <ElementsBlogLink
+        :url="blog.url"
+        :bid="blog.bid"
         class="text-primary w-fit text-xs"
+        @click.stop
         >{{ blog.url }}
-      </NuxtLink>
+      </ElementsBlogLink>
       <div class="flex justify-between">
         <!-- eslint-disable vue/no-v-html -->
         <div class="hidden gap-2 sm:flex">
