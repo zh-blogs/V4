@@ -29,11 +29,19 @@
   --color-base-content: oklch(0.141 0.005 285.823);
 }
 
-body {
-  font-family: 'Noto Sans Simplified Chinese', sans-serif;
+@theme {
+  --color-zhblogs-red: #ce161c;
+  --color-zhblogs-black: #27130f;
+  --color-zhblogs-white: #bac6e0;
+  --color-zhblogs-dark-note: #feeb4c;
+  --color-zhblogs-light-note: #946039;
 }
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+body {
+  font-family: 'Noto Sans Simplified Chinese', sans-serif;
+}
 
 .tooltip-left-top > .tooltip-content {
   transform: translateX(-10%) translateY(var(--tt-pos, 0.25rem)) !important;
