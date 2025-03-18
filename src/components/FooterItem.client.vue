@@ -40,6 +40,7 @@
           <NuxtLink
             :to="item.path"
             class="link link-hover"
+            :target="item.blank === true ? '_blank' : ''"
           >
             {{ item.name }}
           </NuxtLink>
@@ -69,7 +70,7 @@ import type { LinkItems } from '~/types/components'
 const quickLinks: LinkItems = [
   { name: '博客列表', path: '/list' },
   { name: '数据统计', path: '/charts' },
-  { name: '随机跳转', path: '/random' },
+  { name: '随机跳转', path: '/random', blank: true },
   { name: '项目文档', path: '/docs' },
   { name: '项目博客', path: '/blog' },
   { name: '关于我们', path: '/about' },
