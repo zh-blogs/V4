@@ -30,7 +30,8 @@
         <i class="ri-close-line text-base-content text-xl" />
       </button>
       <div
-        class="absolute bottom-0 left-0 h-2 w-full bg-blue-600"
+        class="absolute bottom-0 left-0 h-2 w-full"
+        :class="typeClasses[innerOptions.type ?? 'tips'].progress"
         :style="{
           animation: `decrease ${innerOptions.duration}ms linear forwards`,
         }"
@@ -57,23 +58,28 @@ const typeClasses = {
   info: {
     alert: 'alert-info alert-soft !border-blue-400 dark:!border-blue-600',
     icon: 'ri-information-line text-blue-500',
+    progress: 'bg-blue-400 dark:bg-blue-600',
   },
   success: {
     alert: 'alert-success alert-soft !border-green-400 dark:!border-green-600',
     icon: 'ri-checkbox-circle-line text-green-500',
+    progress: 'bg-green-400 dark:bg-green-600',
   },
   warning: {
     alert:
       'alert-warning alert-soft !border-yellow-400 dark:!border-yellow-600',
     icon: 'ri-error-warning-line text-yellow-500',
+    progress: 'bg-yellow-400 dark:bg-yellow-600',
   },
   error: {
     alert: 'alert-error alert-soft !border-red-400 dark:!border-red-600',
     icon: 'ri-close-circle-line text-red-500',
+    progress: 'bg-red-400 dark:bg-red-600',
   },
   tips: {
     alert: ' !border-neutral-400 dark:!border-neutral-600',
     icon: 'ri-lightbulb-line text-neutral-500',
+    progress: 'bg-neutral-400 dark:bg-neutral-600',
   },
 }
 
