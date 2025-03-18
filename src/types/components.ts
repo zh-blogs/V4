@@ -11,4 +11,5 @@ export interface AlertOptions {
 export type LinkItems = {
   name: string
   path: string
+  blank?: boolean
 }[]

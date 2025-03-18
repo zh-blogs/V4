@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card bg-base-100 cursor-pointer px-5 pt-3 pb-2 transition-all hover:z-10 hover:scale-110 hover:border hover:border-neutral-500 hover:shadow-xs"
+    class="card bg-base-100 px-5 pt-3 pb-2"
     @click="$emit('click', blog)"
   >
     <div class="mb-1 flex justify-between">
@@ -17,12 +17,14 @@
     </div>
     <div class="card-body gap-1 p-0">
       <ElementsBlogLink
+        v-if="!random"
         :url="blog.url"
         :bid="blog.bid"
         class="text-primary w-fit text-xs"
         @click.stop
         >{{ blog.url }}
       </ElementsBlogLink>
+      <span v-else>{{ blog.url }}</span>
       <div class="flex justify-between">
         <div class="flex gap-2">
           <i class="ri-time-fill opacity-40"></i>
@@ -36,7 +38,7 @@
             class="ri-map-2-fill opacity-40"
           ></i>
         </div>
-        <div>
+        <div v-if="!random">
           <i class="ri-more-fill text-base"></i>
         </div>
       </div>
@@ -52,6 +54,10 @@ defineProps({
   blog: {
     type: Object as PropType<BlogVO>,
     required: true,
+  },
+  random: {
+    type: Boolean,
+    default: false,
   },
 })
 </script>

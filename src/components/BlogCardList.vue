@@ -9,6 +9,7 @@
     >
       <ElementsBlogCard
         :blog="blog"
+        class="cursor-pointer transition-all hover:z-10 hover:scale-110 hover:border hover:border-neutral-500 hover:shadow-xs"
         @click="showBlogDetail(blog)"
       />
     </template>
