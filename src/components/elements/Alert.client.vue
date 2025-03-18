@@ -3,7 +3,7 @@
     <div
       v-if="alertVisible"
       role="alert"
-      class="alert min-w-xl gap-2"
+      class="alert relative w-full max-w-xl gap-2 border-2"
       :class="typeClasses[innerOptions.type ?? 'tips'].alert"
     >
       <i
@@ -14,22 +14,27 @@
       <div class="">
         <h3
           v-if="innerOptions.title"
-          class="h-auto text-lg font-bold break-all"
+          class="text-base-content h-auto text-lg font-bold break-all"
         >
           {{ innerOptions.title }}
         </h3>
-        <div class="h-auto text-sm break-all">
+        <p class="text-base-content h-auto text-sm break-all">
           {{ innerOptions.message }}
-        </div>
+        </p>
       </div>
       <button
         v-if="innerOptions.closeIconVisible"
         class="btn btn-sm btn-ghost self-start p-0"
         @click="closeAlert"
       >
-        <i class="ri-close-line text-xl" />
+        <i class="ri-close-line text-base-content text-xl" />
       </button>
-      <div class="absolute h-0.5 w-full" />
+      <div
+        class="absolute bottom-0 left-0 h-2 w-full bg-blue-600"
+        :style="{
+          animation: `decrease ${innerOptions.duration}ms linear forwards`,
+        }"
+      />
     </div>
   </Transition>
 </template>
@@ -50,23 +55,24 @@ const innerOptions = computed<AlertOptions>(() => ({
 
 const typeClasses = {
   info: {
-    alert: 'alert-info alert-soft',
+    alert: 'alert-info alert-soft !border-blue-400 dark:!border-blue-600',
     icon: 'ri-information-line text-blue-500',
   },
   success: {
-    alert: 'alert-success alert-soft',
+    alert: 'alert-success alert-soft !border-green-400 dark:!border-green-600',
     icon: 'ri-checkbox-circle-line text-green-500',
   },
   warning: {
-    alert: 'alert-warning alert-soft',
+    alert:
+      'alert-warning alert-soft !border-yellow-400 dark:!border-yellow-600',
     icon: 'ri-error-warning-line text-yellow-500',
   },
   error: {
-    alert: 'alert-error alert-soft',
+    alert: 'alert-error alert-soft !border-red-400 dark:!border-red-600',
     icon: 'ri-close-circle-line text-red-500',
   },
   tips: {
-    alert: '',
+    alert: ' !border-neutral-400 dark:!border-neutral-600',
     icon: 'ri-lightbulb-line text-neutral-500',
   },
 }
@@ -112,5 +118,14 @@ onMounted(() => {
 .fade-leave-from {
   opacity: 1;
   transform: translateY(0);
+}
+
+@keyframes decrease {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }
 </style>

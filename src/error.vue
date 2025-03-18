@@ -13,7 +13,7 @@ const props = defineProps({
     >
       <section class="flex h-96 w-full flex-col items-center justify-center">
         <div
-          class="grid w-full max-w-5xl grid-cols-[1fr_auto_1fr] items-center"
+          class="mb-5 grid w-full max-w-5xl grid-cols-[1fr_auto_1fr] items-center"
         >
           <div class="w-48 justify-self-end">
             <ElementsLogo class="h-full w-full" />
