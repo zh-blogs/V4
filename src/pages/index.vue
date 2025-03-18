@@ -2,9 +2,11 @@
   <div class="py-10">
     <section class="lg w-full overflow-hidden px-[10%] py-10 md:px-[20%]">
       <div
-        class="mx-auto mb-10 w-full border-x-[#ce161c] px-0 pt-7 pb-9 md:border-x-[20px] md:px-20"
+        class="border-x-zhblogs-red mx-auto mb-10 w-full px-0 pt-7 pb-9 md:border-x-[20px] md:px-20"
       >
-        <h2 class="md:text-base-content my-5 text-6xl font-bold text-[#ce161c]">
+        <h2
+          class="md:text-base-content text-zhblogs-red my-5 text-6xl font-bold"
+        >
           集博栈
         </h2>
         <h3 class="my-5 text-3xl opacity-30">原中文博客列表导航</h3>
