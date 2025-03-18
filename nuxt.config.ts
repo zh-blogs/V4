@@ -78,6 +78,13 @@ export default defineNuxtConfig({
   },
   srcDir: 'src/',
   serverDir: 'server/',
+  experimental: {
+    defaults: {
+      nuxtLink: {
+        externalRelAttribute: 'noopener',
+      },
+    },
+  },
   compatibilityDate: '2024-11-01',
   vite: {
     plugins: [tailwindcss()],
