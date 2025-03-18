@@ -114,7 +114,7 @@ onMounted(async () => {
         },
         keepalive: true,
       }).catch((err) => console.error('点击统计请求失败:', err))
-      window.location.href = blog.value?.url
+      window.location.replace(blog.value?.url)
     }
   }, 1000)
 })
