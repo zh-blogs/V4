@@ -1,11 +1,12 @@
 {
   "name": "nuxt-app",
   "private": true,
+  "version": "0.0.0-dev",
   "type": "module",
   "packageManager": "pnpm@10.2.0+sha1.5d36c5a1aae9a628a924ee9982f013ad202e1051",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
+    "build": "node ./scripts/system-info.js --build && nuxt build",
+    "dev": "node ./scripts/system-info.js && nuxt dev",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
