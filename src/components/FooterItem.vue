@@ -20,28 +20,30 @@
             {{ new Date().getFullYear() }}
           </p>
           <div class="tooltip">
-            <div class="tooltip-content text-left">
-              <p>
-                版本哈希：
-                <span class="underline-offset-4 hover:underline">
-                  {{ systemInfo.commitHash.slice(0, 8) }}
-                </span>
-              </p>
-              <p>
-                最后一次提交于：{{
-                  new Date(systemInfo.commitTime).toLocaleDateString() +
-                  ' ' +
-                  new Date(systemInfo.commitTime).toLocaleTimeString()
-                }}
-              </p>
-              <p v-if="systemInfo.buildTime">
-                构建于：{{
-                  new Date(systemInfo?.buildTime).toLocaleDateString() +
-                  ' ' +
-                  new Date(systemInfo?.buildTime).toLocaleTimeString()
-                }}
-              </p>
-            </div>
+            <ClientOnly>
+              <div class="tooltip-content text-left">
+                <p>
+                  版本哈希：
+                  <span class="underline-offset-4 hover:underline">
+                    {{ systemInfo.commitHash.slice(0, 8) }}
+                  </span>
+                </p>
+                <p>
+                  最后一次提交于：{{
+                    new Date(systemInfo.commitTime).toLocaleDateString() +
+                    ' ' +
+                    new Date(systemInfo.commitTime).toLocaleTimeString()
+                  }}
+                </p>
+                <p v-if="systemInfo.buildTime">
+                  构建于：{{
+                    new Date(systemInfo?.buildTime).toLocaleDateString() +
+                    ' ' +
+                    new Date(systemInfo?.buildTime).toLocaleTimeString()
+                  }}
+                </p>
+              </div>
+            </ClientOnly>
             <NuxtLink
               class="underline-offset-4 hover:underline"
               :to="systemInfo.commitLink"

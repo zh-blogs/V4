@@ -100,29 +100,31 @@
         </div>
       </div>
       <div class="flex flex-row items-center">
-        <div>
-          <button
-            class="btn btn-square btn-sm btn-ghost"
-            :class="{ 'text-blue-500': colorMode.preference === 'light' }"
-            @click="colorMode.preference = 'light'"
-          >
-            <i class="ri-sun-line text-base" />
-          </button>
-          <button
-            class="btn btn-square btn-sm btn-ghost"
-            :class="{ 'text-blue-500': colorMode.preference === 'dark' }"
-            @click="colorMode.preference = 'dark'"
-          >
-            <i class="ri-moon-line text-base" />
-          </button>
-          <button
-            class="btn btn-square btn-sm btn-ghost"
-            :class="{ 'text-blue-500': colorMode.preference === 'system' }"
-            @click="colorMode.preference = 'system'"
-          >
-            <i class="ri-computer-line text-base" />
-          </button>
-        </div>
+        <ClientOnly>
+          <div>
+            <button
+              class="btn btn-square btn-sm btn-ghost"
+              :class="{ 'text-blue-500': colorMode.preference === 'light' }"
+              @click="colorMode.preference = 'light'"
+            >
+              <i class="ri-sun-line text-base" />
+            </button>
+            <button
+              class="btn btn-square btn-sm btn-ghost"
+              :class="{ 'text-blue-500': colorMode.preference === 'dark' }"
+              @click="colorMode.preference = 'dark'"
+            >
+              <i class="ri-moon-line text-base" />
+            </button>
+            <button
+              class="btn btn-square btn-sm btn-ghost"
+              :class="{ 'text-blue-500': colorMode.preference === 'system' }"
+              @click="colorMode.preference = 'system'"
+            >
+              <i class="ri-computer-line text-base" />
+            </button>
+          </div>
+        </ClientOnly>
         <input
           id="menu-sidebar"
           type="checkbox"
