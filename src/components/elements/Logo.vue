@@ -1,8 +1,11 @@
 <template>
-  <img
-    :src="logoPath"
-    alt="logo"
-  />
+  <ClientOnly>
+    <img
+      :src="logoPath"
+      alt="logo"
+      v-bind="$attrs"
+    />
+  </ClientOnly>
 </template>
 
 <script lang="ts" setup>

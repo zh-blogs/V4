@@ -1,42 +1,44 @@
 <template>
   <Transition name="fade">
-    <div
-      v-if="alertVisible"
-      role="alert"
-      class="alert relative w-full max-w-xl gap-2 border-2"
-      :class="typeClasses[innerOptions.type ?? 'tips'].alert"
-    >
-      <i
-        v-if="innerOptions.alertIconVisible"
-        class="self-start text-2xl"
-        :class="typeClasses[innerOptions.type ?? 'tips'].icon"
-      />
-      <div class="">
-        <h3
-          v-if="innerOptions.title"
-          class="text-base-content h-auto text-lg font-bold break-all"
-        >
-          {{ innerOptions.title }}
-        </h3>
-        <p class="text-base-content h-auto text-sm break-all">
-          {{ innerOptions.message }}
-        </p>
-      </div>
-      <button
-        v-if="innerOptions.closeIconVisible"
-        class="btn btn-sm btn-ghost self-start p-0"
-        @click="closeAlert"
-      >
-        <i class="ri-close-line text-base-content text-xl" />
-      </button>
+    <ClientOnly>
       <div
-        class="absolute bottom-0 left-0 h-2 w-full"
-        :class="typeClasses[innerOptions.type ?? 'tips'].progress"
-        :style="{
-          animation: `decrease ${innerOptions.duration}ms linear forwards`,
-        }"
-      />
-    </div>
+        v-if="alertVisible"
+        role="alert"
+        class="alert relative w-full max-w-xl gap-2 border-2"
+        :class="typeClasses[innerOptions.type ?? 'tips'].alert"
+      >
+        <i
+          v-if="innerOptions.alertIconVisible"
+          class="self-start text-2xl"
+          :class="typeClasses[innerOptions.type ?? 'tips'].icon"
+        />
+        <div class="">
+          <h3
+            v-if="innerOptions.title"
+            class="text-base-content h-auto text-lg font-bold break-all"
+          >
+            {{ innerOptions.title }}
+          </h3>
+          <p class="text-base-content h-auto text-sm break-all">
+            {{ innerOptions.message }}
+          </p>
+        </div>
+        <button
+          v-if="innerOptions.closeIconVisible"
+          class="btn btn-sm btn-ghost self-start p-0"
+          @click="closeAlert"
+        >
+          <i class="ri-close-line text-base-content text-xl" />
+        </button>
+        <div
+          class="absolute bottom-0 left-0 h-2 w-full"
+          :class="typeClasses[innerOptions.type ?? 'tips'].progress"
+          :style="{
+            animation: `decrease ${innerOptions.duration}ms linear forwards`,
+          }"
+        />
+      </div>
+    </ClientOnly>
   </Transition>
 </template>
 

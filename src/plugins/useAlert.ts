@@ -1,6 +1,6 @@
 import { createApp, h } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
-import Alert from '~/components/elements/Alert.client.vue'
+import Alert from '~/components/elements/Alert.vue'
 import type { AlertOptions } from '~/types/components'
 
 interface AlertInstance extends ComponentPublicInstance {
