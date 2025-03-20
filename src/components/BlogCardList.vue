@@ -189,13 +189,14 @@
 <script setup lang="ts">
 import type { BlogVO, StatusType } from '~/shared/types/blog'
 
-let timer: null | NodeJS.Timeout = null
 defineProps({
   data: {
     type: Object as PropType<BlogVO[]>,
     required: true,
   },
 })
+
+let timer: null | NodeJS.Timeout = null
 
 const blogDetailElement = ref<HTMLDialogElement | null>(null)
 const blogDetailData = ref<BlogVO | null>(null)
@@ -211,14 +212,15 @@ const clearBlogDetailData = () => {
   }
 }
 const showBlogDetail = (blog: BlogVO) => {
-  if (blog.sub_tag.length === 0) {
-    blog.sub_tag.push('无补充分类')
+  if (blog.sub_tag === null || blog.sub_tag.length === 0) {
+    blog.sub_tag = ['无补充分类']
   }
-  if (!blog.feed.length) {
-    blog.feed.push('暂无订阅地址')
+  if (blog.feed === null || blog.feed.length === 0) {
+    blog.feed = ['暂无订阅地址']
   }
   if (blogDetailElement.value !== null) {
     blogDetailData.value = blog
+    console.log(blog)
     blogDetailElement.value?.showModal()
   }
 }
