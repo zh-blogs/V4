@@ -35,27 +35,34 @@ export const BaseBlogSchema = z.object({
       )
       .max(10),
   ),
-  feed: z.nullable(
-    z.array(
-      z
-        .string({ message: '不正确的数据格式' })
-        .max(128, { message: 'Feed URL 长度不得超过 128 字符' })
-        .refine((arg) => {
-          if (!arg) {
-            return true
-          }
-          try {
-            new URL(arg)
-            return true
-          } catch {
-            return false
-          }
+  feed: z
+    .array(
+      z.object({
+        name: z.string({
+          message: '请对订阅链接进行必要的描述，如果只有一个，请写默认',
         }),
-      {
-        errorMap: () => ({ message: '无效的 Feed URL 类型' }),
-      },
-    ),
-  ),
+        url: z
+          .string({ message: '不正确的数据格式' })
+          .max(128, { message: 'Feed URL 长度不得超过 128 字符' })
+          .refine(
+            (arg) => {
+              try {
+                new URL(arg)
+                return true
+              } catch {
+                return false
+              }
+            },
+            {
+              message: '请输入有效的 URL 地址',
+            },
+          ),
+      }),
+      // {
+      //   errorMap: () => ({ message: '无效的 Feed URL 类型' }),
+      // },
+    )
+    .nullable(),
   from: z
     .array(
       z.enum(FROM_SOURCES, {
@@ -66,13 +73,16 @@ export const BaseBlogSchema = z.object({
       },
     )
     .min(1, { message: '数据来源不能为空' }),
-  sitemap: z.nullable(
-    z
-      .string({ message: '不正确的数据格式' })
-      .max(128, { message: 'Sitemap URL 长度不得超过 128 字符' })
-      .refine((arg) => {
-        if (!arg) {
+  sitemap: z
+    .string({ message: '不正确的数据格式' })
+    .max(128, { message: 'Feed URL 长度不得超过 128 字符' })
+    .nullable()
+    .refine(
+      (arg) => {
+        if (arg === null) {
           return true
+        } else if (arg === '') {
+          return false
         }
         try {
           new URL(arg)
@@ -80,15 +90,21 @@ export const BaseBlogSchema = z.object({
         } catch {
           return false
         }
-      }),
-  ),
-  link_page: z.nullable(
-    z
-      .string({ message: '不正确的数据格式' })
-      .max(128, { message: 'Sitemap URL 长度不得超过 128 字符' })
-      .refine((arg) => {
-        if (!arg) {
+      },
+      {
+        message: '请输入有效的 URL 地址',
+      },
+    ),
+  link_page: z
+    .string({ message: '不正确的数据格式' })
+    .max(128, { message: 'Feed URL 长度不得超过 128 字符' })
+    .nullable()
+    .refine(
+      (arg) => {
+        if (arg === null) {
           return true
+        } else if (arg === '') {
+          return false
         }
         try {
           new URL(arg)
@@ -96,8 +112,11 @@ export const BaseBlogSchema = z.object({
         } catch {
           return false
         }
-      }),
-  ),
+      },
+      {
+        message: '请输入有效的 URL 地址',
+      },
+    ),
   arch: z
     .string({ message: '不正确的数据格式' })
     .max(32, { message: '博客架构名称不超过 16 字符' }),

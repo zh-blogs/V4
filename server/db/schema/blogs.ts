@@ -41,6 +41,11 @@ export const mainTagsEnum = pgEnum('main_tag_enum', MAIN_TAGS)
 export const fromSources = pgEnum('from_enum', FROM_SOURCES)
 export const statusTypes = pgEnum('status_enum', STATUS_TYPES)
 
+export interface mutiFeed {
+  name: string
+  url: string
+}
+
 export const Blogs = pgTable(
   'blogs',
   {
@@ -53,7 +58,7 @@ export const Blogs = pgTable(
     sign: text().default(''),
     main_tag: mainTagsEnum(),
     sub_tag: jsonb().$type<string[]>().default([]),
-    feed: jsonb().$type<string[]>().default([]),
+    feed: jsonb().$type<mutiFeed[]>().default([]),
     from: fromSources().array(),
     sitemap: varchar({ length: 128 }),
     link_page: varchar({ length: 128 }),
