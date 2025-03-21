@@ -30,7 +30,7 @@
           <i class="ri-time-fill opacity-40"></i>
           <i class="ri-arrow-left-right-fill opacity-40"></i>
           <i
-            v-if="blog.feed.length !== 0"
+            v-if="blog.feed"
             class="ri-rss-fill opacity-40"
           ></i>
           <i

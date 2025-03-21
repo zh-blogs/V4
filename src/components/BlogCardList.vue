@@ -134,14 +134,25 @@
               <i class="ri-rss-line"></i>
               订阅地址
             </span>
-            <div class="flex gap-2">
+            <div
+              v-if="blogDetailData?.feed"
+              class="flex gap-2"
+            >
               <template
                 v-for="feed in blogDetailData?.feed"
                 :key="feed"
               >
-                <span class="break-all whitespace-normal"> {{ feed }}</span>
+                <div
+                  class="bg-base-300 flex items-center gap-1 rounded-xl px-3 py-0.5 text-sm"
+                >
+                  <span class="whitespace-nowrap">{{ feed.name }} | </span>
+                  <span class="break-all whitespace-normal">{{
+                    feed.url
+                  }}</span>
+                </div>
               </template>
             </div>
+            <span v-else>暂无订阅地址</span>
           </div>
           <div>
             <span class="whitespace-nowrap opacity-50 after:content-['：']">
@@ -215,12 +226,8 @@ const showBlogDetail = (blog: BlogVO) => {
   if (blog.sub_tag === null || blog.sub_tag.length === 0) {
     blog.sub_tag = ['无补充分类']
   }
-  if (blog.feed === null || blog.feed.length === 0) {
-    blog.feed = ['暂无订阅地址']
-  }
   if (blogDetailElement.value !== null) {
     blogDetailData.value = blog
-    console.log(blog)
     blogDetailElement.value?.showModal()
   }
 }

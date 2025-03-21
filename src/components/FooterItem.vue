@@ -3,7 +3,7 @@
     class="footer sm:footer-horizontal text-base-content mx-auto max-w-7xl justify-evenly px-5 py-10 md:justify-between md:px-5 md:py-10"
   >
     <aside class="mx-auto flex flex-col">
-      <div class="flex flex-row items-center gap-2 md:gap-5">
+      <div class="flex flex-col items-center gap-2 sm:flex-row md:gap-5">
         <ElementsLogo class="h-24 w-24 object-contain md:h-28 md:w-28" />
         <div
           class="text-sm leading-7 font-bold text-neutral-400 md:text-base dark:text-neutral-500"

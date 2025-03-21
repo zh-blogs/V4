@@ -56,7 +56,7 @@
       <div class="hidden flex-row items-center justify-center md:flex">
         <button class="btn btn-sm btn-ghost h-full font-medium">
           <NuxtLink
-            to="/about"
+            to="/new"
             class="text-base"
           >
             <i class="ri-add-line" />
@@ -211,7 +211,7 @@
             >
               <button class="btn btn-sm btn-outline">
                 <NuxtLink
-                  to=""
+                  to="/new"
                   class="text-base"
                 >
                   <i class="ri-add-line" />
