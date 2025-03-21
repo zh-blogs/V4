@@ -28,7 +28,7 @@ const Configuration = {
     'subject-case': [0],
     'scope-empty': [0],
     'scope-case': [2, 'always', 'lower-case'],
-    'header-max-length': [2, 'always', 72],
+    'header-max-length': [2, 'always', 128],
   },
   defaultIgnores: true,
   helpUrl: 'https://www.conventionalcommits.org/',
