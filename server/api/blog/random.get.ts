@@ -1,9 +1,9 @@
-import { and, eq, isNotNull, sql } from 'drizzle-orm'
+import { and, eq, sql } from 'drizzle-orm'
 import { DatabaseError } from 'pg-protocol'
 import { z, ZodError } from 'zod'
 import { BlogVOSchema } from '~/shared/types/blog'
-import { db } from '~~/server/db/database'
-import { Blogs, MAIN_TAGS } from '~~/server/db/schema/blogs'
+import { db } from '~~/db/database'
+import { Blogs, MAIN_TAGS } from '~~/db/schema/blogs'
 import Result from '~~/server/result'
 
 const randomSchema = z.object({
@@ -45,7 +45,6 @@ export default defineEventHandler(async (event) => {
       .orderBy(sql`random()`)
       .where(
         and(
-          isNotNull(Blogs.bid),
           recommen ? eq(Blogs.recommen, recommen) : undefined,
           type ? eq(Blogs.main_tag, type) : undefined,
           eq(Blogs.status, 'OK'),

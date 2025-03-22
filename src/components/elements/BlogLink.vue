@@ -16,8 +16,8 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  bid: {
-    type: Number,
+  id: {
+    type: String,
     required: true,
   },
 })
@@ -31,7 +31,7 @@ const handleClick = async () => {
           'Content-Type': 'application/json',
         },
         body: {
-          bid: props.bid,
+          id: props.id,
         },
         keepalive: true,
       }).catch((err) => console.error('点击统计请求失败:', err))

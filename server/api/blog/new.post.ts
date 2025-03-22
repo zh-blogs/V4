@@ -1,9 +1,8 @@
 import { DatabaseError } from 'pg-protocol'
-import { db } from '../../db/database'
+import { db } from '~~/db/database'
 import type { WebIntert } from '~/shared/types/blog'
 import { WebSubmitSchema } from '~/shared/types/blog'
-import { Blogs } from '~~/server/db/schema/blogs'
-import { generateBID } from '~~/server/db/util'
+import { Blogs } from '~~/db/schema/blogs'
 import Result from '~~/server/result'
 import { handleDatabaseErrorResponse } from '~~/server/utils/handleDatabaseError'
 
@@ -21,7 +20,7 @@ export default defineEventHandler(async (event) => {
 
   const insertData: WebIntert = {
     ...body.data,
-    bid: await generateBID(),
+    bid: null,
     from: ['WebSubmit'],
   }
 
