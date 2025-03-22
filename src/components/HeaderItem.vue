@@ -12,13 +12,14 @@
             v-for="item in leftMenuItems"
             :key="item.path"
           >
-            <button class="btn btn-sm btn-ghost h-full font-medium">
-              <NuxtLink
-                :to="item.path"
-                class="text-base"
-                >{{ item.name }}</NuxtLink
-              >
-            </button>
+            <NuxtLink
+              :to="item.path"
+              class="h-full"
+            >
+              <button class="btn btn-sm btn-ghost h-full text-base font-medium">
+                {{ item.name }}
+              </button>
+            </NuxtLink>
           </template>
         </div>
       </div>
@@ -54,15 +55,15 @@
       </div>
 
       <div class="hidden flex-row items-center justify-center md:flex">
-        <button class="btn btn-sm btn-ghost h-full font-medium">
-          <NuxtLink
-            to="/new"
-            class="text-base"
-          >
+        <NuxtLink
+          to="/new"
+          class="h-full"
+        >
+          <button class="btn btn-sm btn-ghost h-full text-base font-medium">
             <i class="ri-add-line" />
             提交博客
-          </NuxtLink>
-        </button>
+          </button>
+        </NuxtLink>
         <div class="dropdown-hover dropdown h-full">
           <button
             tabindex="0"
