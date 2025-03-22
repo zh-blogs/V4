@@ -61,6 +61,8 @@ export default defineEventHandler(async (event) => {
     if (e instanceof DatabaseError) {
       return handleDatabaseErrorResponse(e)
     } else if (e instanceof ZodError) {
+      console.error(e)
+
       return Result.error('数据解析有误，请报告管理员进行处理', 500)
     }
     throw e
