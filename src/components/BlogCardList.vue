@@ -5,7 +5,7 @@
   >
     <template
       v-for="blog in data"
-      :key="blog.bid"
+      :key="blog.id"
     >
       <ElementsBlogCard
         :blog="blog"
@@ -43,7 +43,7 @@
               <i class="ri-profile-line"></i>
               BID
             </span>
-            <span>{{ blogDetailData?.bid }}</span>
+            <span>{{ blogDetailData?.bid ?? '--' }}</span>
           </div>
           <div>
             <span class="whitespace-nowrap opacity-50 after:content-['：']">
@@ -76,9 +76,9 @@
               站点地址
             </span>
             <ElementsBlogLink
-              v-if="blogDetailData?.url && blogDetailData?.bid"
+              v-if="blogDetailData?.url && blogDetailData?.id"
+              :id="blogDetailData.id"
               :url="blogDetailData.url"
-              :bid="blogDetailData.bid"
               class="text-primary break-all whitespace-normal"
             >
               {{ blogDetailData?.url }}

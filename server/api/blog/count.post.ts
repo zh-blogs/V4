@@ -1,12 +1,12 @@
 import { eq, sql } from 'drizzle-orm'
 import { DatabaseError } from 'pg-protocol'
-import { z } from 'zod'
-import { db } from '~~/server/db/database'
-import { Blogs } from '~~/server/db/schema/blogs'
+import { BaseBlogSchema } from '~/shared/types/blog'
+import { db } from '~~/db/database'
+import { Blogs } from '~~/db/schema/blogs'
 import Result from '~~/server/result'
 
-const IncrementSchema = z.object({
-  bid: z.coerce.number({ message: '该字段为什么会不正确？' }),
+const IncrementSchema = BaseBlogSchema.pick({
+  id: true,
 })
 
 export default defineEventHandler(async (event) => {
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     return Result.error(`数据验证失败: ${errors}`, 400)
   }
 
-  const targetBID = result.data.bid
+  const targetID = result.data.id
 
   try {
     await db
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
       .set({
         access_count: sql`${Blogs.access_count} + 1`,
       })
-      .where(eq(Blogs.bid, targetBID))
+      .where(eq(Blogs.id, targetID))
   } catch (e) {
     if (e instanceof DatabaseError) {
       return handleDatabaseErrorResponse(e)

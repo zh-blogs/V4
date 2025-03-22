@@ -1,9 +1,8 @@
 import { eq, or } from 'drizzle-orm'
 import { DatabaseError } from 'pg-protocol'
-import { db } from '../../db/database'
+import { db } from '~~/db/database'
 import { BotUpdateSchema } from '~/shared/types/blog'
-import { Blogs } from '~~/server/db/schema/blogs'
-import { generateBID } from '~~/server/db/util'
+import { Blogs } from '~~/db/schema/blogs'
 import Result from '~~/server/result'
 import { handleDatabaseError } from '~~/server/utils/handleDatabaseError'
 
@@ -53,7 +52,7 @@ export default defineEventHandler(async (event) => {
         } else {
           await db.insert(Blogs).values({
             ...blog,
-            bid: await generateBID(),
+            bid: null,
           })
           result.type = 'insert'
         }

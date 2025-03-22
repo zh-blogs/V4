@@ -4,7 +4,7 @@
     @click="$emit('click', blog)"
   >
     <div class="mb-1 flex justify-between">
-      <span class="text-sm opacity-40">BID: {{ blog.bid }}</span>
+      <span class="text-sm opacity-40">BID: {{ blog.bid ?? '--' }}</span>
       <div
         class="badge badge-sm whitespace-nowrap"
         :class="getMainTagClass(blog.main_tag)"
@@ -18,8 +18,8 @@
     <div class="card-body gap-1 p-0">
       <ElementsBlogLink
         v-if="!random"
+        :id="blog.id"
         :url="blog.url"
-        :bid="blog.bid"
         class="text-primary w-fit text-xs"
         @click.stop
         >{{ blog.url }}

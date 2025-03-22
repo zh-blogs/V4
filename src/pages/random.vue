@@ -40,7 +40,7 @@
 <script lang="ts" setup>
 import { z } from 'zod'
 import type { BlogVO } from '~/shared/types/blog'
-import { MAIN_TAGS } from '~~/server/db/schema/blogs'
+import { MAIN_TAGS } from '~~/db/schema/blogs'
 import type { ResultType } from '~~/server/result'
 
 definePageMeta({
@@ -110,7 +110,7 @@ onMounted(async () => {
           'Content-Type': 'application/json',
         },
         body: {
-          bid: blog.value.bid,
+          id: blog.value.id,
         },
         keepalive: true,
       }).catch((err) => console.error('点击统计请求失败:', err))

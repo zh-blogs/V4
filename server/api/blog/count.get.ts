@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm'
 import { DatabaseError } from 'pg-protocol'
-import { db } from '~~/server/db/database'
-import { Blogs } from '~~/server/db/schema/blogs'
+import { db } from '~~/db/database'
+import { Blogs } from '~~/db/schema/blogs'
 import Result from '~~/server/result'
 // 定义返回类型
 export interface BlogStats {
@@ -14,18 +14,18 @@ export interface BlogStats {
 export default defineEventHandler(async () => {
   try {
     const [result] = await db
-      .selectDistinct({
-        total: sql`COUNT(${Blogs.bid}) `.as('total'),
+      .select({
+        total: sql`COUNT(${Blogs.id}) `.as('total'),
         accessible:
-          sql`COUNT(${Blogs.bid}) FILTER (WHERE ${Blogs.status} <> 'ERROR')`.as(
+          sql`COUNT(${Blogs.id}) FILTER (WHERE ${Blogs.status} <> 'ERROR')`.as(
             'accessible',
           ),
         recommen:
-          sql`COUNT(${Blogs.bid}) FILTER (WHERE ${Blogs.recommen} = true AND ${Blogs.status} = 'OK')`.as(
+          sql`COUNT(${Blogs.id}) FILTER (WHERE ${Blogs.recommen} = true)`.as(
             'recommen',
           ),
         passed:
-          sql`COUNT(${Blogs.bid}) FILTER (WHERE ${Blogs.passed} = true AND ${Blogs.status} = 'OK')`.as(
+          sql`COUNT(${Blogs.id}) FILTER (WHERE ${Blogs.passed} = true)`.as(
             'passed',
           ),
       })
