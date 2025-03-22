@@ -1,9 +1,5 @@
 import { z } from 'zod'
-import {
-  FROM_SOURCES,
-  MAIN_TAGS,
-  STATUS_TYPES,
-} from '~~/server/db/schema/blogs'
+import { FROM_SOURCES, MAIN_TAGS, STATUS_TYPES } from '~~/db/schema/blogs'
 
 export type MainTag = (typeof MAIN_TAGS)[number]
 export type StatusType = (typeof STATUS_TYPES)[number]
@@ -13,7 +9,7 @@ export const BaseBlogSchema = z.object({
   id: z
     .string({ message: '不正确的数据格式' })
     .uuid({ message: '该字段为什么会不正确？' }),
-  bid: z.number({ message: '该字段为什么会不正确？' }),
+  bid: z.number({ message: '该字段为什么会不正确？' }).nullable(),
   name: z
     .string({ message: '不正确的数据格式' })
     .min(1, { message: '博客名称不得小于 1 字符' })
@@ -123,12 +119,13 @@ export const BaseBlogSchema = z.object({
   status: z.enum(STATUS_TYPES, {
     errorMap: () => ({ message: '无效的状态码类型' }),
   }),
-  passed: z.boolean(),
+  passed: z.boolean().nullable(),
   recommen: z.boolean(),
   join_time: z.date(),
   update_time: z.date(),
   saveweb_id: z.string(),
   access_count: z.number(),
+  reason: z.string().nullable(),
 })
 
 export type BaseBlog = z.infer<typeof BaseBlogSchema>
@@ -166,6 +163,7 @@ export const BotUpdateSchema = z.object({
       update_time: true,
       saveweb_id: true,
       access_count: true,
+      reason: true,
     }),
   ),
 })
@@ -181,7 +179,6 @@ export const BotInsertSchema = BotUpdateSchema.merge(
 export type BotInsert = z.infer<typeof WebIntertSchema>
 
 export const BlogVOSchema = BaseBlogSchema.omit({
-  id: true,
   link_page: true,
   passed: true,
   recommen: true,

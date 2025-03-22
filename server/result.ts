@@ -49,3 +49,9 @@ class Result<T> {
 }
 
 export default Result
+
+export interface ResultType<T> {
+  code: number
+  message: string
+  data: T | null
+}
