@@ -1,4 +1,7 @@
 import tailwindcss from '@tailwindcss/vite'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export default defineNuxtConfig({
   modules: [
