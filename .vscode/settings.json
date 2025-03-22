@@ -27,5 +27,6 @@
     "source.sortImports": "never",
     "source.organizeImports": "never",
     "source.removeUnusedImports": "always",
-  }
+  },
+  "javascript.format.semicolons": "remove"
 }

@@ -70,9 +70,10 @@ export const Blogs = pgTable(
       () => new Date(),
     ),
     status: statusTypes().default('OK'),
-    passed: boolean().default(false),
+    passed: boolean(),
     recommen: boolean().default(false),
     access_count: integer().default(0),
+    reason: text(),
     // TODO: saveweb_id: varchar({ length: 256 }),
   },
   (table) => [

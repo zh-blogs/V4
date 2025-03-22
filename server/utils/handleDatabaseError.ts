@@ -1,6 +1,6 @@
 import type { DatabaseError } from 'pg-protocol'
-import { PG_ERRORS } from '../db/error'
 import Result from '../result'
+import { PG_ERRORS } from '~~/db/error'
 
 export interface DatabaseErrorResult {
   success: boolean
