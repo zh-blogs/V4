@@ -4,7 +4,7 @@ import { db } from '~~/db/database'
 import { Blogs } from '~~/db/schema/blogs'
 import Result from '~~/server/result'
 // 定义返回类型
-export interface BlogStats {
+export interface BlogsInfo {
   total: number
   accessible: number
   recommen: number
@@ -31,7 +31,7 @@ export default defineEventHandler(async () => {
       })
       .from(Blogs)
 
-    return Result.success(result as BlogStats)
+    return Result.success(result as BlogsInfo)
   } catch (e) {
     if (e instanceof DatabaseError) {
       return handleDatabaseErrorResponse(e)
