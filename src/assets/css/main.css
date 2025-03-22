@@ -46,3 +46,11 @@ body {
 .tooltip-left-top > .tooltip-content {
   transform: translateX(-10%) translateY(var(--tt-pos, 0.25rem)) !important;
 }
+
+.required {
+  @apply after:text-error after:text-lg after:font-bold after:content-['*'];
+}
+
+option {
+  @apply bg-base-100 text-base-content;
+}

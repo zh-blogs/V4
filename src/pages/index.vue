@@ -102,10 +102,10 @@
 
 <script setup lang="ts">
 import type { BlogVO } from '~/shared/types/blog'
-import type { BlogStats } from '~~/server/api/blog/count.get'
+import type { BlogsInfo } from '~~/server/api/blog/stats/count.get'
 import type { ResultType } from '~~/server/result'
 
-const { data: count } = useFetch<ResultType<BlogStats>>('/api/blog/count')
+const { data: count } = useFetch<ResultType<BlogsInfo>>('/api/blog/stats/count')
 const {
   data: blogs,
   status,
