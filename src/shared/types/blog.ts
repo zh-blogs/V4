@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import urlVaildation from '../utils/urlVaildation'
 import { FROM_SOURCES, MAIN_TAGS, STATUS_TYPES } from '~~/db/schema/blogs'
 
 export type MainTag = (typeof MAIN_TAGS)[number]
@@ -16,8 +17,15 @@ export const BaseBlogSchema = z.object({
     .max(32, { message: '博客名称不得大于 32 字符' }),
   url: z
     .string({ message: '不正确的数据格式' })
-    .url({ message: 'URL 格式不正确' })
-    .max(64, { message: 'URL 长度不得超过 64 字符' }),
+    .max(64, { message: 'URL 长度不得超过 64 字符' })
+    .refine(
+      (val) => {
+        return urlVaildation(val)
+      },
+      {
+        message: '请输入有效的 URL 地址',
+      },
+    ),
   sign: z.string({ message: '不正确的数据格式' }),
   main_tag: z.enum(MAIN_TAGS, {
     errorMap: () => ({ message: '无效的主标签类型' }),
@@ -29,7 +37,7 @@ export const BaseBlogSchema = z.object({
           .string({ message: '不正确的数据格式' })
           .min(1, { message: '空字符串是不能成为标签的哦' }),
       )
-      .max(10),
+      .max(10, { message: '太多啦！请精简一下您的子标签' }),
   ),
   feed: z
     .array(
@@ -41,13 +49,8 @@ export const BaseBlogSchema = z.object({
           .string({ message: '不正确的数据格式' })
           .max(128, { message: 'Feed URL 长度不得超过 128 字符' })
           .refine(
-            (arg) => {
-              try {
-                new URL(arg)
-                return true
-              } catch {
-                return false
-              }
+            (val) => {
+              return urlVaildation(val)
             },
             {
               message: '请输入有效的 URL 地址',
@@ -74,18 +77,13 @@ export const BaseBlogSchema = z.object({
     .max(128, { message: 'Feed URL 长度不得超过 128 字符' })
     .nullable()
     .refine(
-      (arg) => {
-        if (arg === null) {
+      (val) => {
+        if (val === null) {
           return true
-        } else if (arg === '') {
+        } else if (val === '') {
           return false
         }
-        try {
-          new URL(arg)
-          return true
-        } catch {
-          return false
-        }
+        return urlVaildation(val)
       },
       {
         message: '请输入有效的 URL 地址',
@@ -96,26 +94,23 @@ export const BaseBlogSchema = z.object({
     .max(128, { message: 'Feed URL 长度不得超过 128 字符' })
     .nullable()
     .refine(
-      (arg) => {
-        if (arg === null) {
+      (val) => {
+        if (val === null) {
           return true
-        } else if (arg === '') {
+        } else if (val === '') {
           return false
         }
-        try {
-          new URL(arg)
-          return true
-        } catch {
-          return false
-        }
+        return urlVaildation(val)
       },
       {
         message: '请输入有效的 URL 地址',
       },
     ),
-  arch: z
-    .string({ message: '不正确的数据格式' })
-    .max(32, { message: '博客架构名称不超过 16 字符' }),
+  arch: z.nullable(
+    z
+      .string({ message: '不正确的数据格式' })
+      .max(32, { message: '博客架构名称不超过 16 字符' }),
+  ),
   status: z.enum(STATUS_TYPES, {
     errorMap: () => ({ message: '无效的状态码类型' }),
   }),
@@ -141,6 +136,29 @@ export const WebSubmitSchema = BaseBlogSchema.pick({
   sitemap: true,
   link_page: true,
   arch: true,
+}).extend({
+  main_tag: z
+    .enum(MAIN_TAGS, {
+      errorMap: () => ({ message: '无效的主标签类型' }),
+    })
+    .refine(
+      (val) => {
+        if (val === '') {
+          return false
+        }
+        return true
+      },
+      { message: '无效的主标签类型' },
+    ),
+  sign: z.string({ message: '博客简介不能为空' }).refine(
+    (val) => {
+      if (val.trim() === '') {
+        return false
+      }
+      return true
+    },
+    { message: '博客简介不能为空' },
+  ),
 })
 
 export type WebSubmit = z.infer<typeof WebSubmitSchema>
