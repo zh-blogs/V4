@@ -29,6 +29,7 @@
     "@nuxtjs/color-mode": "3.5.2",
     "@tailwindcss/vite": "^4.0.14",
     "daisyui": "5.0.6",
+    "dotenv": "^16.4.7",
     "drizzle-orm": "^0.40.1",
     "jose": "^6.0.10",
     "nuxt": "^3.16.0",

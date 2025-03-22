@@ -23,6 +23,9 @@ importers:
       daisyui:
         specifier: 5.0.6
         version: 5.0.6
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.4.7
       drizzle-orm:
         specifier: ^0.40.1
         version: 0.40.1(@types/pg@8.11.11)(better-sqlite3@11.8.1)(gel@2.0.1)(pg@8.14.1)
