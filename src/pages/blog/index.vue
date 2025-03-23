@@ -82,8 +82,10 @@
 </template>
 
 <script lang="ts" setup>
-const allPosts = await queryCollection('blog')
-  .order('top', 'DESC')
-  .order('date', 'DESC')
-  .all()
+const { data: allPosts } = await useAsyncData(() => {
+  return queryCollection('blog')
+    .order('top', 'DESC')
+    .order('date', 'DESC')
+    .all()
+})
 </script>
