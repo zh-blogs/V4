@@ -109,7 +109,7 @@ export const BaseBlogSchema = z.object({
   arch: z.nullable(
     z
       .string({ message: '不正确的数据格式' })
-      .max(32, { message: '博客架构名称不超过 16 字符' }),
+      .max(32, { message: '博客架构名称不超过 32 字符' }),
   ),
   status: z.enum(STATUS_TYPES, {
     errorMap: () => ({ message: '无效的状态码类型' }),
