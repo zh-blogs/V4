@@ -65,6 +65,45 @@
       />
     </section>
     <div class="divider mx-auto w-9/10"></div>
+    <section class="w-full px-[10%] py-20 sm:px-15">
+      <div
+        class="mb-10 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between sm:gap-0 sm:px-0"
+      >
+        <div class="leading-10">
+          <h3 class="text-2xl font-bold">近期动态</h3>
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <template
+          v-for="post in posts"
+          :key="post"
+        >
+          <div
+            class="border-b-base-content/50 flex flex-col border-b border-dotted py-2 text-left last-of-type:border-none sm:flex-row sm:items-center"
+          >
+            <div class="flex w-fit flex-nowrap items-center gap-2">
+              <i
+                v-if="post.top"
+                class="ri-pushpin-fill text-sm text-red-600 dark:text-red-500"
+              />
+              <div class="badge badge-sm badge-warning font-bold">
+                {{ post.category }}
+              </div>
+              <NuxtLink
+                :to="post.path"
+                class="btn btn-link text-base-content hover:text-primary px-0 underline-offset-4"
+              >
+                {{ post.title }}
+              </NuxtLink>
+            </div>
+            <div class="text-base-content/70 flex-1 text-left sm:text-right">
+              发布于：{{ new Date(post.date).toLocaleDateString() }}
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+    <div class="divider mx-auto w-9/10"></div>
     <section class="my-10 flex w-full">
       <div
         class="stats stats-horizontal mx-auto flex w-fit flex-wrap justify-center text-center"
@@ -112,5 +151,12 @@ const {
   refresh,
 } = useFetch<ResultType<BlogVO[]>>('/api/blog/random', {
   params: { size: 12 },
+})
+const { data: posts } = await useAsyncData(() => {
+  return queryCollection('blog')
+    .order('top', 'DESC')
+    .order('date', 'DESC')
+    .limit(10)
+    .all()
 })
 </script>
