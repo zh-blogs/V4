@@ -20,6 +20,18 @@ export default defineNuxtConfig({
       },
       title: '中文博客列表导航',
       link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
+      script: [
+        {
+          src: 'https://static.cloudflareinsights.com/beacon.min.js',
+          'data-cf-beacon': '{"token": "c2a68d123ca448209d09c57ccb26b658"}',
+          defer: true,
+        },
+        {
+          src: 'https://analytics.myxxts.com/script.js',
+          'data-website-id': 'bec33a3a-a722-4a07-a981-24e59bc5b319',
+          defer: true,
+        },
+      ],
     },
   },
   css: ['~/assets/css/main.css', 'remixicon/fonts/remixicon.css'],
