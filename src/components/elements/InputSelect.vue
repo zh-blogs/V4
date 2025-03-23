@@ -30,7 +30,7 @@
         v-model="inputValue"
         type="text"
         class="min-w-20 grow px-1 outline-none"
-        :placeholder="selectedTags.length > 0 ? '' : '请选择或输入进行搜索...'"
+        :placeholder="selectedTags.length > 0 ? '' : props.placeholderText"
         @input="handleInputChange"
       />
     </div>
@@ -56,6 +56,7 @@
       >
         <div class="text-base-content/70 my-1 px-2">找不到匹配结果</div>
         <button
+          v-if="props.new"
           class="btn btn-primary btn-soft btn-sm text-base-content w-full justify-start text-sm font-normal"
           @click="createNewTag"
         >
@@ -67,9 +68,11 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-  value: string[]
-}>()
+const props = defineProps({
+  value: { type: Array as PropType<string[]>, required: true },
+  new: { type: Boolean, default: true },
+  placeholderText: { type: String, default: '请下拉选择或者输入进行搜索' },
+})
 const emit = defineEmits<Emits>()
 
 const dropdownRef = ref<HTMLElement | null>(null)
