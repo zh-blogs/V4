@@ -69,11 +69,16 @@
 
 <script setup lang="ts">
 const props = defineProps({
+  modelValue: { type: Array as PropType<string[]>, default: () => [] }, // 修改 value 为 modelValue
   value: { type: Array as PropType<string[]>, required: true },
   new: { type: Boolean, default: true },
   placeholderText: { type: String, default: '请下拉选择或者输入进行搜索' },
 })
-const emit = defineEmits<Emits>()
+
+const emit = defineEmits<{
+  'update:modelValue': [value: string[]] // 添加 v-model 事件
+  update: [value: string[]]
+}>()
 
 const dropdownRef = ref<HTMLElement | null>(null)
 const inputElemet = ref<HTMLInputElement | null>(null)
@@ -89,20 +94,6 @@ const handleClick = () => {
   inputElemet.value?.focus()
   isOpen.value = true
 }
-
-// 定义Emit类型
-interface Emits {
-  (e: 'update', value: string[]): void
-}
-
-// 监听选中变化触发事件
-watch(
-  selectedTags,
-  (newVal) => {
-    emit('update', newVal)
-  },
-  { deep: true },
-)
 
 // 处理输入变化
 const handleInputChange = () => {
@@ -168,4 +159,21 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
+
+watch(
+  selectedTags,
+  (newVal) => {
+    emit('update', newVal)
+    emit('update:modelValue', newVal)
+  },
+  { deep: true },
+)
+
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    selectedTags.value = newVal
+  },
+  { immediate: true },
+)
 </script>

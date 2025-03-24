@@ -34,11 +34,11 @@
       </div>
       <div class="flex w-full flex-col gap-2 sm:flex-row">
         <ElementsInputSelect
+          v-model="filter.sub_tag"
           class="w-full flex-1"
           :value="subTags"
           :new="false"
           :placeholder-text="'请选择子标签进行筛选'"
-          @update="handleSubTagFilter"
         />
         <div
           class="flex h-10 flex-row flex-nowrap items-center justify-center gap-3"
@@ -51,7 +51,7 @@
           </button>
           <button
             class="btn btn-error btn-outline h-full"
-            @click="handleFilter"
+            @click="resetFilter"
           >
             重置
           </button>
@@ -60,26 +60,13 @@
     </fieldset>
     <div class="mt-5">
       <div
-        v-if="status === 'pending'"
-        class="col-span-4 flex w-full justify-center"
-      >
-        <span
-          class="loading loading-bars loading-md sm:loading-xl col-span-4"
-        ></span>
-      </div>
-      <div
-        v-else-if="status === 'error'"
-        class="col-span-4 mx-auto flex w-full justify-center"
-      >
-        <span>请求失败，请刷新重试</span>
-      </div>
-      <div
-        v-else-if="status === 'success' && !blogs?.data"
+        v-if="!showData"
         class="col-span-4 mx-auto flex w-full justify-center"
       >
         <span>无数据</span>
       </div>
       <BlogCardList
+        v-else
         ref="blogCardList"
         :data="showData"
       />
@@ -142,13 +129,13 @@ import type { SubTags } from '~~/server/api/blog/stats/sub-tag.get'
 import type { ResultType } from '~~/server/result'
 
 const mainTags = MAIN_TAGS.filter((item) => item !== '')
-const { data: blogs, status } = useFetch<ResultType<BlogVO[]>>('/api/blog/list')
 const { data: subTagStats } = useFetch<ResultType<SubTags[]>>(
   '/api/blog/stats/sub-tag',
 )
-const subTags = subTagStats.value?.data?.map((item) => item.name) ?? []
+const { data: blogs } = useFetch<ResultType<BlogVO[]>>('/api/blog/list')
 
-const originBlogsData: BlogVO[] = blogs.value?.data ?? []
+const subTags = subTagStats.value?.data?.map((item) => item.name) ?? []
+const originBlogsData = ref<BlogVO[]>(blogs.value?.data ?? [])
 
 const filteredData = ref<BlogVO[]>([])
 const showData = ref<BlogVO[]>([])
@@ -180,7 +167,7 @@ const handlePageChange = (page: number) => {
 
 const handleFilter = () => {
   filter.page = 1
-  filteredData.value = originBlogsData
+  filteredData.value = originBlogsData.value
     .filter((item) => {
       if (filter.content) {
         return (
@@ -207,13 +194,16 @@ const handleFilter = () => {
   showData.value = filteredData.value.slice(0, filter.size)
 }
 
-const handleSubTagFilter = (sub_tags: string[]) => {
-  filter.sub_tag = sub_tags
+const resetFilter = () => {
+  filter.content = ''
+  filter.main_tag = null
+  filter.sub_tag = []
+  filter.page = 1
+  filteredData.value = originBlogsData.value
+  showData.value = filteredData.value.slice(0, filter.size)
 }
 
-onMounted(() => {
-  filteredData.value = originBlogsData
-  filter.maxPage = Math.ceil(originBlogsData.length / filter.size)
-  showData.value = filteredData.value.slice(0, filter.size)
-})
+filteredData.value = originBlogsData.value
+filter.maxPage = Math.ceil(originBlogsData.value.length / filter.size)
+showData.value = filteredData.value.slice(0, filter.size)
 </script>
