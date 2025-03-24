@@ -3,7 +3,7 @@
     <div class="drawer mx-auto flex h-full max-w-7xl justify-between">
       <div class="h-full p-1">
         <NuxtLink to="/">
-          <ElementsLogo class="h-full w-full object-contain" />
+          <ElementsLogo class="h-full object-contain" />
         </NuxtLink>
       </div>
       <div class="hidden h-full flex-1 lg:flex">
