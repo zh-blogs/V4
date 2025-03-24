@@ -12,6 +12,12 @@
         <h3 class="my-5 text-3xl opacity-30">原中文博客列表导航</h3>
         <h4 class="my-3 text-2xl">尝试链接几乎所有的中文博客</h4>
       </div>
+      <div class="alert alert-warning block text-center text-base">
+        本站已经启用全新域名和站点程序<br />
+        若您还在使用旧版本域名：<br />
+        zhblogs.ohyee.cc<br />
+        请及时更新您所记载或使用的本站的旧信息
+      </div>
     </section>
     <div class="divider mx-auto w-9/10"></div>
     <section class="w-full px-[10%] py-20 sm:px-15">
