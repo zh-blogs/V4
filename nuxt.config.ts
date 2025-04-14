@@ -18,7 +18,7 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'zh',
       },
-      title: '中文博客列表导航',
+      title: '集博栈',
       link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
       script: [
         {
