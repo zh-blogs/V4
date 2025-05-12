@@ -9,12 +9,6 @@
           class="text-sm leading-7 font-bold text-neutral-400 md:text-base dark:text-neutral-500"
         >
           <p>尝试链接几乎所有的中文博客</p>
-          <NuxtLink
-            to="https://beian.miit.gov.cn"
-            class="link link-hover"
-          >
-            闽ICP备 2023011626号-3
-          </NuxtLink>
           <p>
             Copyright © 2022 -
             {{ new Date().getFullYear() }}

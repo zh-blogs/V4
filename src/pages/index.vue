@@ -14,8 +14,7 @@
       </div>
       <div class="alert alert-warning block text-center text-base">
         本站已经启用全新域名和站点程序<br />
-        若您还在使用旧版本域名：<br />
-        zhblogs.ohyee.cc<br />
+        若您还在使用旧版本域名<br />
         请及时更新您所记载或使用的本站的旧信息
       </div>
     </section>
