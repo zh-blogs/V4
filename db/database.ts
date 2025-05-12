@@ -1,5 +1,6 @@
-import { drizzle } from 'drizzle-orm/node-postgres'
 import dotenv from 'dotenv'
+// if node server, import drizzle-orm/node-postgres
+import { drizzle } from 'drizzle-orm/neon-serverless'
 
 dotenv.config()
 
