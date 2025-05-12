@@ -1,0 +1,9 @@
+{
+  "name": "zhblogs-old",
+  "main": "./.output/server/index.mjs",
+  "compatibility_date": "2024-11-01",
+  "assets": {
+    "directory": "./.output/public/",
+    "binding": "ASSETS"
+  }
+}

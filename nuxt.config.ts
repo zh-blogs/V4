@@ -68,7 +68,6 @@ export default defineNuxtConfig({
             'vue',
             'css',
             'html',
-            'vue',
             'bash',
             'md',
             'mdc',
@@ -78,21 +77,14 @@ export default defineNuxtConfig({
         },
       },
     },
-    database: {
-      type: 'postgres',
-      url: process.env.DATABASE_URL!,
-    },
-  },
-  runtimeConfig: {
-    oauth: {
-      github: {
-        clientId: process.env.GITHUB_CLIENT_ID,
-        clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      },
-    },
   },
   srcDir: 'src/',
   serverDir: 'server/',
+  routeRules: {
+    '/about': { static: true },
+    '/blog/**': { static: true },
+    '/docs/**': { static: true },
+  },
   experimental: {
     defaults: {
       nuxtLink: {
