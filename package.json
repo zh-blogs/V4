@@ -16,12 +16,11 @@
     "db:studio": "drizzle-kit studio",
     "db:push": "drizzle-kit push",
     "db:clear": "rm -rf drizzle",
-    "db:start": "drizzle-kit generate && drizzle-kit migrate",
-    "db:refresh": "rm -rf drizzle && drizzle-kit generate && drizzle-kit migrate",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "husky",
-    "commitlint": "commitlint --edit"
+    "commitlint": "commitlint --edit",
+    "cf:build": "pnpm db:migrate && pnpm build"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",
