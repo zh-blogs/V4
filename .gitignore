@@ -28,3 +28,5 @@ logs
 .vscode/*
 !.vscode/settings.json
 !.vscode/extensions.json
+
+src/assets/system-info.json
