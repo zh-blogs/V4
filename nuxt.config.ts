@@ -69,9 +69,9 @@ export default defineNuxtConfig({
   srcDir: 'src/',
   serverDir: 'server/',
   routeRules: {
-    '/about': { static: true },
-    '/blog/**': { static: true },
-    '/docs/**': { static: true },
+    '/about': { prerender: true },
+    '/blog/**': { prerender: true },
+    '/docs/**': { prerender: true },
   },
   experimental: {
     defaults: {
