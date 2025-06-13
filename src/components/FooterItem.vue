@@ -13,7 +13,7 @@
             to="https://beian.miit.gov.cn"
             class="link link-hover"
           >
-            闽ICP备 2023011626号-3
+            陇ICP备 2021003047号-5
           </NuxtLink>
           <p>
             Copyright © 2022 -
