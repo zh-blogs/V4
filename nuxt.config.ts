@@ -20,18 +20,6 @@ export default defineNuxtConfig({
       },
       title: '中文博客列表导航',
       link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }],
-      script: [
-        {
-          src: 'https://static.cloudflareinsights.com/beacon.min.js',
-          'data-cf-beacon': '{"token": "c2a68d123ca448209d09c57ccb26b658"}',
-          defer: true,
-        },
-        {
-          src: 'https://analytics.myxxts.com/script.js',
-          'data-website-id': 'bec33a3a-a722-4a07-a981-24e59bc5b319',
-          defer: true,
-        },
-      ],
     },
   },
   css: ['~/assets/css/main.css', 'remixicon/fonts/remixicon.css'],
@@ -68,7 +56,6 @@ export default defineNuxtConfig({
             'vue',
             'css',
             'html',
-            'vue',
             'bash',
             'md',
             'mdc',
@@ -78,21 +65,14 @@ export default defineNuxtConfig({
         },
       },
     },
-    database: {
-      type: 'postgres',
-      url: process.env.DATABASE_URL!,
-    },
-  },
-  runtimeConfig: {
-    oauth: {
-      github: {
-        clientId: process.env.GITHUB_CLIENT_ID,
-        clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      },
-    },
   },
   srcDir: 'src/',
   serverDir: 'server/',
+  routeRules: {
+    '/about': { prerender: true },
+    '/blog/**': { prerender: true },
+    '/docs/**': { prerender: true },
+  },
   experimental: {
     defaults: {
       nuxtLink: {
