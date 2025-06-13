@@ -29,5 +29,4 @@ logs
 !.vscode/settings.json
 !.vscode/extensions.json
 
-# database
-drizzle
+src/assets/system-info.json
