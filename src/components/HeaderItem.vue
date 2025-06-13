@@ -220,105 +220,7 @@
                 </NuxtLink>
               </button>
             </li>
-            <div class="divider"></div>
-            <li class="px-3 opacity-40">
-              <div
-                v-if="!session.user"
-                class="flex h-10 w-full items-center justify-center p-0"
-              >
-                <button
-                  class="flex h-full w-full items-center justify-center gap-2"
-                  @click="openInPopup('/auth/github')"
-                >
-                  <i class="ri-admin-line text-base" />
-                  管理员您好，请先登录
-                </button>
-              </div>
-              <details
-                v-if="session.user"
-                open
-              >
-                <summary class="text-sm">
-                  欢迎你，管理员
-                  <br />
-                  {{ session.user.name }}
-                </summary>
-                <ul>
-                  <li @click="closeDrawer">
-                    <NuxtLink
-                      to="/admin"
-                      class="flex w-full items-center rounded-t-lg px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                    >
-                      <i class="ri-speed-up-line mr-1" />
-                      进入控制台
-                    </NuxtLink>
-                  </li>
-                  <li @click="closeDrawer">
-                    <button
-                      class="flex w-full items-center rounded-b-lg px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                      @click="handleLogout"
-                    >
-                      <i class="ri-logout-box-r-line mr-1" />
-                      退出登录
-                    </button>
-                  </li>
-                </ul>
-              </details>
-            </li>
           </ul>
-        </div>
-        <div class="hidden h-full items-center md:flex">
-          <div
-            v-if="!session.user"
-            class="flex flex-row items-center justify-center before:mx-1 before:h-6 before:w-px before:bg-neutral-500 before:content-['']"
-          >
-            <button
-              class="btn btn-square btn-xs btn-ghost p-3"
-              @click="openInPopup('/auth/github')"
-            >
-              <i class="ri-admin-line text-base" />
-            </button>
-          </div>
-          <div
-            v-if="session.user"
-            class="dropdown-hover dropdown group relative flex h-full w-auto flex-row items-center justify-center text-center text-sm font-normal whitespace-nowrap before:mx-1 before:h-6 before:w-px before:bg-neutral-500 before:content-['']"
-          >
-            <div class="dropdown dropdown-end h-full">
-              <div
-                tabindex="0"
-                role="button"
-                class="btn btn-ghost flex h-full flex-col text-sm leading-3 font-normal opacity-50"
-              >
-                <p>欢迎你，管理员</p>
-                <p>
-                  {{ session.user.name }}<i class="ri-arrow-down-s-line ml-1" />
-                </p>
-              </div>
-              <ul
-                tabindex="0"
-                class="dropdown-content menu bg-base-200 rounded-box z-1 p-2 shadow-sm"
-              >
-                <li>
-                  <NuxtLink
-                    to="/admin"
-                    class="flex w-full items-center rounded-t-lg px-4 py-2 whitespace-nowrap hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                  >
-                    <i class="ri-speed-up-line mr-1" />
-                    进入控制台
-                  </NuxtLink>
-                </li>
-                <li>
-                  <button
-                    class="flex w-full items-center rounded-b-lg px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700"
-                    @click="handleLogout"
-                  >
-                    <i class="ri-logout-box-r-line mr-1" />
-                    退出登录
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -328,7 +230,6 @@
 <script lang="ts" setup>
 import type { LinkItems } from '~/types/components'
 
-const { openInPopup, clear, session } = useUserSession()
 const colorMode = useColorMode()
 const leftMenuItems: LinkItems = [
   {
@@ -366,14 +267,6 @@ const rightMenuItems: LinkItems = [
     path: 'https://github.com/zh-blogs/blog-daohang/issues/new?template=05-Selected+Blog+Application.yml',
   },
 ]
-
-const handleLogout = async () => {
-  await clear()
-  const route = useRoute()
-  if (route.path.startsWith('/admin')) {
-    await navigateTo('/')
-  }
-}
 
 const closeDrawer = () => {
   const checkbox = document.getElementById('menu-sidebar') as HTMLInputElement

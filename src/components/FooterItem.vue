@@ -60,6 +60,9 @@
         <NuxtLink to="https://github.com/zh-blogs">
           <i class="ri-github-fill" />
         </NuxtLink>
+        <NuxtLink to="mailto:contact@mail.zhblogs.net">
+          <i class="ri-mail-fill" />
+        </NuxtLink>
       </div>
     </aside>
     <div class="mx-auto grid grid-cols-2 lg:gap-20">
@@ -100,7 +103,7 @@
 import type { LinkItems } from '~/types/components'
 import info from '~/assets/system-info.json'
 
-interface SystemInfo {
+export interface BuildInfo {
   version: string
   commitTime: string
   commitHash: string
@@ -140,5 +143,5 @@ const friendLinks: LinkItems = [
   },
 ]
 
-const systemInfo = info as SystemInfo
+const systemInfo = info as BuildInfo
 </script>
