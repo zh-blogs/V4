@@ -1,8 +1,6 @@
 import * as fs from 'fs'
 import { execSync } from 'child_process'
 
-const isBuildMode = process.argv.includes('--build')
-
 const getLastCommitHash = () => {
   try {
     const fullHash = execSync('git rev-parse HEAD').toString().trim()
@@ -52,25 +50,24 @@ const getVersion = () => {
   }
 }
 
-const systemInfo = () => {
+export default function generateBuildInfo() {
   const { fullHash, commitLink, commitTime } = getLastCommitHash()
   const version = getVersion()
   const path = './src/assets/system-info.json'
 
-  const systemInfo = {
+  const buildInfo = {
     version,
     commitTime,
     commitHash: fullHash,
     commitLink,
   }
 
-  if (isBuildMode) {
-    systemInfo.buildTime = new Date().toISOString()
+  console.log(process.env.NODE_ENV)
+  if (process.env.NODE_ENV === 'production') {
+    buildInfo.buildTime = new Date().toISOString()
   }
 
-  fs.writeFileSync(path, JSON.stringify(systemInfo, null, 2))
+  fs.writeFileSync(path, JSON.stringify(buildInfo, null, 2))
 
   console.log('Success generated system build infomation to:', path)
 }
-
-systemInfo()

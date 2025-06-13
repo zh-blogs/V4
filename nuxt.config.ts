@@ -1,5 +1,6 @@
 import tailwindcss from '@tailwindcss/vite'
 import dotenv from 'dotenv'
+import generateBuildInfo from './scripts/generateBuildInfo'
 
 dotenv.config()
 
@@ -83,6 +84,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   vite: {
     plugins: [tailwindcss()],
+  },
+  hooks: {
+    ready: () => {
+      generateBuildInfo()
+    },
   },
   eslint: {
     config: {
