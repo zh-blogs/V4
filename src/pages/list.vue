@@ -10,20 +10,14 @@
           type="text"
           class="input w-full min-w-50"
           placeholder="以博客名称或 URL 进行筛选"
+          @keyup.enter="handleFilter"
         />
 
         <select
           v-model="filter.main_tag"
           class="select w-full min-w-50"
         >
-          <option
-            value="null"
-            disabled
-            selected
-            hidden
-          >
-            请选择一个主标签
-          </option>
+          <option value="">全部主标签</option>
           <template
             v-for="item in mainTags"
             :key="item"
@@ -45,8 +39,13 @@
         >
           <button
             class="btn btn-primary btn-outline h-full"
+            :disabled="pending"
             @click="handleFilter"
           >
+            <span
+              v-if="pending"
+              class="loading loading-spinner loading-sm"
+            ></span>
             查询
           </button>
           <button
@@ -58,160 +57,287 @@
         </div>
       </div>
     </fieldset>
+
     <div class="mt-5">
       <div
-        v-if="!showData"
-        class="col-span-4 mx-auto flex w-full justify-center"
+        v-if="pending"
+        class="flex w-full justify-center py-20"
       >
-        <span>无数据</span>
+        <span class="loading loading-spinner loading-lg"></span>
+      </div>
+      <div
+        v-else-if="!listData?.data?.data || listData.data.data.length === 0"
+        class="flex w-full justify-center py-20"
+      >
+        <div class="text-center">
+          <div class="mb-2 text-gray-500">暂无数据</div>
+          <button
+            class="btn btn-sm btn-outline"
+            @click="resetFilter"
+          >
+            重置筛选条件
+          </button>
+        </div>
       </div>
       <BlogCardList
         v-else
-        ref="blogCardList"
-        :data="showData"
+        :data="listData.data.data"
       />
     </div>
+
+    <!-- 分页组件 -->
     <div
-      class="mt-20 flex flex-col items-center justify-center gap-2 sm:flex-row"
+      v-if="listData?.data && listData.data.totalPages > 1"
+      class="mt-20 flex flex-col items-center justify-center gap-4"
     >
-      <div class="join">
-        <button
-          class="btn"
-          :disabled="filter.page === 1"
-          @click="handlePageChange(1)"
-        >
-          «
-        </button>
-        <button
-          class="btn"
-          :disabled="filter.page === 1"
-          @click="handlePageChange(filter.page - 1)"
-        >
-          &lt;
-        </button>
-
-        <div class="input w-16">
-          {{ filter.page }}
-        </div>
-
-        <button
-          class="btn"
-          :disabled="filter.page === filter.maxPage"
-          @click="handlePageChange(filter.page + 1)"
-        >
-          &gt;
-        </button>
-        <button
-          class="btn"
-          :disabled="filter.page === filter.maxPage"
-          @click="handlePageChange(filter.maxPage)"
-        >
-          »
-        </button>
+      <!-- 分页信息 -->
+      <div class="text-sm text-gray-500">
+        共 {{ listData.data.total }} 条记录，第 {{ listData.data.page }} /
+        {{ listData.data.totalPages }} 页
       </div>
 
-      <div class="join">
-        <input
-          class="input join-item w-16"
-          type="number"
-          :value="filter.page"
-        />
-        <button class="btn join-item rounded-r-full">跳转</button>
+      <!-- 分页按钮 -->
+      <div class="flex items-center gap-2">
+        <div class="join">
+          <button
+            class="btn join-item"
+            :disabled="listData.data.page === 1 || pending"
+            @click="handlePageChange(1)"
+          >
+            <i class="ri-skip-back-line"></i>
+          </button>
+          <button
+            class="btn join-item"
+            :disabled="listData.data.page === 1 || pending"
+            @click="handlePageChange(listData.data.page - 1)"
+          >
+            <i class="ri-arrow-left-s-line"></i>
+          </button>
+
+          <!-- 页码按钮 -->
+          <template
+            v-for="page in paginationPages"
+            :key="page"
+          >
+            <button
+              v-if="page !== '...'"
+              class="btn join-item"
+              :class="{ 'btn-active': page === listData.data.page }"
+              :disabled="pending"
+              @click="handlePageChange(page as number)"
+            >
+              {{ page }}
+            </button>
+            <span
+              v-else
+              class="btn join-item btn-disabled"
+              >...</span
+            >
+          </template>
+
+          <button
+            class="btn join-item"
+            :disabled="
+              listData.data.page === listData.data.totalPages || pending
+            "
+            @click="handlePageChange(listData.data.page + 1)"
+          >
+            <i class="ri-arrow-right-s-line"></i>
+          </button>
+          <button
+            class="btn join-item"
+            :disabled="
+              listData.data.page === listData.data.totalPages || pending
+            "
+            @click="handlePageChange(listData.data.totalPages)"
+          >
+            <i class="ri-skip-forward-line"></i>
+          </button>
+        </div>
+
+        <!-- 快速跳转 -->
+        <div class="join">
+          <input
+            v-model="jumpPage"
+            class="input join-item w-16 text-center"
+            type="number"
+            :min="1"
+            :max="listData.data.totalPages"
+            placeholder="页码"
+            @keyup.enter="handleJumpPage"
+          />
+          <button
+            class="btn join-item"
+            :disabled="
+              pending ||
+              !jumpPage ||
+              jumpPage < 1 ||
+              jumpPage > listData.data.totalPages
+            "
+            @click="handleJumpPage"
+          >
+            跳转
+          </button>
+        </div>
+
+        <!-- 每页数量选择 -->
+        <select
+          v-model="filter.pageSize"
+          class="select select-sm w-20"
+          @change="handlePageSizeChange"
+        >
+          <option :value="12">12</option>
+          <option :value="24">24</option>
+          <option :value="60">60</option>
+        </select>
+        <span class="text-sm text-gray-500">条/页</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { BlogVO, MainTag } from '~/shared/types/blog'
 import { MAIN_TAGS } from '~~/db/schema/blogs'
 import type { SubTags } from '~~/server/api/blog/stats/sub-tag.get'
+import type { ListResult } from '~~/server/api/blog/list.get'
 import type { ResultType } from '~~/server/result'
 
 const mainTags = MAIN_TAGS.filter((item) => item !== '')
-const { data: subTagStats } = useFetch<ResultType<SubTags[]>>(
+
+// 获取子标签数据
+const { data: subTagStats } = await useFetch<ResultType<SubTags[]>>(
   '/api/blog/stats/sub-tag',
 )
-const { data: blogs } = useFetch<ResultType<BlogVO[]>>('/api/blog/list')
-
 const subTags = computed(
   () => subTagStats.value?.data?.map((item) => item.name) ?? [],
 )
-const originBlogsData = computed(() => blogs.value?.data ?? [])
 
-const filteredData = ref<BlogVO[]>([])
-const showData = ref<BlogVO[]>([])
-
-const filter = reactive<{
-  content: string
-  main_tag: MainTag | null
-  sub_tag: string[]
-  size: 12 | 24 | 60
-  page: number
-  maxPage: number
-}>({
+// 筛选条件
+const filter = reactive({
   content: '',
-  main_tag: null,
-  sub_tag: [],
-  size: 12,
+  main_tag: '',
+  sub_tag: [] as string[],
   page: 1,
-  maxPage: 0,
+  pageSize: 12 as 12 | 24 | 60,
 })
 
-const handlePageChange = (page: number) => {
-  if (page < 1 || page > filter.maxPage) return
+// 跳转页码
+const jumpPage = ref<number>()
 
+// 构建查询参数
+const queryParams = computed(() => {
+  const params: Record<string, string> = {
+    page: filter.page.toString(),
+    pageSize: filter.pageSize.toString(),
+  }
+
+  if (filter.content) params.content = filter.content
+  if (filter.main_tag) params.main_tag = filter.main_tag
+  if (filter.sub_tag.length > 0) params.sub_tag = filter.sub_tag.join(',')
+
+  return params
+})
+
+// 获取列表数据
+const { data: listData, pending } = await useFetch<ResultType<ListResult>>(
+  '/api/blog/list',
+  {
+    query: queryParams,
+    server: false,
+  },
+)
+
+// 计算分页页码
+const paginationPages = computed(() => {
+  if (!listData.value?.data) return []
+
+  const current = listData.value.data.page
+  const total = listData.value.data.totalPages
+  const pages: (number | string)[] = []
+
+  if (total <= 7) {
+    // 总页数较少，显示所有页码
+    for (let i = 1; i <= total; i++) {
+      pages.push(i)
+    }
+  } else {
+    // 总页数较多，智能显示页码
+    pages.push(1)
+
+    if (current > 4) {
+      pages.push('...')
+    }
+
+    const start = Math.max(2, current - 1)
+    const end = Math.min(total - 1, current + 1)
+
+    for (let i = start; i <= end; i++) {
+      if (i !== 1 && i !== total) {
+        pages.push(i)
+      }
+    }
+
+    if (current < total - 3) {
+      pages.push('...')
+    }
+
+    if (total > 1) {
+      pages.push(total)
+    }
+  }
+
+  return pages
+})
+
+// 处理分页
+const handlePageChange = (page: number) => {
+  if (
+    page < 1 ||
+    !listData.value?.data ||
+    page > listData.value.data.totalPages
+  )
+    return
   filter.page = page
-  const start = (page - 1) * filter.size
-  const end = start + filter.size
-  showData.value = filteredData.value.slice(start, end)
+  jumpPage.value = page
 }
 
+// 处理跳转
+const handleJumpPage = () => {
+  if (jumpPage.value) {
+    handlePageChange(jumpPage.value)
+  }
+}
+
+// 处理每页数量变化
+const handlePageSizeChange = () => {
+  filter.page = 1
+  jumpPage.value = 1
+}
+
+// 处理筛选
 const handleFilter = () => {
   filter.page = 1
-  filteredData.value = originBlogsData.value
-    .filter((item) => {
-      if (filter.content) {
-        return (
-          item.name.toLowerCase().includes(filter.content.toLowerCase()) ||
-          item.url.toLowerCase().includes(filter.content.toLowerCase())
-        )
-      }
-      return true
-    })
-    .filter((item) => {
-      if (filter.main_tag) {
-        return item.main_tag === filter.main_tag
-      }
-      return true
-    })
-    .filter((item) => {
-      if (filter.sub_tag.length > 0 && item.sub_tag !== null) {
-        return filter.sub_tag.every((tag) => item.sub_tag?.includes(tag))
-      }
-      return true
-    })
-
-  filter.maxPage = Math.ceil(filteredData.value.length / filter.size)
-  showData.value = filteredData.value.slice(0, filter.size)
+  jumpPage.value = 1
 }
 
+// 重置筛选
 const resetFilter = () => {
   filter.content = ''
-  filter.main_tag = null
+  filter.main_tag = ''
   filter.sub_tag = []
   filter.page = 1
-  filteredData.value = originBlogsData.value
-  filter.maxPage = Math.ceil(filteredData.value.length / filter.size)
-  showData.value = filteredData.value.slice(0, filter.size)
+  filter.pageSize = 12
+  jumpPage.value = 1
 }
 
-// 初始化数据，等待异步数据加载完成
-watchEffect(() => {
-  if (originBlogsData.value.length > 0) {
-    filteredData.value = originBlogsData.value
-    filter.maxPage = Math.ceil(originBlogsData.value.length / filter.size)
-    showData.value = filteredData.value.slice(0, filter.size)
-  }
-})
+// 监听列表数据变化，更新跳转页码
+watch(
+  () => listData.value?.data?.page,
+  (newPage) => {
+    if (newPage) {
+      jumpPage.value = newPage
+    }
+  },
+  { immediate: true },
+)
 </script>
