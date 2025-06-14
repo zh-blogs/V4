@@ -62,7 +62,6 @@ export default function generateBuildInfo() {
     commitLink,
   }
 
-  console.log(process.env.NODE_ENV)
   if (process.env.NODE_ENV === 'production') {
     buildInfo.buildTime = new Date().toISOString()
   }
