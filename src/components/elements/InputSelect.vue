@@ -69,8 +69,8 @@
 
 <script setup lang="ts">
 const props = defineProps({
-  modelValue: { type: Array as PropType<string[]>, default: () => [] }, // 修改 value 为 modelValue
-  value: { type: Array as PropType<string[]>, required: true },
+  modelValue: { type: Array as PropType<string[]>, default: () => [] },
+  options: { type: Array as PropType<string[]>, default: () => [] }, // 重命名 value 为 options
   new: { type: Boolean, default: true },
   placeholderText: { type: String, default: '请下拉选择或者输入进行搜索' },
 })
@@ -86,7 +86,7 @@ const inputElemet = ref<HTMLInputElement | null>(null)
 const isOpen = ref(false)
 const inputValue = ref('')
 
-const tags = ref<string[]>(props.value)
+const tags = ref<string[]>(props.options)
 const selectedTags = ref<string[]>([])
 const filteredTags = ref<string[]>([...tags.value])
 
@@ -159,6 +159,17 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
 })
+
+watch(
+  () => props.options,
+  (newVal) => {
+    tags.value = newVal
+    filteredTags.value = newVal.filter(
+      (tag) => !selectedTags.value.includes(tag),
+    )
+  },
+  { immediate: true },
+)
 
 watch(
   selectedTags,

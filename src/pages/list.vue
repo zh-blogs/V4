@@ -36,7 +36,7 @@
         <ElementsInputSelect
           v-model="filter.sub_tag"
           class="w-full flex-1"
-          :value="subTags"
+          :options="subTags"
           :new="false"
           :placeholder-text="'请选择子标签进行筛选'"
         />
@@ -134,8 +134,10 @@ const { data: subTagStats } = useFetch<ResultType<SubTags[]>>(
 )
 const { data: blogs } = useFetch<ResultType<BlogVO[]>>('/api/blog/list')
 
-const subTags = subTagStats.value?.data?.map((item) => item.name) ?? []
-const originBlogsData = ref<BlogVO[]>(blogs.value?.data ?? [])
+const subTags = computed(
+  () => subTagStats.value?.data?.map((item) => item.name) ?? [],
+)
+const originBlogsData = computed(() => blogs.value?.data ?? [])
 
 const filteredData = ref<BlogVO[]>([])
 const showData = ref<BlogVO[]>([])
@@ -200,10 +202,16 @@ const resetFilter = () => {
   filter.sub_tag = []
   filter.page = 1
   filteredData.value = originBlogsData.value
+  filter.maxPage = Math.ceil(filteredData.value.length / filter.size)
   showData.value = filteredData.value.slice(0, filter.size)
 }
 
-filteredData.value = originBlogsData.value
-filter.maxPage = Math.ceil(originBlogsData.value.length / filter.size)
-showData.value = filteredData.value.slice(0, filter.size)
+// 初始化数据，等待异步数据加载完成
+watchEffect(() => {
+  if (originBlogsData.value.length > 0) {
+    filteredData.value = originBlogsData.value
+    filter.maxPage = Math.ceil(originBlogsData.value.length / filter.size)
+    showData.value = filteredData.value.slice(0, filter.size)
+  }
+})
 </script>
