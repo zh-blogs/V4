@@ -1,0 +1,35 @@
+{
+  "name": "@zhblogs/database",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./migrator": {
+      "types": "./dist/migrator.d.ts",
+      "import": "./dist/migrator.js",
+      "require": "./dist/migrator.cjs",
+      "default": "./dist/migrator.cjs"
+    },
+    "./database": {
+      "types": "./dist/database.d.ts",
+      "import": "./dist/database.js",
+      "require": "./dist/database.cjs",
+      "default": "./dist/database.cjs"
+    }
+  },
+  "scripts": {
+    "generate": "drizzle-kit generate",
+    "typecheck": "tsc --noEmit",
+    "build": "tsup"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.44.2",
+    "drizzle-zod": "^0.8.2",
+    "postgres": "^3.4.7",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@zhblogs/config": "workspace:*",
+    "drizzle-kit": "^0.31.4"
+  }
+}
