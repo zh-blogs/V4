@@ -1,0 +1,11 @@
+{
+  "name": "@zhblogs/constants",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "devDependencies": {
+    "@zhblogs/config": "workspace:*"
+  }
+}
