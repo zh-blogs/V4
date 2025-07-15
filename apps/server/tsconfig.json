@@ -1,0 +1,28 @@
+{
+  "extends": "@zhblogs/config/tsconfig.base.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDirs": [
+      "./src",
+      "./index.ts"
+    ],
+    "declaration": false,
+    "paths": {
+      "@server/*": [
+        "./src/*"
+      ],
+    }
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.d.ts",
+    "./index.ts",
+    "./index.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "test"
+  ]
+}
