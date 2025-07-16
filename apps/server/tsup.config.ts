@@ -6,6 +6,7 @@ import { defineConfig } from "tsup";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const externals: string[] = [];
+const outBaseDir = "./dist";
 
 const packageJson = JSON.parse(
   readFileSync(join(__dirname, "package.json"), "utf8")
@@ -21,7 +22,7 @@ export default defineConfig({
   format: ["cjs"],
   sourcemap: true,
   clean: true,
-  outDir: "../../dist/server",
+  outDir: outBaseDir,
   treeshake: true,
   splitting: true,
   minify: false,
@@ -44,7 +45,7 @@ export default defineConfig({
       __dirname,
       "./node_modules/@zhblogs/schemas/src/drizzle"
     );
-    const destDir = join(__dirname, "../../dist/server/drizzle");
+    const destDir = join(__dirname, `${outBaseDir}/drizzle`);
     console.log(`Copying migrations from ${srcDir} to ${destDir}`);
     try {
       await import("fs/promises").then((fs) =>
