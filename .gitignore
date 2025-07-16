@@ -19,3 +19,4 @@ pnpm-debug.log*
 .idea/
 # Turbo cache
 .turbo/
+system-info.json

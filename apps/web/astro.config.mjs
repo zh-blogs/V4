@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from "astro/config";
+import { generateBuildInfoIntegration } from "./src/integrations/generate-build-info";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import vue from "@astrojs/vue";
@@ -27,5 +28,5 @@ export default defineConfig({
       }
     }
   },
-  integrations: [react(), vue(), mdx(), sitemap(), partytown()],
+  integrations: [generateBuildInfoIntegration(), react(), vue(), mdx(), sitemap(), partytown()],
 });
