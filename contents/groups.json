@@ -1,0 +1,27 @@
+[
+  {
+    "id": "PROJECT",
+    "name": "项目组",
+    "description": "集博栈项目组"
+  },
+  {
+    "id": "TECH",
+    "name": "技术组",
+    "description": "负责项目的技术开发和维护"
+  },
+  {
+    "id": "DOCS",
+    "name": "文档维护组",
+    "description": "负责项目文档的编写和维护"
+  },
+  {
+    "id": "DATA",
+    "name": "数据维护组",
+    "description": "负责项目数据的管理和维护"
+  },
+  {
+    "id": "OUTREACH",
+    "name": "外联组",
+    "description": "负责项目对外的账号管理、宣传、合作等内容"
+  }
+]

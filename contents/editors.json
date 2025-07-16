@@ -1,0 +1,18 @@
+[
+  {
+    "id": "Xiaozonglin",
+    "nickname": "林林",
+    "url": "https://www.xiaozonglin.cn",
+    "group": ["DOCS", "DATA"],
+    "identity": "LEADER",
+    "description": "项目发起人。目前主要负责项目的文档编写和数据维护工作。"
+  },
+  {
+    "id": "MYXXTS",
+    "nickname": "沐云湘夕",
+    "url": "https://www.myxxts.com",
+    "group": ["TECH", "DOCS", "DATA", "OUTREACH"],
+    "identity": "LEADER",
+    "description": "项目负责人。目前承担项目的开发、运维和管理工作。"
+  }
+]
