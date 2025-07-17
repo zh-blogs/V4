@@ -1,28 +1,31 @@
 {
   "extends": "@zhblogs/config/tsconfig.base.json",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
-    "rootDirs": [
-      "./src",
-      "./index.ts"
-    ],
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "target": "esnext", // 更现代的目标
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "declaration": false,
+    "noEmit": false,
+    "rootDirs": [
+      "./src"
+    ],
     "paths": {
       "@server/*": [
         "./src/*"
-      ],
+      ]
     }
   },
   "include": [
     "./src/**/*.ts",
-    "./src/**/*.d.ts",
-    "./index.ts",
-    "./index.d.ts"
+    "./index.ts"
   ],
   "exclude": [
     "node_modules",
-    "test"
+    "dist",
+    "test",
+    "**/*.test.ts",
+    "**/*.spec.ts"
   ]
 }
