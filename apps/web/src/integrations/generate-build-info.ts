@@ -46,7 +46,7 @@ const getLastCommitHash = (
       commitTime,
     };
   } catch (error: any) {
-    logger.error("获取Git信息失败:" + error.message);
+    logger.error(`获取Git信息失败: ${error.message}`);
     return {
       fullHash: "unknown",
       commitLink: "",
@@ -60,7 +60,7 @@ const getVersion = (logger: AstroIntegrationLogger): string => {
     const packageJson = JSON.parse(fs.readFileSync("./package.json", "utf8"));
     return packageJson.version || "0.0.0";
   } catch (error: any) {
-    logger.error("读取package.json失败:" + error.message);
+    logger.error(`读取package.json失败: ${error.message}`);
     return "0.0.0";
   }
 };
