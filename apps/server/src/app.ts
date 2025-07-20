@@ -1,12 +1,22 @@
 import Fastify from "fastify";
-import { FastifyLoggerOptions, PinoLoggerOptions } from "fastify/types/logger.js";
+import routes from "./routes";
+import drizzle from "./plugins/drizzle";
+import {
+  FastifyLoggerOptions,
+  PinoLoggerOptions,
+} from "fastify/types/logger.js";
 import { SwaggerOptions } from "@fastify/swagger";
 import { FastifySwaggerUiOptions } from "@fastify/swagger-ui";
+import fastifyRedis from "@fastify/redis";
+import { format } from "date-fns";
 
 const env: string = process.env.NODE_ENV!;
 
 // Logger configuration
-const envToLogger: Record<string, boolean | FastifyLoggerOptions & PinoLoggerOptions> = {
+const envToLogger: Record<
+  string,
+  boolean | (FastifyLoggerOptions & PinoLoggerOptions)
+> = {
   development: {
     level: "debug",
     transport: {
@@ -20,6 +30,8 @@ const envToLogger: Record<string, boolean | FastifyLoggerOptions & PinoLoggerOpt
   },
   production: {
     level: process.env.LOG_LEVEL || "debug",
+    // 修改显示日期为非时间戳的格式
+    timestamp: () => `,"time":"${format(new Date(), "yyyy-MM-dd HH:mm:ss")}"`,
   },
   test: false,
 };
@@ -30,6 +42,11 @@ const app = Fastify({
 });
 
 // Register plugins
+await app.register(drizzle);
+await app.register(fastifyRedis, {
+  url: process.env.REDIS_URL!,
+});
+
 if (env === "development") {
   await app.register(import("@fastify/swagger"), {
     openapi: {
@@ -61,5 +78,6 @@ if (env === "development") {
 }
 
 // Register routes
+await app.register(routes);
 
 export default app;

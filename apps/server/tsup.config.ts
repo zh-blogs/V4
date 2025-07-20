@@ -35,7 +35,7 @@ export default defineConfig({
     options.mainFields = ["module", "main"];
   },
   define: {
-    "process.env.NODE_ENV": `"${process.env.NODE_ENV || "production"}"`,
+    "process.env.NODE_ENV": '"production"',
   },
   banner() {
     return {
