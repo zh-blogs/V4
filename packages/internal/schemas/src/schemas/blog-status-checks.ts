@@ -11,7 +11,7 @@ import { v7 } from "uuid";
 import { Blogs } from "./blogs";
 import { blog_status_enum } from "./enums";
 
-export const Blog_Status_Checks = pgTable(
+export const BlogStatusChecks = pgTable(
   "blog_status_checks",
   {
     id: uuid()

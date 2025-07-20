@@ -1,11 +1,13 @@
 CREATE TYPE "public"."architecture_type" AS ENUM('CMS', 'SSG', 'FRAMEWORK', 'UNKNOWN');--> statement-breakpoint
 CREATE TYPE "public"."blog_status" AS ENUM('OK', 'ERROR', 'SSLERROR');--> statement-breakpoint
 CREATE TYPE "public"."blog_status_tags" AS ENUM('EXTERNAL_LIMIT', 'INTERNAL_LIMIT', 'FEW_ARTICLES', 'NO_CONTENT', 'NON_ORIGINAL', 'SENSITIVE_CONTENT');--> statement-breakpoint
+CREATE TYPE "public"."blog_to_tags_connection_type" AS ENUM('SUBMISSION', 'MAIN');--> statement-breakpoint
+CREATE TYPE "public"."claimed_by" AS ENUM('OWNER', 'ADMIN');--> statement-breakpoint
 CREATE TYPE "public"."from_sources" AS ENUM('CIB', 'BoYouQuan', 'BlogFinder', 'BKZ', 'Travellings', 'LinkPage', 'WebSubmit', 'OldData', 'Claimed');--> statement-breakpoint
 CREATE TYPE "public"."submission_status" AS ENUM('CREATE', 'CLAIM', 'MODIFY', 'DELETE', 'NOTICE');--> statement-breakpoint
 CREATE TYPE "public"."submission_type" AS ENUM('CREATE', 'CLAIM', 'MODIFY', 'DELETE', 'NOTICE');--> statement-breakpoint
 CREATE TYPE "public"."submitter_type" AS ENUM('GUEST', 'USER', 'ROBOT', 'UNKNOWN');--> statement-breakpoint
-CREATE TYPE "public"."tag_type" AS ENUM('MAIN', 'SUB');--> statement-breakpoint
+CREATE TYPE "public"."tag_type" AS ENUM('MAIN', 'SUB', 'WARNING');--> statement-breakpoint
 CREATE TYPE "public"."user_role" AS ENUM('SYS_ADMIN', 'ADMIN', 'CONTRIBUTOR', 'USER');--> statement-breakpoint
 CREATE TYPE "public"."user_social_account_provider" AS ENUM('GITHUB');--> statement-breakpoint
 CREATE TABLE "architectures" (
@@ -27,7 +29,8 @@ CREATE TABLE "blog_feeds" (
 	"title" varchar(128) NOT NULL,
 	"link" varchar(2048) NOT NULL,
 	"description" varchar(2048),
-	"publish_date" timestamp (3) with time zone
+	"publish_time" timestamp (3) with time zone,
+	"collection_time" timestamp (3) with time zone NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "blog_status_checks" (
@@ -69,6 +72,7 @@ CREATE TABLE "blog_submissions" (
 CREATE TABLE "blog_to_tags" (
 	"blog_id" uuid,
 	"tag_id" integer,
+	"connecrion_type" "blog_to_tags_connection_type" NOT NULL,
 	CONSTRAINT "blog_tags_pkey" PRIMARY KEY("blog_id","tag_id")
 );
 --> statement-breakpoint
@@ -87,11 +91,12 @@ CREATE TABLE "blogs" (
 	"from" "from_sources"[] NOT NULL,
 	"blog_status" "blog_status" DEFAULT 'OK',
 	"blog_status_tags" "blog_status_tags"[] DEFAULT '{}',
-	"recommendation" boolean DEFAULT false NOT NULL,
+	"is_recommend" boolean DEFAULT false NOT NULL,
 	"access_count" integer DEFAULT 0 NOT NULL,
 	"owner_id" uuid,
 	"is_deleted" boolean DEFAULT false NOT NULL,
 	"weight" numeric(6, 3) DEFAULT '0.000' NOT NULL,
+	"claimed_by" "claimed_by",
 	CONSTRAINT "blogs_bid_unique" UNIQUE("bid")
 );
 --> statement-breakpoint
@@ -126,6 +131,7 @@ CREATE TABLE "users" (
 	"nickname" varchar(64) NOT NULL,
 	"email" varchar(128) NOT NULL,
 	"password" varchar(256) NOT NULL,
+	"avatar" varchar(256),
 	"role" "user_role" DEFAULT 'USER' NOT NULL,
 	"login_count" integer DEFAULT 0 NOT NULL,
 	"last_login_time" timestamp (6) with time zone DEFAULT now() NOT NULL,
@@ -158,8 +164,9 @@ CREATE INDEX "blog_feeds_title_index" ON "blog_feeds" USING btree ("title");--> 
 CREATE UNIQUE INDEX "blog_feeds_blog_id_link_index" ON "blog_feeds" USING btree ("blog_id","link");--> statement-breakpoint
 CREATE UNIQUE INDEX "blog_feeds_title_link_index" ON "blog_feeds" USING btree ("title","link");--> statement-breakpoint
 CREATE INDEX "blog_feeds_blog_id_title_index" ON "blog_feeds" USING btree ("blog_id","title");--> statement-breakpoint
-CREATE INDEX "blog_feeds_publish_date_index" ON "blog_feeds" USING btree ("publish_date" DESC NULLS LAST);--> statement-breakpoint
-CREATE INDEX "blog_feeds_blog_id_publish_date_index" ON "blog_feeds" USING btree ("blog_id","publish_date" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "blog_feeds_publish_time_index" ON "blog_feeds" USING btree ("publish_time" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "blog_feeds_collection_time_index" ON "blog_feeds" USING btree ("collection_time" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "blog_feeds_blog_id_publish_time_index" ON "blog_feeds" USING btree ("blog_id","publish_time" DESC NULLS LAST);--> statement-breakpoint
 CREATE UNIQUE INDEX "blog_status_checks_id_index" ON "blog_status_checks" USING btree ("id");--> statement-breakpoint
 CREATE INDEX "blog_status_checks_blog_id_index" ON "blog_status_checks" USING btree ("blog_id");--> statement-breakpoint
 CREATE INDEX "blog_status_checks_blog_id_check_time_index" ON "blog_status_checks" USING btree ("blog_id","check_time" DESC NULLS LAST);--> statement-breakpoint
@@ -194,15 +201,16 @@ CREATE INDEX "blogs_architecture_index" ON "blogs" USING btree ("architecture");
 CREATE INDEX "blogs_weight_index" ON "blogs" USING btree ("weight");--> statement-breakpoint
 CREATE INDEX "blogs_from_index" ON "blogs" USING btree ("from");--> statement-breakpoint
 CREATE INDEX "blogs_blog_status_index" ON "blogs" USING btree ("blog_status");--> statement-breakpoint
-CREATE INDEX "blogs_recommend_index" ON "blogs" USING btree ("recommendation");--> statement-breakpoint
+CREATE INDEX "blogs_is_recommend_index" ON "blogs" USING btree ("is_recommend");--> statement-breakpoint
 CREATE INDEX "blogs_access_count_index" ON "blogs" USING btree ("access_count");--> statement-breakpoint
 CREATE INDEX "blogs_join_time_index" ON "blogs" USING btree ("join_time" DESC NULLS LAST);--> statement-breakpoint
 CREATE INDEX "blogs_is_deleted_index" ON "blogs" USING btree ("is_deleted");--> statement-breakpoint
+CREATE INDEX "blogs_claim_by_index" ON "blogs" USING btree ("claimed_by");--> statement-breakpoint
 CREATE INDEX "blogs_update_time_index" ON "blogs" USING btree ("update_time" DESC NULLS LAST);--> statement-breakpoint
 CREATE UNIQUE INDEX "blogs_name_url_index" ON "blogs" USING btree ("name","url");--> statement-breakpoint
-CREATE INDEX "blogs_recommendation_status_index" ON "blogs" USING btree ("recommendation","blog_status");--> statement-breakpoint
-CREATE INDEX "blogs_status_recommendation_weight_index" ON "blogs" USING btree ("blog_status","recommendation","weight" DESC NULLS LAST);--> statement-breakpoint
-CREATE INDEX "blogs_status_recommendation_weight_access_index" ON "blogs" USING btree ("blog_status","recommendation","weight" DESC NULLS LAST,"access_count" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "blogs_recommendation_status_index" ON "blogs" USING btree ("is_recommend","blog_status");--> statement-breakpoint
+CREATE INDEX "blogs_status_recommendation_weight_index" ON "blogs" USING btree ("blog_status","is_recommend","weight" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "blogs_status_recommendation_weight_access_index" ON "blogs" USING btree ("blog_status","is_recommend","weight" DESC NULLS LAST,"access_count" DESC NULLS LAST);--> statement-breakpoint
 CREATE UNIQUE INDEX "tags_id_index" ON "tags" USING btree ("id");--> statement-breakpoint
 CREATE UNIQUE INDEX "tags_name_index" ON "tags" USING btree ("name");--> statement-breakpoint
 CREATE INDEX "tags_count_index" ON "tags" USING btree ("count" DESC NULLS LAST);--> statement-breakpoint

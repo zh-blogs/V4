@@ -21,7 +21,7 @@ import {
 } from "./enums";
 import { Users } from "./users";
 
-export const Blog_Submissions = pgTable(
+export const BlogSubmissions = pgTable(
   "blog_submissions",
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1 }),

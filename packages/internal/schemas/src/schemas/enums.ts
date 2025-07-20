@@ -1,6 +1,7 @@
 import { ARCHITECTURE_TYPE_KEYS } from "@zhblogs/constants/architecture-types";
 import { BLOG_STATUS_TAG_KEYS } from "@zhblogs/constants/blog-status-tags";
 import { BLOG_STATUS_TYPE_KEYS } from "@zhblogs/constants/blog-status-types";
+import { BLOG_TO_TAGS_CONNECTION_TYPE_KEYS } from "@zhblogs/constants/blog-to-tags-connection-types";
 import { CLAIM_TYPE_KEYS } from "@zhblogs/constants/claim-types";
 import { FROM_SOURCE_KEYS } from "@zhblogs/constants/frome-sources";
 import { SUBMISSION_TYPE_KEYS } from "@zhblogs/constants/submission-types";
@@ -53,6 +54,11 @@ export const blog_status_tags_enum = pgEnum(
 export const claimed_by_enum = pgEnum(
   "claimed_by",
   CLAIM_TYPE_KEYS as [string]
+);
+
+export const blog_to_tags_connection_type_enum = pgEnum(
+  "blog_to_tags_connection_type",
+  BLOG_TO_TAGS_CONNECTION_TYPE_KEYS as [string]
 );
 
 export const tag_type_enum = pgEnum("tag_type", TAG_TYPE_KEYS as [string]);

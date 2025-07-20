@@ -1,5 +1,5 @@
 {
-  "id": "1b9e640a-75fc-4ec1-8dae-8b10294c94fe",
+  "id": "2941dbab-906d-45b5-ac86-5fab4ba2c7f8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -204,11 +204,17 @@
           "primaryKey": false,
           "notNull": false
         },
-        "publish_date": {
-          "name": "publish_date",
+        "publish_time": {
+          "name": "publish_time",
           "type": "timestamp (3) with time zone",
           "primaryKey": false,
           "notNull": false
+        },
+        "collection_time": {
+          "name": "collection_time",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {
@@ -305,11 +311,11 @@
           "method": "btree",
           "with": {}
         },
-        "blog_feeds_publish_date_index": {
-          "name": "blog_feeds_publish_date_index",
+        "blog_feeds_publish_time_index": {
+          "name": "blog_feeds_publish_time_index",
           "columns": [
             {
-              "expression": "publish_date",
+              "expression": "publish_time",
               "isExpression": false,
               "asc": false,
               "nulls": "last"
@@ -320,8 +326,23 @@
           "method": "btree",
           "with": {}
         },
-        "blog_feeds_blog_id_publish_date_index": {
-          "name": "blog_feeds_blog_id_publish_date_index",
+        "blog_feeds_collection_time_index": {
+          "name": "blog_feeds_collection_time_index",
+          "columns": [
+            {
+              "expression": "collection_time",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "blog_feeds_blog_id_publish_time_index": {
+          "name": "blog_feeds_blog_id_publish_time_index",
           "columns": [
             {
               "expression": "blog_id",
@@ -330,7 +351,7 @@
               "nulls": "last"
             },
             {
-              "expression": "publish_date",
+              "expression": "publish_time",
               "isExpression": false,
               "asc": false,
               "nulls": "last"
@@ -1050,6 +1071,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
+        },
+        "connecrion_type": {
+          "name": "connecrion_type",
+          "type": "blog_to_tags_connection_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {
@@ -1242,8 +1270,8 @@
           "notNull": false,
           "default": "'{}'"
         },
-        "recommendation": {
-          "name": "recommendation",
+        "is_recommend": {
+          "name": "is_recommend",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
@@ -1275,6 +1303,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'0.000'"
+        },
+        "claimed_by": {
+          "name": "claimed_by",
+          "type": "claimed_by",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {
@@ -1413,11 +1448,11 @@
           "method": "btree",
           "with": {}
         },
-        "blogs_recommend_index": {
-          "name": "blogs_recommend_index",
+        "blogs_is_recommend_index": {
+          "name": "blogs_is_recommend_index",
           "columns": [
             {
-              "expression": "recommendation",
+              "expression": "is_recommend",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1473,6 +1508,21 @@
           "method": "btree",
           "with": {}
         },
+        "blogs_claim_by_index": {
+          "name": "blogs_claim_by_index",
+          "columns": [
+            {
+              "expression": "claimed_by",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "blogs_update_time_index": {
           "name": "blogs_update_time_index",
           "columns": [
@@ -1513,7 +1563,7 @@
           "name": "blogs_recommendation_status_index",
           "columns": [
             {
-              "expression": "recommendation",
+              "expression": "is_recommend",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1540,7 +1590,7 @@
               "nulls": "last"
             },
             {
-              "expression": "recommendation",
+              "expression": "is_recommend",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1567,7 +1617,7 @@
               "nulls": "last"
             },
             {
-              "expression": "recommendation",
+              "expression": "is_recommend",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -2009,6 +2059,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "avatar": {
+          "name": "avatar",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "role": {
           "name": "role",
           "type": "user_role",
@@ -2240,6 +2296,22 @@
         "SENSITIVE_CONTENT"
       ]
     },
+    "public.blog_to_tags_connection_type": {
+      "name": "blog_to_tags_connection_type",
+      "schema": "public",
+      "values": [
+        "SUBMISSION",
+        "MAIN"
+      ]
+    },
+    "public.claimed_by": {
+      "name": "claimed_by",
+      "schema": "public",
+      "values": [
+        "OWNER",
+        "ADMIN"
+      ]
+    },
     "public.from_sources": {
       "name": "from_sources",
       "schema": "public",
@@ -2292,7 +2364,8 @@
       "schema": "public",
       "values": [
         "MAIN",
-        "SUB"
+        "SUB",
+        "WARNING"
       ]
     },
     "public.user_role": {

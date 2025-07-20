@@ -10,7 +10,7 @@ import {
 import { Users } from "./users";
 import { user_social_account_provider_enum } from "./enums";
 
-export const User_Social_Accounts = pgTable(
+export const UserSocialAccounts = pgTable(
   "user_social_accounts",
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1 }),

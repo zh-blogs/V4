@@ -6,6 +6,7 @@
 export enum TAG_TYPES {
   MAIN = "主标签",
   SUB = "子标签",
+  WARNING = "警告标签",
 }
 
 export const TAG_TYPE_KEYS = Object.keys(TAG_TYPES) as (keyof typeof TAG_TYPES)[]
