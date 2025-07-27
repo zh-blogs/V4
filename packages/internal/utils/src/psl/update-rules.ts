@@ -31,7 +31,7 @@ fetch(src)
   .then((rules) =>
     writeFile(dest, `export default ${JSON.stringify(rules, null, 2)};`)
   )
-  .catch((error) => {
-    console.error(error);
+  .catch((err) => {
+    console.error(err);
     process.exit(1);
   });

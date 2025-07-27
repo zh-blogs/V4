@@ -6,8 +6,8 @@ async function startServer() {
     await app.listen({
       port: 9900,
     });
-  } catch (err: any) {
-    app.log.error(err);
+  } catch (err) {
+    console.error("Error starting server:", err);
   }
 }
 

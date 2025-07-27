@@ -15,7 +15,7 @@ async function startServer() {
     }
     process.send?.("ready");
   } catch (err: any) {
-    app.log.error(err);
+    console.error("Error starting server:", err);
   }
 }
 

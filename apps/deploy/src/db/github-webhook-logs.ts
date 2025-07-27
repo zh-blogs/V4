@@ -19,7 +19,7 @@ export async function insertGithubWebhookLog(
   }
   try {
     await app.db.insert(GithubWebhookLogs).values(result.data);
-  } catch (error) {
-    logger.error("Failed to insert Github Webhook Log: " + error);
+  } catch (err) {
+    console.error("Error inserting Github Webhook Log:", err);
   }
 }

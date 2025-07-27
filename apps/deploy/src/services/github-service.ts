@@ -44,4 +44,7 @@ export async function deployService(
   record.status = result;
   record.logs = logs;
   await insertGithubWebhookLog(record as GithubWebhookLogInsert, logger);
+  logger.info(
+    `Deployment service completed for workflow run ID: ${body.workflow_run.id}, status: ${result}`
+  );
 }
