@@ -1,0 +1,17 @@
+{
+  "name": "@zhblogs/utils",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "psl:update-rules": "tsx ./src/psl/update-rules.ts"
+  },
+  "exports": {
+    "./psl": "./src/psl/index.ts"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@zhblogs/config": "workspace:*"
+  }
+}
