@@ -21,11 +21,10 @@ if [ "$OLD_COMMIT" = "$NEW_COMMIT" ]; then
 fi
 echo "New changes detected, proceeding with upgrade."
 # Check if there are any changes in the .env.example file
-git diff --name-only $OLD_COMMIT $NEW_COMMIT -- .env.example
-if [ $? -eq 0 ]; then
-  echo "No changes in .env.example, continuing with existing environment file."
-else
+if git diff --name-only "$OLD_COMMIT" "$NEW_COMMIT" -- .env.example | grep -q .env.example; then
   exit 91
+else
+  echo "No changes in .env.example, continuing with existing environment file."
 fi
 # Install dependencies
 echo "Installing dependencies..."
