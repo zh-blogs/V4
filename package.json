@@ -3,16 +3,23 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "turbo run dev  --filter=zhblogs-*",
-    "dev:server": "turbo run dev  --filter=zhblogs-server",
-    "build": "turbo run build --filter=zhblogs-*"
+    "dev:web": "pnpm -F zhblogs-web dev",
+    "dev:server": "pnpm -F zhblogs-server dev",
+    "build": "turbo run build --filter=zhblogs-*",
+    "build:web": "pnpm -F zhblogs-web build",
+    "build:server": "pnpm -F zhblogs-server build",
+    "build:upgrade": "turbo run build --filter=zhblogs-server --filter=zhblogs-web"
   },
   "devDependencies": {
-    "@types/node": "^24.0.14",
-    "dotenv": "^17.2.0",
+    "@types/node": "^24.1.0",
+    "dotenv": "^17.2.1",
     "tsup": "^8.5.0",
     "tsx": "^4.20.3",
-    "turbo": "^2.5.4",
+    "turbo": "^2.5.5",
     "typescript": "^5.8.3"
   },
-  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad",
+  "engines": {
+    "node": ">=22.0.0"
+  }
 }

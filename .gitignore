@@ -20,4 +20,5 @@ logs/
 .idea/
 # Turbo cache
 .turbo/
+# System info
 system-info.json
