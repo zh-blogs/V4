@@ -1,58 +1,54 @@
 import { readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import path from "node:path";
 import { defineConfig } from "tsup";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const externals: string[] = [];
+const outBaseDir = "./dist";
 
 const packageJson = JSON.parse(
-  readFileSync(join(__dirname, "package.json"), "utf8")
+  readFileSync(new URL("package.json", import.meta.url), "utf8")
 );
 
 const deps = Object.keys({
   ...(packageJson.dependencies || {}),
-  ...(packageJson.peerDependencies || {}),
-}).filter((dep) => !externals.includes(dep));
+}).filter((dep) => dep.startsWith("@zhblogs/"));
+
+const copyFiles = ["./node_modules/@zhblogs/schemas/src/drizzle"];
 
 export default defineConfig({
   entry: ["./index.ts"],
-  format: ["cjs"],
-  sourcemap: true,
+  format: ["esm"],
+  sourcemap: false,
   clean: true,
-  outDir: "../../dist/server",
+  outDir: outBaseDir,
   treeshake: true,
-  splitting: true,
-  minify: false,
+  splitting: false,
+  minify: true,
   dts: false,
   target: "esnext",
   bundle: true,
   tsconfig: "./tsconfig.json",
   noExternal: [...deps],
-  external: [/^node:/, ...externals],
+  external: [/^node:/],
   esbuildOptions: (options) => {
     options.platform = "node";
+    options.conditions = ["import", "module", "node"];
     options.mainFields = ["module", "main"];
-    options.conditions = ["node", "import", "require", "module", "default"];
   },
   define: {
     "process.env.NODE_ENV": '"production"',
   },
+  banner() {
+    return {
+      js: `import { createRequire } from 'module';const require = createRequire(import.meta.url);`,
+    };
+  },
   onSuccess: async () => {
-    const srcDir = join(
-      __dirname,
-      "./node_modules/@zhblogs/schemas/src/drizzle"
-    );
-    const destDir = join(__dirname, "../../dist/server/drizzle");
-    console.log(`Copying migrations from ${srcDir} to ${destDir}`);
-    try {
+    for (const file of copyFiles) {
+      const src = new URL(file, import.meta.url).pathname;
+      const dest = path.join(outBaseDir, path.basename(file));
       await import("fs/promises").then((fs) =>
-        fs.cp(srcDir, destDir, { recursive: true })
+        fs.cp(src, dest, { recursive: true })
       );
-      console.log("Migrations copied successfully.");
-    } catch (error) {
-      console.error("Error copying migrations:", error);
     }
   },
 });

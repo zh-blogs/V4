@@ -1,15 +1,22 @@
-import app from "@server/app.js";
+import app from "@server/app";
 import { migrateDatabase } from "@zhblogs/schemas/migrator";
+import "dotenv/config";
 
-// Start the Fastify server
-app.listen({ port: 8765 }).catch((err) => {
-  app.log.error("Error starting server:", err);
-});
+async function startServer() {
+  try {
+    await migrateDatabase();
+    app.log.info("Database migration completed successfully");
+    await app.listen({
+      port: 9901,
+    });
+    app.log.info(`Server is running on port 8765`);
+    if (process.send) {
+      process.send("ready");
+    }
+    process.send?.("ready");
+  } catch (err: any) {
+    console.error("Error starting server:", err);
+  }
+}
 
-// Run scripts after the server is ready
-app.ready().then(async () => {
-  // Perform database migration
-  migrateDatabase().catch((err) => {
-    app.log.error("Error migrating database:", err);
-  })
-});
+startServer();

@@ -1,0 +1,26 @@
+{
+  "name": "zhblogs-deploy",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "NODE_ENV=development tsx watch index.ts --env-file=../../.env",
+    "build": "tsup"
+  },
+  "dependencies": {
+    "@fastify/redis": "^7.0.2",
+    "@fastify/sensible": "^6.0.3",
+    "@octokit/webhooks": "^14.1.1",
+    "@zhblogs/constants": "workspace:*",
+    "@zhblogs/schemas": "workspace:*",
+    "date-fns": "^4.1.0",
+    "fastify": "^5.4.0",
+    "fastify-plugin": "^5.0.1",
+    "pino": "^9.7.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@zhblogs/config": "workspace:*",
+    "pino-pretty": "^13.0.0"
+  }
+}

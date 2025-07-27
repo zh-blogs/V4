@@ -1,6 +1,7 @@
 {
   "name": "@zhblogs/schemas",
   "version": "0.0.1",
+  "type": "module",
   "private": true,
   "scripts": {
     "generate": "drizzle-kit generate"
@@ -8,14 +9,16 @@
   "exports": {
     "./database": "./src/database.ts",
     "./migrator": "./src/migrator.ts",
-    "./schemas/*": "./src/schema/*.ts"
+    "./*": "./src/schemas/*.ts"
   },
   "dependencies": {
     "@zhblogs/constants": "workspace:*",
-    "drizzle-orm": "^0.44.2",
+    "@zhblogs/utils": "workspace:*",
+    "drizzle-orm": "^0.44.3",
     "drizzle-zod": "^0.8.2",
     "postgres": "^3.4.7",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@zhblogs/config": "workspace:*",
