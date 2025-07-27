@@ -10,6 +10,12 @@ import {
 import { v7 } from "uuid";
 import { Blogs } from "./blogs";
 import { blog_status_enum } from "./enums";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
+import z from "zod/v4";
 
 export const BlogStatusChecks = pgTable(
   "blog_status_checks",
@@ -51,3 +57,11 @@ export const BlogStatusChecks = pgTable(
     ),
   ]
 );
+
+export const BlogStatusCheckSelectSchema = createSelectSchema(BlogStatusChecks);
+export const BlogStatusCheckInsertSchema = createInsertSchema(BlogStatusChecks);
+export const BlogStatusCheckUpdateSchema = createUpdateSchema(BlogStatusChecks);
+
+export type BlogStatusCheckSelect = z.infer<typeof BlogStatusCheckSelectSchema>;
+export type BlogStatusCheckInsert = z.infer<typeof BlogStatusCheckInsertSchema>;
+export type BlogStatusCheckUpdate = z.infer<typeof BlogStatusCheckUpdateSchema>;

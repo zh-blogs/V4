@@ -1,5 +1,5 @@
 {
-  "id": "2941dbab-906d-45b5-ac86-5fab4ba2c7f8",
+  "id": "a2e4d35f-fba8-4d0b-9423-a1694b9000b3",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -18,7 +18,7 @@
             "name": "architectures_id_seq",
             "schema": "public",
             "increment": "1",
-            "startWith": "1",
+            "startWith": "100000",
             "minValue": "1",
             "maxValue": "2147483647",
             "cache": "1",
@@ -39,7 +39,7 @@
         },
         "architecture_type": {
           "name": "architecture_type",
-          "type": "architecture_type",
+          "type": "architecture_type_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -402,7 +402,7 @@
         },
         "blog_status": {
           "name": "blog_status",
-          "type": "blog_status",
+          "type": "blog_status_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -590,7 +590,7 @@
             "name": "blog_submissions_id_seq",
             "schema": "public",
             "increment": "1",
-            "startWith": "1",
+            "startWith": "100000",
             "minValue": "1",
             "maxValue": "2147483647",
             "cache": "1",
@@ -659,7 +659,7 @@
         },
         "blog_status": {
           "name": "blog_status",
-          "type": "blog_status",
+          "type": "blog_status_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -698,21 +698,21 @@
         },
         "submission_status": {
           "name": "submission_status",
-          "type": "submission_status",
+          "type": "submission_status_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "submission_type": {
           "name": "submission_type",
-          "type": "submission_type",
+          "type": "submission_type_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "submitter_type": {
           "name": "submitter_type",
-          "type": "submitter_type",
+          "type": "submitter_type_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -1074,7 +1074,7 @@
         },
         "connecrion_type": {
           "name": "connecrion_type",
-          "type": "blog_to_tags_connection_type",
+          "type": "blog_to_tags_connection_type_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -1249,14 +1249,14 @@
         },
         "from": {
           "name": "from",
-          "type": "from_sources[]",
+          "type": "from_source_enum[]",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
         "blog_status": {
           "name": "blog_status",
-          "type": "blog_status",
+          "type": "blog_status_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -1264,7 +1264,7 @@
         },
         "blog_status_tags": {
           "name": "blog_status_tags",
-          "type": "blog_status_tags[]",
+          "type": "blog_status_tag_enum[]",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -1297,6 +1297,13 @@
           "notNull": true,
           "default": false
         },
+        "is_show": {
+          "name": "is_show",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
         "weight": {
           "name": "weight",
           "type": "numeric(6, 3)",
@@ -1306,7 +1313,7 @@
         },
         "claimed_by": {
           "name": "claimed_by",
-          "type": "claimed_by",
+          "type": "claimed_by_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
@@ -1559,6 +1566,27 @@
           "method": "btree",
           "with": {}
         },
+        "blogs_show_status_index": {
+          "name": "blogs_show_status_index",
+          "columns": [
+            {
+              "expression": "is_show",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "blog_status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
         "blogs_recommendation_status_index": {
           "name": "blogs_recommendation_status_index",
           "columns": [
@@ -1570,6 +1598,21 @@
             },
             {
               "expression": "blog_status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "blogs_status_tags_index": {
+          "name": "blogs_status_tags_index",
+          "columns": [
+            {
+              "expression": "blog_status_tags",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -1683,6 +1726,285 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
+    "public.github_webhook_logs": {
+      "name": "github_webhook_logs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "github_webhook_logs_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "100000",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "delivery_id": {
+          "name": "delivery_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workflow_run_id": {
+          "name": "workflow_run_id",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workflow_run_url": {
+          "name": "workflow_run_url",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workflow_run_title": {
+          "name": "workflow_run_title",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workflow_run_head_sha": {
+          "name": "workflow_run_head_sha",
+          "type": "varchar(40)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workflow_run_created_time": {
+          "name": "workflow_run_created_time",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workflow_run_updated_time": {
+          "name": "workflow_run_updated_time",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workflow_run_run_started_time": {
+          "name": "workflow_run_run_started_time",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actor_id": {
+          "name": "actor_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actor_username": {
+          "name": "actor_username",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "actor_url": {
+          "name": "actor_url",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "triggering_actor_id": {
+          "name": "triggering_actor_id",
+          "type": "varchar(128)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "triggering_actor_username": {
+          "name": "triggering_actor_username",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "triggering_actor_url": {
+          "name": "triggering_actor_url",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "commit_id": {
+          "name": "commit_id",
+          "type": "varchar(40)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "commit_message": {
+          "name": "commit_message",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "commit_author_name": {
+          "name": "commit_author_name",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "received_webhook_time": {
+          "name": "received_webhook_time",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "finished_time": {
+          "name": "finished_time",
+          "type": "timestamp (3) with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "github_webhook_logs_status_type_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "logs": {
+          "name": "logs",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "github_webhook_logs_id_index": {
+          "name": "github_webhook_logs_id_index",
+          "columns": [
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "github_webhook_logs_status_index": {
+          "name": "github_webhook_logs_status_index",
+          "columns": [
+            {
+              "expression": "status",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "github_webhook_logs_workflow_run_created_time_index": {
+          "name": "github_webhook_logs_workflow_run_created_time_index",
+          "columns": [
+            {
+              "expression": "workflow_run_created_time",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "github_webhook_logs_workflow_run_updated_time_index": {
+          "name": "github_webhook_logs_workflow_run_updated_time_index",
+          "columns": [
+            {
+              "expression": "workflow_run_updated_time",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "github_webhook_logs_workflow_run_run_started_time_index": {
+          "name": "github_webhook_logs_workflow_run_run_started_time_index",
+          "columns": [
+            {
+              "expression": "workflow_run_run_started_time",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "github_webhook_logs_received_webhook_time_index": {
+          "name": "github_webhook_logs_received_webhook_time_index",
+          "columns": [
+            {
+              "expression": "received_webhook_time",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "github_webhook_logs_finished_time_index": {
+          "name": "github_webhook_logs_finished_time_index",
+          "columns": [
+            {
+              "expression": "finished_time",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "github_webhook_logs_actor_id_unique": {
+          "name": "github_webhook_logs_actor_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "actor_id"
+          ]
+        },
+        "github_webhook_logs_triggering_actor_id_unique": {
+          "name": "github_webhook_logs_triggering_actor_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "triggering_actor_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.tags": {
       "name": "tags",
       "schema": "",
@@ -1697,7 +2019,7 @@
             "name": "tags_id_seq",
             "schema": "public",
             "increment": "1",
-            "startWith": "1",
+            "startWith": "100000",
             "minValue": "1",
             "maxValue": "2147483647",
             "cache": "1",
@@ -1712,7 +2034,7 @@
         },
         "type": {
           "name": "type",
-          "type": "tag_type",
+          "type": "tag_type_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -1857,7 +2179,7 @@
             "name": "user_social_accounts_id_seq",
             "schema": "public",
             "increment": "1",
-            "startWith": "1",
+            "startWith": "100000",
             "minValue": "1",
             "maxValue": "2147483647",
             "cache": "1",
@@ -1872,7 +2194,7 @@
         },
         "provider": {
           "name": "provider",
-          "type": "user_social_account_provider",
+          "type": "user_social_account_provider_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -2067,7 +2389,7 @@
         },
         "role": {
           "name": "role",
-          "type": "user_role",
+          "type": "user_role_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
@@ -2265,8 +2587,8 @@
     }
   },
   "enums": {
-    "public.architecture_type": {
-      "name": "architecture_type",
+    "public.architecture_type_enum": {
+      "name": "architecture_type_enum",
       "schema": "public",
       "values": [
         "CMS",
@@ -2275,8 +2597,8 @@
         "UNKNOWN"
       ]
     },
-    "public.blog_status": {
-      "name": "blog_status",
+    "public.blog_status_enum": {
+      "name": "blog_status_enum",
       "schema": "public",
       "values": [
         "OK",
@@ -2284,8 +2606,8 @@
         "SSLERROR"
       ]
     },
-    "public.blog_status_tags": {
-      "name": "blog_status_tags",
+    "public.blog_status_tag_enum": {
+      "name": "blog_status_tag_enum",
       "schema": "public",
       "values": [
         "EXTERNAL_LIMIT",
@@ -2296,24 +2618,24 @@
         "SENSITIVE_CONTENT"
       ]
     },
-    "public.blog_to_tags_connection_type": {
-      "name": "blog_to_tags_connection_type",
+    "public.blog_to_tags_connection_type_enum": {
+      "name": "blog_to_tags_connection_type_enum",
       "schema": "public",
       "values": [
         "SUBMISSION",
         "MAIN"
       ]
     },
-    "public.claimed_by": {
-      "name": "claimed_by",
+    "public.claimed_by_enum": {
+      "name": "claimed_by_enum",
       "schema": "public",
       "values": [
         "OWNER",
         "ADMIN"
       ]
     },
-    "public.from_sources": {
-      "name": "from_sources",
+    "public.from_source_enum": {
+      "name": "from_source_enum",
       "schema": "public",
       "values": [
         "CIB",
@@ -2327,8 +2649,26 @@
         "Claimed"
       ]
     },
-    "public.submission_status": {
-      "name": "submission_status",
+    "public.github_webhook_logs_status_type_enum": {
+      "name": "github_webhook_logs_status_type_enum",
+      "schema": "public",
+      "values": [
+        "SUCCESS",
+        "FAILURE",
+        "MANUAL_INTERVENTION"
+      ]
+    },
+    "public.submission_status_enum": {
+      "name": "submission_status_enum",
+      "schema": "public",
+      "values": [
+        "PENDING",
+        "APPROVED",
+        "REJECTED"
+      ]
+    },
+    "public.submission_type_enum": {
+      "name": "submission_type_enum",
       "schema": "public",
       "values": [
         "CREATE",
@@ -2338,19 +2678,8 @@
         "NOTICE"
       ]
     },
-    "public.submission_type": {
-      "name": "submission_type",
-      "schema": "public",
-      "values": [
-        "CREATE",
-        "CLAIM",
-        "MODIFY",
-        "DELETE",
-        "NOTICE"
-      ]
-    },
-    "public.submitter_type": {
-      "name": "submitter_type",
+    "public.submitter_type_enum": {
+      "name": "submitter_type_enum",
       "schema": "public",
       "values": [
         "GUEST",
@@ -2359,8 +2688,8 @@
         "UNKNOWN"
       ]
     },
-    "public.tag_type": {
-      "name": "tag_type",
+    "public.tag_type_enum": {
+      "name": "tag_type_enum",
       "schema": "public",
       "values": [
         "MAIN",
@@ -2368,8 +2697,8 @@
         "WARNING"
       ]
     },
-    "public.user_role": {
-      "name": "user_role",
+    "public.user_role_enum": {
+      "name": "user_role_enum",
       "schema": "public",
       "values": [
         "SYS_ADMIN",
@@ -2378,8 +2707,8 @@
         "USER"
       ]
     },
-    "public.user_social_account_provider": {
-      "name": "user_social_account_provider",
+    "public.user_social_account_provider_enum": {
+      "name": "user_social_account_provider_enum",
       "schema": "public",
       "values": [
         "GITHUB"

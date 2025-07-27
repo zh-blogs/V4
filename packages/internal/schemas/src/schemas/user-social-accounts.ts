@@ -9,11 +9,17 @@ import {
 } from "drizzle-orm/pg-core";
 import { Users } from "./users";
 import { user_social_account_provider_enum } from "./enums";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
+import z from "zod/v4";
 
 export const UserSocialAccounts = pgTable(
   "user_social_accounts",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1 }),
+    id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 100000 }),
     user_id: uuid()
       .notNull()
       .references(() => Users.id, { onDelete: "cascade", onUpdate: "cascade" }),
@@ -35,3 +41,20 @@ export const UserSocialAccounts = pgTable(
     index("user_social_accounts_expires_time_index").on(table.expires_time),
   ]
 );
+
+export const UserSocialAccountSelectSchema =
+  createSelectSchema(UserSocialAccounts);
+export const UserSocialAccountInsertSchema =
+  createInsertSchema(UserSocialAccounts);
+export const UserSocialAccountUpdateSchema =
+  createUpdateSchema(UserSocialAccounts);
+
+export type UserSocialAccountSelect = z.infer<
+  typeof UserSocialAccountSelectSchema
+>;
+export type UserSocialAccountInsert = z.infer<
+  typeof UserSocialAccountInsertSchema
+>;
+export type UserSocialAccountUpdate = z.infer<
+  typeof UserSocialAccountUpdateSchema
+>;

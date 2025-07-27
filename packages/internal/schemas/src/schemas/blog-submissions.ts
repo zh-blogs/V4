@@ -20,11 +20,18 @@ import {
   submitter_type_enum,
 } from "./enums";
 import { Users } from "./users";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
+import { isValidUrl } from "@zhblogs/utils/psl";
+import { z, ZodString } from "zod/v4";
 
 export const BlogSubmissions = pgTable(
   "blog_submissions",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1 }),
+    id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 100000 }),
     blog_id: uuid().references(() => Blogs.id, {
       onDelete: "set null",
       onUpdate: "cascade",
@@ -88,3 +95,41 @@ export const BlogSubmissions = pgTable(
     index("blog_submissions_submitter_type_index").on(table.submitter_type),
   ]
 );
+
+const blogSubmissionRefine = {
+  url: (schema: ZodString) =>
+    schema
+      .refine((value) => {
+        return isValidUrl(value);
+      })
+      .optional(),
+  link_page: (schema: ZodString) =>
+    schema
+      .refine((value) => {
+        return isValidUrl(value);
+      })
+      .optional(),
+  sitemap: (schema: ZodString) =>
+    schema
+      .refine((value) => {
+        return isValidUrl(value);
+      })
+      .optional(),
+};
+
+export const BlogSubmissionSelectSchema = createSelectSchema(
+  BlogSubmissions,
+  blogSubmissionRefine
+);
+export const BlogSubmissionInsertSchema = createInsertSchema(
+  BlogSubmissions,
+  blogSubmissionRefine
+);
+export const BlogSubmissionUpdateSchema = createUpdateSchema(
+  BlogSubmissions,
+  blogSubmissionRefine
+);
+
+export type BlogSubmissionSelect = z.infer<typeof BlogSubmissionSelectSchema>;
+export type BlogSubmissionInsert = z.infer<typeof BlogSubmissionInsertSchema>;
+export type BlogSubmissionUpdate = z.infer<typeof BlogSubmissionUpdateSchema>;

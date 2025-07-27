@@ -1,20 +1,21 @@
-CREATE TYPE "public"."architecture_type" AS ENUM('CMS', 'SSG', 'FRAMEWORK', 'UNKNOWN');--> statement-breakpoint
-CREATE TYPE "public"."blog_status" AS ENUM('OK', 'ERROR', 'SSLERROR');--> statement-breakpoint
-CREATE TYPE "public"."blog_status_tags" AS ENUM('EXTERNAL_LIMIT', 'INTERNAL_LIMIT', 'FEW_ARTICLES', 'NO_CONTENT', 'NON_ORIGINAL', 'SENSITIVE_CONTENT');--> statement-breakpoint
-CREATE TYPE "public"."blog_to_tags_connection_type" AS ENUM('SUBMISSION', 'MAIN');--> statement-breakpoint
-CREATE TYPE "public"."claimed_by" AS ENUM('OWNER', 'ADMIN');--> statement-breakpoint
-CREATE TYPE "public"."from_sources" AS ENUM('CIB', 'BoYouQuan', 'BlogFinder', 'BKZ', 'Travellings', 'LinkPage', 'WebSubmit', 'OldData', 'Claimed');--> statement-breakpoint
-CREATE TYPE "public"."submission_status" AS ENUM('CREATE', 'CLAIM', 'MODIFY', 'DELETE', 'NOTICE');--> statement-breakpoint
-CREATE TYPE "public"."submission_type" AS ENUM('CREATE', 'CLAIM', 'MODIFY', 'DELETE', 'NOTICE');--> statement-breakpoint
-CREATE TYPE "public"."submitter_type" AS ENUM('GUEST', 'USER', 'ROBOT', 'UNKNOWN');--> statement-breakpoint
-CREATE TYPE "public"."tag_type" AS ENUM('MAIN', 'SUB', 'WARNING');--> statement-breakpoint
-CREATE TYPE "public"."user_role" AS ENUM('SYS_ADMIN', 'ADMIN', 'CONTRIBUTOR', 'USER');--> statement-breakpoint
-CREATE TYPE "public"."user_social_account_provider" AS ENUM('GITHUB');--> statement-breakpoint
+CREATE TYPE "public"."architecture_type_enum" AS ENUM('CMS', 'SSG', 'FRAMEWORK', 'UNKNOWN');--> statement-breakpoint
+CREATE TYPE "public"."blog_status_enum" AS ENUM('OK', 'ERROR', 'SSLERROR');--> statement-breakpoint
+CREATE TYPE "public"."blog_status_tag_enum" AS ENUM('EXTERNAL_LIMIT', 'INTERNAL_LIMIT', 'FEW_ARTICLES', 'NO_CONTENT', 'NON_ORIGINAL', 'SENSITIVE_CONTENT');--> statement-breakpoint
+CREATE TYPE "public"."blog_to_tags_connection_type_enum" AS ENUM('SUBMISSION', 'MAIN');--> statement-breakpoint
+CREATE TYPE "public"."claimed_by_enum" AS ENUM('OWNER', 'ADMIN');--> statement-breakpoint
+CREATE TYPE "public"."from_source_enum" AS ENUM('CIB', 'BoYouQuan', 'BlogFinder', 'BKZ', 'Travellings', 'LinkPage', 'WebSubmit', 'OldData', 'Claimed');--> statement-breakpoint
+CREATE TYPE "public"."github_webhook_logs_status_type_enum" AS ENUM('SUCCESS', 'FAILURE', 'MANUAL_INTERVENTION');--> statement-breakpoint
+CREATE TYPE "public"."submission_status_enum" AS ENUM('PENDING', 'APPROVED', 'REJECTED');--> statement-breakpoint
+CREATE TYPE "public"."submission_type_enum" AS ENUM('CREATE', 'CLAIM', 'MODIFY', 'DELETE', 'NOTICE');--> statement-breakpoint
+CREATE TYPE "public"."submitter_type_enum" AS ENUM('GUEST', 'USER', 'ROBOT', 'UNKNOWN');--> statement-breakpoint
+CREATE TYPE "public"."tag_type_enum" AS ENUM('MAIN', 'SUB', 'WARNING');--> statement-breakpoint
+CREATE TYPE "public"."user_role_enum" AS ENUM('SYS_ADMIN', 'ADMIN', 'CONTRIBUTOR', 'USER');--> statement-breakpoint
+CREATE TYPE "public"."user_social_account_provider_enum" AS ENUM('GITHUB');--> statement-breakpoint
 CREATE TABLE "architectures" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "architectures_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "architectures_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 100000 CACHE 1),
 	"name" varchar(32) NOT NULL,
 	"description" varchar(256),
-	"architecture_type" "architecture_type" NOT NULL,
+	"architecture_type" "architecture_type_enum" NOT NULL,
 	"url" varchar(128),
 	"logo_url" varchar(256),
 	"count" integer DEFAULT 0,
@@ -36,14 +37,14 @@ CREATE TABLE "blog_feeds" (
 CREATE TABLE "blog_status_checks" (
 	"id" uuid PRIMARY KEY NOT NULL,
 	"blog_id" uuid,
-	"blog_status" "blog_status" NOT NULL,
+	"blog_status" "blog_status_enum" NOT NULL,
 	"message" varchar(256) NOT NULL,
 	"duration" integer NOT NULL,
 	"check_time" timestamp (3) with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "blog_submissions" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "blog_submissions_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "blog_submissions_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 100000 CACHE 1),
 	"blog_id" uuid,
 	"name" varchar(64),
 	"url" varchar(128),
@@ -54,15 +55,15 @@ CREATE TABLE "blog_submissions" (
 	"architecture" integer,
 	"custom_architecture" varchar(64),
 	"is_recommended" boolean,
-	"blog_status" "blog_status",
+	"blog_status" "blog_status_enum",
 	"submit_time" timestamp (3) with time zone DEFAULT now() NOT NULL,
 	"review_time" timestamp (3) with time zone DEFAULT now() NOT NULL,
 	"ip" "inet" NOT NULL,
 	"user_agent" varchar(512) NOT NULL,
 	"email" varchar(128),
-	"submission_status" "submission_status" NOT NULL,
-	"submission_type" "submission_type" NOT NULL,
-	"submitter_type" "submitter_type" NOT NULL,
+	"submission_status" "submission_status_enum" NOT NULL,
+	"submission_type" "submission_type_enum" NOT NULL,
+	"submitter_type" "submitter_type_enum" NOT NULL,
 	"reason" varchar(512),
 	"request" varchar(512),
 	"submitter_id" uuid,
@@ -72,7 +73,7 @@ CREATE TABLE "blog_submissions" (
 CREATE TABLE "blog_to_tags" (
 	"blog_id" uuid,
 	"tag_id" integer,
-	"connecrion_type" "blog_to_tags_connection_type" NOT NULL,
+	"connecrion_type" "blog_to_tags_connection_type_enum" NOT NULL,
 	CONSTRAINT "blog_tags_pkey" PRIMARY KEY("blog_id","tag_id")
 );
 --> statement-breakpoint
@@ -88,22 +89,50 @@ CREATE TABLE "blogs" (
 	"architecture" integer,
 	"join_time" timestamp (3) with time zone DEFAULT now() NOT NULL,
 	"update_time" timestamp (3) with time zone DEFAULT now() NOT NULL,
-	"from" "from_sources"[] NOT NULL,
-	"blog_status" "blog_status" DEFAULT 'OK',
-	"blog_status_tags" "blog_status_tags"[] DEFAULT '{}',
+	"from" "from_source_enum"[] NOT NULL,
+	"blog_status" "blog_status_enum" DEFAULT 'OK',
+	"blog_status_tags" "blog_status_tag_enum"[] DEFAULT '{}',
 	"is_recommend" boolean DEFAULT false NOT NULL,
 	"access_count" integer DEFAULT 0 NOT NULL,
 	"owner_id" uuid,
 	"is_deleted" boolean DEFAULT false NOT NULL,
+	"is_show" boolean DEFAULT true NOT NULL,
 	"weight" numeric(6, 3) DEFAULT '0.000' NOT NULL,
-	"claimed_by" "claimed_by",
+	"claimed_by" "claimed_by_enum",
 	CONSTRAINT "blogs_bid_unique" UNIQUE("bid")
 );
 --> statement-breakpoint
+CREATE TABLE "github_webhook_logs" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "github_webhook_logs_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 100000 CACHE 1),
+	"delivery_id" uuid NOT NULL,
+	"workflow_run_id" varchar(16) NOT NULL,
+	"workflow_run_url" varchar(256) NOT NULL,
+	"workflow_run_title" varchar(512) NOT NULL,
+	"workflow_run_head_sha" varchar(40) NOT NULL,
+	"workflow_run_created_time" timestamp (3) with time zone NOT NULL,
+	"workflow_run_updated_time" timestamp (3) with time zone NOT NULL,
+	"workflow_run_run_started_time" timestamp (3) with time zone NOT NULL,
+	"actor_id" varchar(128) NOT NULL,
+	"actor_username" varchar(64) NOT NULL,
+	"actor_url" varchar(256) NOT NULL,
+	"triggering_actor_id" varchar(128) NOT NULL,
+	"triggering_actor_username" varchar(64) NOT NULL,
+	"triggering_actor_url" varchar(256) NOT NULL,
+	"commit_id" varchar(40) NOT NULL,
+	"commit_message" varchar(512) NOT NULL,
+	"commit_author_name" varchar(64) NOT NULL,
+	"received_webhook_time" timestamp (3) with time zone DEFAULT now() NOT NULL,
+	"finished_time" timestamp (3) with time zone,
+	"status" "github_webhook_logs_status_type_enum" NOT NULL,
+	"logs" jsonb NOT NULL,
+	CONSTRAINT "github_webhook_logs_actor_id_unique" UNIQUE("actor_id"),
+	CONSTRAINT "github_webhook_logs_triggering_actor_id_unique" UNIQUE("triggering_actor_id")
+);
+--> statement-breakpoint
 CREATE TABLE "tags" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "tags_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "tags_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 100000 CACHE 1),
 	"name" varchar(32) NOT NULL,
-	"type" "tag_type" NOT NULL,
+	"type" "tag_type_enum" NOT NULL,
 	"description" varchar(512) NOT NULL,
 	"count" integer DEFAULT 0 NOT NULL,
 	"created_time" timestamp (6) with time zone DEFAULT now() NOT NULL,
@@ -112,9 +141,9 @@ CREATE TABLE "tags" (
 );
 --> statement-breakpoint
 CREATE TABLE "user_social_accounts" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "user_social_accounts_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "user_social_accounts_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 100000 CACHE 1),
 	"user_id" uuid NOT NULL,
-	"provider" "user_social_account_provider" NOT NULL,
+	"provider" "user_social_account_provider_enum" NOT NULL,
 	"provider_account_id" varchar(128) NOT NULL,
 	"provider_account_username" varchar(64),
 	"access_token" text NOT NULL,
@@ -132,7 +161,7 @@ CREATE TABLE "users" (
 	"email" varchar(128) NOT NULL,
 	"password" varchar(256) NOT NULL,
 	"avatar" varchar(256),
-	"role" "user_role" DEFAULT 'USER' NOT NULL,
+	"role" "user_role_enum" DEFAULT 'USER' NOT NULL,
 	"login_count" integer DEFAULT 0 NOT NULL,
 	"last_login_time" timestamp (6) with time zone DEFAULT now() NOT NULL,
 	"create_time" timestamp (6) with time zone DEFAULT now() NOT NULL,
@@ -208,9 +237,18 @@ CREATE INDEX "blogs_is_deleted_index" ON "blogs" USING btree ("is_deleted");--> 
 CREATE INDEX "blogs_claim_by_index" ON "blogs" USING btree ("claimed_by");--> statement-breakpoint
 CREATE INDEX "blogs_update_time_index" ON "blogs" USING btree ("update_time" DESC NULLS LAST);--> statement-breakpoint
 CREATE UNIQUE INDEX "blogs_name_url_index" ON "blogs" USING btree ("name","url");--> statement-breakpoint
+CREATE INDEX "blogs_show_status_index" ON "blogs" USING btree ("is_show","blog_status");--> statement-breakpoint
 CREATE INDEX "blogs_recommendation_status_index" ON "blogs" USING btree ("is_recommend","blog_status");--> statement-breakpoint
+CREATE INDEX "blogs_status_tags_index" ON "blogs" USING btree ("blog_status_tags");--> statement-breakpoint
 CREATE INDEX "blogs_status_recommendation_weight_index" ON "blogs" USING btree ("blog_status","is_recommend","weight" DESC NULLS LAST);--> statement-breakpoint
 CREATE INDEX "blogs_status_recommendation_weight_access_index" ON "blogs" USING btree ("blog_status","is_recommend","weight" DESC NULLS LAST,"access_count" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "github_webhook_logs_id_index" ON "github_webhook_logs" USING btree ("id");--> statement-breakpoint
+CREATE INDEX "github_webhook_logs_status_index" ON "github_webhook_logs" USING btree ("status");--> statement-breakpoint
+CREATE INDEX "github_webhook_logs_workflow_run_created_time_index" ON "github_webhook_logs" USING btree ("workflow_run_created_time" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "github_webhook_logs_workflow_run_updated_time_index" ON "github_webhook_logs" USING btree ("workflow_run_updated_time" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "github_webhook_logs_workflow_run_run_started_time_index" ON "github_webhook_logs" USING btree ("workflow_run_run_started_time" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "github_webhook_logs_received_webhook_time_index" ON "github_webhook_logs" USING btree ("received_webhook_time" DESC NULLS LAST);--> statement-breakpoint
+CREATE INDEX "github_webhook_logs_finished_time_index" ON "github_webhook_logs" USING btree ("finished_time" DESC NULLS LAST);--> statement-breakpoint
 CREATE UNIQUE INDEX "tags_id_index" ON "tags" USING btree ("id");--> statement-breakpoint
 CREATE UNIQUE INDEX "tags_name_index" ON "tags" USING btree ("name");--> statement-breakpoint
 CREATE INDEX "tags_count_index" ON "tags" USING btree ("count" DESC NULLS LAST);--> statement-breakpoint

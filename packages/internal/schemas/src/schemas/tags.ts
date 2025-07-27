@@ -7,11 +7,17 @@ import {
   varchar,
 } from "drizzle-orm/pg-core";
 import { tag_type_enum } from "./enums";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
+import z from "zod/v4";
 
 export const Tags = pgTable(
   "tags",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1 }),
+    id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 100000 }),
     name: varchar({ length: 32 }).unique().notNull(),
     type: tag_type_enum().notNull(),
     description: varchar({ length: 512 }).notNull(),
@@ -32,3 +38,11 @@ export const Tags = pgTable(
     index("tags_type_name_index").on(table.type, table.name),
   ]
 );
+
+export const TagSelectSchema = createSelectSchema(Tags);
+export const TagInsertSchema = createInsertSchema(Tags);
+export const TagUpdateSchema = createUpdateSchema(Tags);
+
+export type TagSelect = z.infer<typeof TagSelectSchema>;
+export type TagInsert = z.infer<typeof TagInsertSchema>;
+export type TagUpdate = z.infer<typeof TagUpdateSchema>;

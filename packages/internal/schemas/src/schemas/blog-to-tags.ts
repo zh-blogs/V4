@@ -9,6 +9,12 @@ import {
 import { Blogs } from "./blogs";
 import { Tags } from "./tags";
 import { blog_to_tags_connection_type_enum } from "./enums";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
+import { z } from "zod/v4";
 
 export const BlogToTags = pgTable(
   "blog_to_tags",
@@ -33,3 +39,11 @@ export const BlogToTags = pgTable(
     }),
   ]
 );
+
+export const BlogToTagSelectSchema = createSelectSchema(BlogToTags);
+export const BlogToTagInsertSchema = createInsertSchema(BlogToTags);
+export const BlogToTagUpdateSchema = createUpdateSchema(BlogToTags);
+
+export type BlogToTagSelect = z.infer<typeof BlogToTagSelectSchema>;
+export type BlogToTagInsert = z.infer<typeof BlogToTagInsertSchema>;
+export type BlogToTagUpdate = z.infer<typeof BlogToTagUpdateSchema>;

@@ -8,6 +8,13 @@ import {
 } from "drizzle-orm/pg-core";
 import { v7 } from "uuid";
 import { Blogs } from "./blogs";
+import { isValidUrl } from "@zhblogs/utils/psl";
+import {
+  createInsertSchema,
+  createSelectSchema,
+  createUpdateSchema,
+} from "drizzle-zod";
+import z, { ZodString } from "zod/v4";
 
 export const BlogFeeds = pgTable(
   "blog_feeds",
@@ -41,3 +48,27 @@ export const BlogFeeds = pgTable(
     ),
   ]
 );
+
+const blogFeedRefine = {
+  link: (schema: ZodString) =>
+    schema.refine((value) => {
+      return isValidUrl(value);
+    }),
+};
+
+export const BlogFeedSelectSchema = createSelectSchema(
+  BlogFeeds,
+  blogFeedRefine
+);
+export const BlogFeedInsertSchema = createInsertSchema(
+  BlogFeeds,
+  blogFeedRefine
+);
+export const BlogFeedUpdateSchema = createUpdateSchema(
+  BlogFeeds,
+  blogFeedRefine
+);
+
+export type BlogFeedSelect = z.infer<typeof BlogFeedSelectSchema>;
+export type BlogFeedInsert = z.infer<typeof BlogFeedInsertSchema>;
+export type BlogFeedUpdate = z.infer<typeof BlogFeedUpdateSchema>;
