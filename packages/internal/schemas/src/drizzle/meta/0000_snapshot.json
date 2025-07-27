@@ -1,5 +1,5 @@
 {
-  "id": "a2e4d35f-fba8-4d0b-9423-a1694b9000b3",
+  "id": "f5ea9bab-9419-4c19-8f22-0da7e3405812",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1755,25 +1755,13 @@
         },
         "workflow_run_id": {
           "name": "workflow_run_id",
-          "type": "varchar(16)",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
         "workflow_run_url": {
           "name": "workflow_run_url",
           "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "workflow_run_title": {
-          "name": "workflow_run_title",
-          "type": "varchar(512)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "workflow_run_head_sha": {
-          "name": "workflow_run_head_sha",
-          "type": "varchar(40)",
           "primaryKey": false,
           "notNull": true
         },
@@ -1797,7 +1785,7 @@
         },
         "actor_id": {
           "name": "actor_id",
-          "type": "varchar(128)",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
@@ -1815,7 +1803,7 @@
         },
         "triggering_actor_id": {
           "name": "triggering_actor_id",
-          "type": "varchar(128)",
+          "type": "bigint",
           "primaryKey": false,
           "notNull": true
         },
@@ -1860,7 +1848,7 @@
           "name": "finished_time",
           "type": "timestamp (3) with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "status": {
           "name": "status",
@@ -1985,22 +1973,7 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "github_webhook_logs_actor_id_unique": {
-          "name": "github_webhook_logs_actor_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "actor_id"
-          ]
-        },
-        "github_webhook_logs_triggering_actor_id_unique": {
-          "name": "github_webhook_logs_triggering_actor_id_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "triggering_actor_id"
-          ]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -2655,7 +2628,8 @@
       "values": [
         "SUCCESS",
         "FAILURE",
-        "MANUAL_INTERVENTION"
+        "NO_CHANGES",
+        "ENV_CHANGED"
       ]
     },
     "public.submission_status_enum": {

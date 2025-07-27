@@ -4,7 +4,7 @@ CREATE TYPE "public"."blog_status_tag_enum" AS ENUM('EXTERNAL_LIMIT', 'INTERNAL_
 CREATE TYPE "public"."blog_to_tags_connection_type_enum" AS ENUM('SUBMISSION', 'MAIN');--> statement-breakpoint
 CREATE TYPE "public"."claimed_by_enum" AS ENUM('OWNER', 'ADMIN');--> statement-breakpoint
 CREATE TYPE "public"."from_source_enum" AS ENUM('CIB', 'BoYouQuan', 'BlogFinder', 'BKZ', 'Travellings', 'LinkPage', 'WebSubmit', 'OldData', 'Claimed');--> statement-breakpoint
-CREATE TYPE "public"."github_webhook_logs_status_type_enum" AS ENUM('SUCCESS', 'FAILURE', 'MANUAL_INTERVENTION');--> statement-breakpoint
+CREATE TYPE "public"."github_webhook_logs_status_type_enum" AS ENUM('SUCCESS', 'FAILURE', 'NO_CHANGES', 'ENV_CHANGED');--> statement-breakpoint
 CREATE TYPE "public"."submission_status_enum" AS ENUM('PENDING', 'APPROVED', 'REJECTED');--> statement-breakpoint
 CREATE TYPE "public"."submission_type_enum" AS ENUM('CREATE', 'CLAIM', 'MODIFY', 'DELETE', 'NOTICE');--> statement-breakpoint
 CREATE TYPE "public"."submitter_type_enum" AS ENUM('GUEST', 'USER', 'ROBOT', 'UNKNOWN');--> statement-breakpoint
@@ -105,28 +105,24 @@ CREATE TABLE "blogs" (
 CREATE TABLE "github_webhook_logs" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "github_webhook_logs_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 100000 CACHE 1),
 	"delivery_id" uuid NOT NULL,
-	"workflow_run_id" varchar(16) NOT NULL,
+	"workflow_run_id" bigint NOT NULL,
 	"workflow_run_url" varchar(256) NOT NULL,
-	"workflow_run_title" varchar(512) NOT NULL,
-	"workflow_run_head_sha" varchar(40) NOT NULL,
 	"workflow_run_created_time" timestamp (3) with time zone NOT NULL,
 	"workflow_run_updated_time" timestamp (3) with time zone NOT NULL,
 	"workflow_run_run_started_time" timestamp (3) with time zone NOT NULL,
-	"actor_id" varchar(128) NOT NULL,
+	"actor_id" bigint NOT NULL,
 	"actor_username" varchar(64) NOT NULL,
 	"actor_url" varchar(256) NOT NULL,
-	"triggering_actor_id" varchar(128) NOT NULL,
+	"triggering_actor_id" bigint NOT NULL,
 	"triggering_actor_username" varchar(64) NOT NULL,
 	"triggering_actor_url" varchar(256) NOT NULL,
 	"commit_id" varchar(40) NOT NULL,
 	"commit_message" varchar(512) NOT NULL,
 	"commit_author_name" varchar(64) NOT NULL,
 	"received_webhook_time" timestamp (3) with time zone DEFAULT now() NOT NULL,
-	"finished_time" timestamp (3) with time zone,
+	"finished_time" timestamp (3) with time zone NOT NULL,
 	"status" "github_webhook_logs_status_type_enum" NOT NULL,
-	"logs" jsonb NOT NULL,
-	CONSTRAINT "github_webhook_logs_actor_id_unique" UNIQUE("actor_id"),
-	CONSTRAINT "github_webhook_logs_triggering_actor_id_unique" UNIQUE("triggering_actor_id")
+	"logs" jsonb NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "tags" (
