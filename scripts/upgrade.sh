@@ -17,8 +17,7 @@ git pull origin main || { echo "Failed to pull latest changes"; exit 1; }
 NEW_COMMIT=$(git rev-parse HEAD)
 # Check commit hash
 if [ "$OLD_COMMIT" = "$NEW_COMMIT" ]; then
-  echo "No new changes detected, exiting."
-  exit 0
+  exit 90
 fi
 echo "New changes detected, proceeding with upgrade."
 # Check if there are any changes in the .env.example file
@@ -26,8 +25,7 @@ git diff --name-only $OLD_COMMIT $NEW_COMMIT -- .env.example
 if [ $? -eq 0 ]; then
   echo "No changes in .env.example, continuing with existing environment file."
 else
-  echo "Changes detected in .env.example, please update your .env file accordingly."
-  exit 92
+  exit 91
 fi
 # Install dependencies
 echo "Installing dependencies..."

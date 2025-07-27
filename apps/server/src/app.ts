@@ -30,7 +30,6 @@ const envToLogger: Record<
   },
   production: {
     level: process.env.LOG_LEVEL || "debug",
-    // 修改显示日期为非时间戳的格式
     timestamp: () => `,"time":"${format(new Date(), "yyyy-MM-dd HH:mm:ss")}"`,
   },
   test: false,

@@ -1,4 +1,5 @@
 import {
+  bigint,
   index,
   integer,
   jsonb,
@@ -20,10 +21,8 @@ export const GithubWebhookLogs = pgTable(
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 100000 }),
     delivery_id: uuid().notNull(),
-    workflow_run_id: varchar({ length: 16 }).notNull(),
+    workflow_run_id: bigint({ mode: "number" }).notNull(),
     workflow_run_url: varchar({ length: 256 }).notNull(),
-    workflow_run_title: varchar({ length: 512 }).notNull(),
-    workflow_run_head_sha: varchar({ length: 40 }).notNull(),
     workflow_run_created_time: timestamp({
       withTimezone: true,
       precision: 3,
@@ -36,10 +35,10 @@ export const GithubWebhookLogs = pgTable(
       withTimezone: true,
       precision: 3,
     }).notNull(),
-    actor_id: varchar({ length: 128 }).unique().notNull(),
+    actor_id: bigint({ mode: "number" }).notNull(),
     actor_username: varchar({ length: 64 }).notNull(),
     actor_url: varchar({ length: 256 }).notNull(),
-    triggering_actor_id: varchar({ length: 128 }).unique().notNull(),
+    triggering_actor_id: bigint({ mode: "number" }).notNull(),
     triggering_actor_username: varchar({ length: 64 }).notNull(),
     triggering_actor_url: varchar({ length: 256 }).notNull(),
     commit_id: varchar({ length: 40 }).notNull(),
@@ -54,7 +53,7 @@ export const GithubWebhookLogs = pgTable(
     finished_time: timestamp({
       withTimezone: true,
       precision: 3,
-    }),
+    }).notNull(),
     status: github_webhook_logs_status_type_enum().notNull(),
     logs: jsonb().notNull(),
   },

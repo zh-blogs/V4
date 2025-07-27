@@ -1,11 +1,21 @@
 export const apps = [
   {
+    name: 'zhblogs-deploy',
+    port: '9900',
+    exec_mode: 'fork',
+    script: './apps/deploy/dist/index.js',
+    node_args: '--env-file ./.env',
+    merge_logs: true,
+    out_file: "./logs/deploy/pm2-out.log",
+    error_file: "./logs/deploy/pm2-error.log",
+  },
+  {
     name: 'zhblogs-server',
-    port: '8765',
+    port: '9901',
     exec_mode: 'cluster',
-    instances: '2',
+    instances: 'max',
     script: './apps/server/dist/index.js',
-    node_args: '--env-file ./apps/server/.env',
+    node_args: '--env-file ./.env',
     env: {
       SHUTDOWN_TIMEOUT: 10000,
       SHUTDOWN_CHECK_INTERVAL: 1000,
@@ -15,7 +25,18 @@ export const apps = [
     wait_ready: true,
     listen_timeout: 5000,
     merge_logs: true,
-    out_file: "./apps/server/logs/pm2-out.log",
-    error_file: "./apps/server/logs/pm2-error.log",
+    out_file: "./logs/server/pm2-out.log",
+    error_file: "./logs/server/pm2-error.log",
+  },
+  {
+    name: 'zhblogs-web',
+    port: '9902',
+    exec_mode: 'cluster',
+    instances: 'max',
+    script: './apps/web/dist/server/index.mjs',
+    node_args: '--env-file ./.env',
+    merge_logs: true,
+    out_file: "./logs/web/pm2-out.log",
+    error_file: "./logs/web/pm2-error.log",
   }
 ];

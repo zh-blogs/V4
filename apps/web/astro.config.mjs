@@ -14,6 +14,12 @@ export default defineConfig({
   adapter: node({
     mode: "standalone",
   }),
+  server: {
+    port: 9902,
+  },
+  build:{
+    serverEntry: 'index.mjs',
+  },
   vite: {
     plugins: [
       tailwindcss(),
@@ -21,7 +27,7 @@ export default defineConfig({
     server: {
       proxy: {
         '/api': {
-          target: 'http://localhost:8765',
+          target: 'http://localhost:9901',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         }
