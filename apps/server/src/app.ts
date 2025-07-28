@@ -1,14 +1,13 @@
 import Fastify from "fastify";
-import routes from "./routes";
-import drizzle from "./plugins/drizzle";
 import {
   FastifyLoggerOptions,
   PinoLoggerOptions,
 } from "fastify/types/logger.js";
 import { SwaggerOptions } from "@fastify/swagger";
 import { FastifySwaggerUiOptions } from "@fastify/swagger-ui";
-import fastifyRedis from "@fastify/redis";
 import { format } from "date-fns";
+import { FastifyRedisPluginOptions } from "@fastify/redis";
+import { FastifyEnvOptions } from "@fastify/env";
 
 const env: string = process.env.NODE_ENV!;
 
@@ -41,10 +40,35 @@ const app = Fastify({
 });
 
 // Register plugins
-await app.register(drizzle);
-await app.register(fastifyRedis, {
+await app.register(import("@fastify/env"), {
+  dotenv:
+    env === "development"
+      ? {
+          path: new URL("../../../.env", import.meta.url).pathname,
+        }
+      : true,
+  schema: {
+    type: "object",
+    required: [
+      "POSTGRESQL_URL",
+      "REDIS_URL",
+      "GITHUB_WEBHOOK_SECRET",
+      "COOKIE_SECRET",
+    ],
+    properties: {
+      POSTGRESQL_URL: { type: "string" },
+      REDIS_URL: { type: "string" },
+      GITHUB_WEBHOOK_SECRET: { type: "string" },
+      COOKIE_SECRET: { type: "string" },
+    },
+  },
+} as FastifyEnvOptions);
+
+await app.register(import("@fastify/redis"), {
   url: process.env.REDIS_URL!,
-});
+} as FastifyRedisPluginOptions);
+
+await app.register(import("./plugins/drizzle"));
 
 if (env === "development") {
   await app.register(import("@fastify/swagger"), {
@@ -77,6 +101,6 @@ if (env === "development") {
 }
 
 // Register routes
-await app.register(routes);
+await app.register(import("./routes"));
 
 export default app;

@@ -1,10 +1,9 @@
 import app from "@server/app";
-import { migrateDatabase } from "@zhblogs/schemas/migrator";
-import "dotenv/config";
+import { migrateDatabase } from "@zhblogs/schemas/db";
 
 async function startServer() {
   try {
-    await migrateDatabase();
+    await migrateDatabase(process.env.POSTGRESQL_URL!);
     app.log.info("Database migration completed successfully");
     await app.listen({
       port: 9901,
