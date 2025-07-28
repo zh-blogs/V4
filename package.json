@@ -2,13 +2,14 @@
   "name": "zhblogs",
   "version": "1.0.0",
   "scripts": {
-    "dev": "turbo run dev  --filter=zhblogs-*",
+    "dev": "turbo run dev --filter=zhblogs-server --filter=zhblogs-web",
     "dev:web": "pnpm -F zhblogs-web dev",
     "dev:server": "pnpm -F zhblogs-server dev",
+    "dev:deploy": "pnpm -F zhblogs-deploy dev",
     "build": "turbo run build --filter=zhblogs-*",
     "build:web": "pnpm -F zhblogs-web build",
     "build:server": "pnpm -F zhblogs-server build",
-    "build:upgrade": "turbo run build --filter=zhblogs-server --filter=zhblogs-web"
+    "build:deploy": "pnpm -F zhblogs-deploy build"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
