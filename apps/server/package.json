@@ -9,6 +9,7 @@
     "test:ui": "vitest --ui"
   },
   "dependencies": {
+    "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.0.1",
     "@fastify/env": "^5.0.2",
     "@fastify/helmet": "^13.0.1",
@@ -27,6 +28,7 @@
     "jsonfeed-to-rss": "^3.0.8",
     "pino": "^9.7.0",
     "rss-parser": "^3.13.0",
+    "uuid": "^11.1.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {

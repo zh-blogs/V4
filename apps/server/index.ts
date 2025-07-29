@@ -8,7 +8,6 @@ async function startServer() {
     await app.listen({
       port: 9901,
     });
-    app.log.info(`Server is running on port 8765`);
     if (process.send) {
       process.send("ready");
     }
