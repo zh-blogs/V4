@@ -1,10 +1,11 @@
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "tsup";
 
 const outBaseDir = "./dist";
 
 const packageJson = JSON.parse(
-  readFileSync(new URL("package.json", import.meta.url), "utf8")
+  readFileSync(fileURLToPath(new URL("package.json", import.meta.url)), "utf8")
 );
 
 const deps = Object.keys({

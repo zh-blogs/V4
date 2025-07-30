@@ -1,11 +1,12 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "tsup";
 
 const outBaseDir = "./dist";
 
 const packageJson = JSON.parse(
-  readFileSync(new URL("package.json", import.meta.url), "utf8")
+  readFileSync(fileURLToPath(new URL("package.json", import.meta.url)), "utf8")
 );
 
 const deps = Object.keys({
@@ -44,7 +45,7 @@ export default defineConfig({
   },
   onSuccess: async () => {
     for (const file of copyFiles) {
-      const src = new URL(file, import.meta.url).pathname;
+      const src = fileURLToPath(new URL(file, import.meta.url));
       const dest = path.join(outBaseDir, path.basename(file));
       await import("fs/promises").then((fs) =>
         fs.cp(src, dest, { recursive: true })

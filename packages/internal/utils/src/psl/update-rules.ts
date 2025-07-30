@@ -5,9 +5,10 @@
  */
 
 import { writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 
 const src = "https://publicsuffix.org/list/effective_tld_names.dat";
-const dest = new URL("./rules.ts", import.meta.url);
+const dest = fileURLToPath(new URL("./rules.ts", import.meta.url));
 
 const parseLine = (line: any) => {
   const trimmed = line.trim();
