@@ -1,5 +1,4 @@
 import app from "@server/app";
-import "dotenv/config";
 
 async function startServer() {
   try {

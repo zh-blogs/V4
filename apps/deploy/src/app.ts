@@ -1,11 +1,11 @@
 import Fastify from "fastify";
-import drizzle from "./plugins/drizzle";
 import { githubRoutes, githubRoutesPrefix } from "./routes/github";
 import {
   FastifyLoggerOptions,
   PinoLoggerOptions,
 } from "fastify/types/logger.js";
 import { format } from "date-fns";
+import { FastifyEnvOptions } from "@fastify/env";
 
 const env: string = process.env.NODE_ENV!;
 
@@ -38,7 +38,24 @@ const app = Fastify({
 });
 
 // Register plugins
-await app.register(drizzle);
+await app.register(import("@fastify/env"), {
+  dotenv:
+    env === "development"
+      ? {
+          path: new URL("../../../.env", import.meta.url).pathname,
+        }
+      : true,
+  schema: {
+    type: "object",
+    required: ["POSTGRESQL_URL"],
+    properties: {
+      POSTGRESQL_URL: { type: "string" },
+    },
+  },
+} as FastifyEnvOptions);
+
+await app.register(import("./plugins/drizzle"));
+
 // Register routes
 await app.register(githubRoutes, { prefix: githubRoutesPrefix });
 

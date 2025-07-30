@@ -1,14 +1,16 @@
 import Fastify from "fastify";
-import routes from "./routes";
-import drizzle from "./plugins/drizzle";
 import {
   FastifyLoggerOptions,
   PinoLoggerOptions,
 } from "fastify/types/logger.js";
 import { SwaggerOptions } from "@fastify/swagger";
 import { FastifySwaggerUiOptions } from "@fastify/swagger-ui";
-import fastifyRedis from "@fastify/redis";
 import { format } from "date-fns";
+import { FastifyRedisPluginOptions } from "@fastify/redis";
+import { FastifyEnvOptions } from "@fastify/env";
+import { FastifyCookieOptions } from "@fastify/cookie";
+import { v7 } from "uuid";
+import { createHash } from "node:crypto";
 
 const env: string = process.env.NODE_ENV!;
 
@@ -41,10 +43,44 @@ const app = Fastify({
 });
 
 // Register plugins
-await app.register(drizzle);
-await app.register(fastifyRedis, {
+await app.register(import("@fastify/env"), {
+  dotenv:
+    env === "development"
+      ? {
+          path: new URL("../../../.env", import.meta.url).pathname,
+        }
+      : true,
+  schema: {
+    type: "object",
+    required: [
+      "POSTGRESQL_URL",
+      "REDIS_URL",
+      "GITHUB_WEBHOOK_SECRET",
+      "COOKIE_SECRET",
+    ],
+    properties: {
+      POSTGRESQL_URL: { type: "string" },
+      REDIS_URL: { type: "string" },
+      GITHUB_WEBHOOK_SECRET: { type: "string" },
+      COOKIE_SECRET: { type: "string" },
+    },
+  },
+} as FastifyEnvOptions);
+
+await app.register(import("@fastify/redis"), {
   url: process.env.REDIS_URL!,
-});
+} as FastifyRedisPluginOptions);
+
+await app.register(import("@fastify/cookie"), {
+  secret: process.env.COOKIE_SECRET!,
+  hook: "onRequest",
+  algorithm: "sha512-256",
+  parseOptions: {
+    secure: true,
+  },
+} as FastifyCookieOptions);
+
+await app.register(import("./plugins/drizzle"));
 
 if (env === "development") {
   await app.register(import("@fastify/swagger"), {
@@ -63,11 +99,11 @@ if (env === "development") {
           url: "https://www.gnu.org/licenses/agpl-3.0.html",
         },
       },
-      servers: [{ url: "http://localhost:8765" }],
+      servers: [{ url: "http://localhost:9901" }],
     },
   } as SwaggerOptions);
   await app.register(import("@fastify/swagger-ui"), {
-    routePrefix: "/documentation",
+    routePrefix: "/doc",
     uiConfig: {
       docExpansion: "full",
       deepLinking: false,
@@ -77,6 +113,27 @@ if (env === "development") {
 }
 
 // Register routes
-await app.register(routes);
+await app.register(import("./routes"));
+
+// Add hook
+app.addHook("onRequest", async (request, reply) => {
+  const client_session = request.cookies.client_session;
+  const redis_session_name = `client_session:${client_session}`;
+  let valid: boolean = false;
+  if (client_session) {
+    valid = !!(await app.redis.exists(redis_session_name));
+  }
+  if (!valid) {
+    reply.setCookie(
+      "client_session",
+      createHash("sha512").update(v7()).digest("hex").toUpperCase(),
+      {
+        maxAge: 60 * 60 * 24,
+        httpOnly: true,
+      }
+    );
+    app.redis.set(redis_session_name, "1", "EX", 60 * 60 * 24);
+  }
+});
 
 export default app;

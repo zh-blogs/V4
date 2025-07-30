@@ -58,7 +58,7 @@ export async function handleWebhook(
 
   if (
     workflow_run.head_branch !== "main" ||
-    !["deploy", "CI"].includes(workflow_run.name as string) ||
+    workflow_run.name as string !== "deploy" ||
     workflow_run.event !== "push"
   ) {
     return {

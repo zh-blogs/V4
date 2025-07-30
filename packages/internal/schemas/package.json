@@ -7,8 +7,7 @@
     "generate": "drizzle-kit generate"
   },
   "exports": {
-    "./database": "./src/database.ts",
-    "./migrator": "./src/migrator.ts",
+    "./db": "./src/index.ts",
     "./*": "./src/schemas/*.ts"
   },
   "dependencies": {

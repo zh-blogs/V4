@@ -1,6 +1,8 @@
-import { db } from "@zhblogs/schemas/database";
+import { getDatabase } from "@zhblogs/schemas/db";
 import { FastifyInstance } from "fastify";
 import fp from "fastify-plugin";
+
+const db = getDatabase(process.env.POSTGRESQL_URL!);
 
 async function drizzlePlugin(app: FastifyInstance) {
   app.decorate("db", db);

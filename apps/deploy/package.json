@@ -3,11 +3,11 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development tsx watch index.ts --env-file=../../.env",
+    "dev": "cross-env NODE_ENV=development tsx watch index.ts",
     "build": "tsup"
   },
   "dependencies": {
-    "@fastify/redis": "^7.0.2",
+    "@fastify/env": "^5.0.2",
     "@fastify/sensible": "^6.0.3",
     "@octokit/webhooks": "^14.1.1",
     "@zhblogs/constants": "workspace:*",

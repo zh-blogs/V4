@@ -2,16 +2,21 @@
   "name": "zhblogs",
   "version": "1.0.0",
   "scripts": {
-    "dev": "turbo run dev  --filter=zhblogs-*",
+    "dev": "turbo run dev --filter=zhblogs-server --filter=zhblogs-web",
     "dev:web": "pnpm -F zhblogs-web dev",
     "dev:server": "pnpm -F zhblogs-server dev",
+    "dev:deploy": "pnpm -F zhblogs-deploy dev",
     "build": "turbo run build --filter=zhblogs-*",
     "build:web": "pnpm -F zhblogs-web build",
     "build:server": "pnpm -F zhblogs-server build",
-    "build:upgrade": "turbo run build --filter=zhblogs-server --filter=zhblogs-web"
+    "build:deploy": "pnpm -F zhblogs-deploy build",
+    "test": "turbo run test --filter=zhblogs-*",
+    "test:server": "pnpm -F zhblogs-server test",
+    "test:pm2": "bash ./scripts/deploy.sh"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
+    "cross-env": "^10.0.0",
     "dotenv": "^17.2.1",
     "tsup": "^8.5.0",
     "tsx": "^4.20.3",
