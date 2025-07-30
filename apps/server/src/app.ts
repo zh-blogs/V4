@@ -11,6 +11,7 @@ import { FastifyEnvOptions } from "@fastify/env";
 import { FastifyCookieOptions } from "@fastify/cookie";
 import { v7 } from "uuid";
 import { createHash } from "node:crypto";
+import { fileURLToPath } from "node:url";
 
 const env: string = process.env.NODE_ENV!;
 
@@ -47,7 +48,9 @@ await app.register(import("@fastify/env"), {
   dotenv:
     env === "development"
       ? {
-          path: new URL("../../../.env", import.meta.url).pathname,
+          path: fileURLToPath(
+            new URL("../../../.env", import.meta.url)
+          ),
         }
       : true,
   schema: {
@@ -79,6 +82,8 @@ await app.register(import("@fastify/cookie"), {
     secure: true,
   },
 } as FastifyCookieOptions);
+
+await app.register(import("@fastify/sensible"));
 
 await app.register(import("./plugins/drizzle"));
 

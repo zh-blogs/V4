@@ -1,5 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { fileURLToPath } from "node:url";
 
 let db: ReturnType<typeof drizzle>;
 
@@ -18,7 +19,7 @@ export function getDatabase(url: string): typeof db {
 
 export async function migrateDatabase(url: string): Promise<void> {
   await migrate(getDatabase(url), {
-    migrationsFolder: new URL("drizzle", import.meta.url).pathname,
+    migrationsFolder: fileURLToPath(new URL("drizzle", import.meta.url)),
   });
 }
 

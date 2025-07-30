@@ -6,6 +6,7 @@ import {
 } from "fastify/types/logger.js";
 import { format } from "date-fns";
 import { FastifyEnvOptions } from "@fastify/env";
+import { fileURLToPath } from "node:url";
 
 const env: string = process.env.NODE_ENV!;
 
@@ -42,7 +43,7 @@ await app.register(import("@fastify/env"), {
   dotenv:
     env === "development"
       ? {
-          path: new URL("../../../.env", import.meta.url).pathname,
+          path: fileURLToPath(new URL("../../../.env", import.meta.url)),
         }
       : true,
   schema: {
