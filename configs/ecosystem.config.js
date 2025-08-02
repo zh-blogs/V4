@@ -16,6 +16,7 @@ export const apps = [
     instances: 'max',
     script: './apps/server/dist/index.js',
     node_args: '--env-file ./.env',
+    instance_var: 'INSTANCE_ID',
     env: {
       SHUTDOWN_TIMEOUT: 10000,
       SHUTDOWN_CHECK_INTERVAL: 1000,
