@@ -9,10 +9,10 @@ import { format } from "date-fns";
 import { FastifyRedisPluginOptions } from "@fastify/redis";
 import { FastifyEnvOptions } from "@fastify/env";
 import { FastifyCookieOptions } from "@fastify/cookie";
-import { v7 } from "uuid";
-import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { ZodError } from "zod/v4";
+import { createHash } from "node:crypto";
+import { v7 } from "uuid";
 
 const env: string = process.env.NODE_ENV!;
 
@@ -79,7 +79,6 @@ await app.register(import("@fastify/cookie"), {
   algorithm: "sha512-256",
   parseOptions: {
     secure: true,
-    signed: true,
   },
 } as FastifyCookieOptions);
 
@@ -122,18 +121,20 @@ app.addHook("onRequest", async (request, reply) => {
   const client_session = request.cookies.client_session;
   let valid: boolean = false;
   if (client_session) {
-    valid = !!(await app.redis.exists(`client_session:${client_session}`));
+    const session_data = !!(await app.redis.get(
+      `client_session:${client_session}`
+    ));
+    const unsigned_cookie = app.unsignCookie(client_session);
+    valid = session_data && unsigned_cookie.valid;
   }
   if (!valid) {
-    const new_ookie = createHash("sha512")
-      .update(v7())
-      .digest("hex")
-      .toUpperCase();
+    const new_ookie = app.signCookie(
+      createHash("sha512").update(v7()).digest("hex").toUpperCase()
+    );
     reply.setCookie("client_session", new_ookie, {
       maxAge: 60 * 60 * 24,
       httpOnly: true,
     });
-
     app.redis.set(`client_session:${new_ookie}`, "1", "EX", 60 * 60 * 24);
     request.client_session = new_ookie;
   } else {
