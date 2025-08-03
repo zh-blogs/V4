@@ -16,7 +16,6 @@ export async function acquire(
 ): Promise<boolean> {
   const key = `lock:${lockKey}`;
   const existingValue = await redis.get(key);
-  app.log.debug(`Checking lock for key: ${key}, existing value: ${existingValue}`);
   if (existingValue) {
     return false;
   }

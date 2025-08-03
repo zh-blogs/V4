@@ -47,6 +47,6 @@ export enum HttpErrorCodes {
   NETWORK_AUTHENTICATION_REQUIRED = 511,
 }
 
-export const HttpErrorCodesKeys = Object.keys(
+export const HttpErrorCodeKeys = Object.keys(
   HttpErrorCodes
 ) as (keyof typeof HttpErrorCodes)[];

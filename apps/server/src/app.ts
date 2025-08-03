@@ -48,9 +48,7 @@ await app.register(import("@fastify/env"), {
   dotenv:
     env === "development"
       ? {
-          path: fileURLToPath(
-            new URL("../../../.env", import.meta.url)
-          ),
+          path: fileURLToPath(new URL("../../../.env", import.meta.url)),
         }
       : true,
   schema: {
@@ -80,6 +78,7 @@ await app.register(import("@fastify/cookie"), {
   algorithm: "sha512-256",
   parseOptions: {
     secure: true,
+    signed: true,
   },
 } as FastifyCookieOptions);
 
@@ -117,28 +116,31 @@ if (env === "development") {
   } as FastifySwaggerUiOptions);
 }
 
-// Register routes
-await app.register(import("./routes"));
-
 // Add hook
 app.addHook("onRequest", async (request, reply) => {
   const client_session = request.cookies.client_session;
-  const redis_session_name = `client_session:${client_session}`;
   let valid: boolean = false;
   if (client_session) {
-    valid = !!(await app.redis.exists(redis_session_name));
+    valid = !!(await app.redis.exists(`client_session:${client_session}`));
   }
   if (!valid) {
-    reply.setCookie(
-      "client_session",
-      createHash("sha512").update(v7()).digest("hex").toUpperCase(),
-      {
-        maxAge: 60 * 60 * 24,
-        httpOnly: true,
-      }
-    );
-    app.redis.set(redis_session_name, "1", "EX", 60 * 60 * 24);
+    const new_ookie = createHash("sha512")
+      .update(v7())
+      .digest("hex")
+      .toUpperCase();
+    reply.setCookie("client_session", new_ookie, {
+      maxAge: 60 * 60 * 24,
+      httpOnly: true,
+    });
+
+    app.redis.set(`client_session:${new_ookie}`, "1", "EX", 60 * 60 * 24);
+    request.client_session = new_ookie;
+  } else {
+    request.client_session = client_session;
   }
 });
+
+// Register routes
+await app.register(import("./routes"));
 
 export default app;

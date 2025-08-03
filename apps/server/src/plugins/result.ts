@@ -19,10 +19,13 @@ async function resultPlugin(app: FastifyInstance) {
     function (
       this: FastifyReply,
       error: Error | string,
-      status: keyof typeof HttpErrorCodes
+      status: HttpErrorCodes | keyof typeof HttpErrorCodes
     ) {
       const errorMessage = error instanceof Error ? error.message : error;
-      return this.status(HttpErrorCodes[status]).send({
+      if (typeof status === "string") {
+        status = HttpErrorCodes[status];
+      }
+      return this.status(status).send({
         success: false,
         status,
         message: errorMessage,
@@ -42,7 +45,7 @@ declare module "fastify" {
     success(data?: any, message?: string): FastifyReply;
     error(
       error: Error | string,
-      status: keyof typeof HttpErrorCodes
+      status: HttpErrorCodes | keyof typeof HttpErrorCodes
     ): FastifyReply;
   }
 }
