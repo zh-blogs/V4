@@ -13,6 +13,7 @@ import { fileURLToPath } from "node:url";
 import { ZodError } from "zod/v4";
 import { createHash } from "node:crypto";
 import { v7 } from "uuid";
+import { RateLimitPluginOptions } from "@fastify/rate-limit";
 
 const env: string = process.env.NODE_ENV!;
 
@@ -42,6 +43,7 @@ const envToLogger: Record<
 // Create Fastify instance with configuration
 const app = Fastify({
   logger: envToLogger[env],
+  trustProxy: true,
 });
 
 // Register plugins
@@ -81,6 +83,55 @@ await app.register(import("@fastify/cookie"), {
     secure: true,
   },
 } as FastifyCookieOptions);
+
+await app.register(import("@fastify/rate-limit"), {
+  max: 20,
+  ban: 3,
+  timeWindow: "1 minute",
+  redis: app.redis,
+  nameSpace: "rate-limit:",
+  continueExceeding: true,
+  exponentialBackoff: true,
+  skipOnError: true,
+  enableDraftSpec: true,
+  allowList: env === "development" ? ["127.0.0.1", "::1"] : [],
+  keyGenerator(request) {
+    return (
+      request.headers["x-real-ip"] ||
+      request.cookies.client_session ||
+      request.headers["x-forwarded-for"] ||
+      request.ip
+    );
+  },
+  onExceeding(request, key) {
+    app.log.warn(
+      `Rate limit exceeded for key: ${key}, more info: ${JSON.stringify({
+        ip:
+          request.headers["x-real-ip"] ||
+          request.headers["x-forwarded-for"] ||
+          request.ip,
+        clientInformation: {
+          client_session: request.cookies.client_session,
+          userAgent: request.headers["user-agent"],
+        },
+      })}`
+    );
+  },
+  onExceeded(request, key) {
+    app.log.warn(
+      `Rate limit exceeded for key: ${key}, more info: ${JSON.stringify({
+        ip:
+          request.headers["x-real-ip"] ||
+          request.headers["x-forwarded-for"] ||
+          request.ip,
+        clientInformation: {
+          client_session: request.cookies.client_session,
+          userAgent: request.headers["user-agent"],
+        },
+      })}`
+    );
+  },
+} as RateLimitPluginOptions);
 
 await app.register(import("./plugins/drizzle"));
 
