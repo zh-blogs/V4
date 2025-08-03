@@ -83,9 +83,9 @@ await app.register(import("@fastify/cookie"), {
   },
 } as FastifyCookieOptions);
 
-await app.register(import("@fastify/sensible"));
-
 await app.register(import("./plugins/drizzle"));
+
+await app.register(import("./plugins/result"));
 
 if (env === "development") {
   await app.register(import("@fastify/swagger"), {
