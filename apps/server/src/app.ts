@@ -12,6 +12,7 @@ import { FastifyCookieOptions } from "@fastify/cookie";
 import { v7 } from "uuid";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { ZodError } from "zod/v4";
 
 const env: string = process.env.NODE_ENV!;
 
@@ -137,6 +138,21 @@ app.addHook("onRequest", async (request, reply) => {
     request.client_session = new_ookie;
   } else {
     request.client_session = client_session;
+  }
+});
+
+// Add global error handler
+app.setNotFoundHandler((request, reply) => {
+  reply.error("Not Found", "NOT_FOUND");
+});
+
+app.setErrorHandler((error, request, reply) => {
+  if (error instanceof ZodError) {
+    reply.error(`Invalid request parameters: ${error.message}`, "BAD_REQUEST");
+  } else if (error.validation) {
+    reply.error(`Validation error: ${error.message}`, "BAD_REQUEST");
+  } else if (error.statusCode) {
+    reply.error(error.message, error.statusCode);
   }
 });
 
