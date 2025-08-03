@@ -16,7 +16,7 @@ import { FastifyBaseLogger } from "fastify";
  * It saves the webhook event log to the database,
  * and finally removes the task after completion.
  */
-export async function deployService(
+export async function deploy(
   body: WebhookEventDefinition<"workflow-run-completed">,
   headers: any,
   logger: FastifyBaseLogger

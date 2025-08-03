@@ -1,5 +1,5 @@
 import { WebhookEventDefinition } from "@octokit/webhooks/types";
-import { deployService } from "@server/services/github-service";
+import { deploy } from "@server/services/github-service";
 import { handleWebhook } from "@server/utils/github-webhook-deploy";
 import { FastifyInstance, FastifyRequest } from "fastify";
 
@@ -23,7 +23,7 @@ export async function githubRoutes(app: FastifyInstance) {
         reply.code(202).send({ message: "Accepted" });
         app.log.info("GitHub webhook received and validated");
       }
-      await deployService(body, headers, logger);
+      await deploy(body, headers, logger);
     }
   );
 }
