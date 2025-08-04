@@ -1,7 +1,7 @@
 import { WebhookEventDefinition } from "@octokit/webhooks/types";
 import { insertGithubWebhookLog } from "@server/db/github-webhook-logs";
 import { handleReload } from "@server/utils/github-webhook-deploy";
-import { GithubWebhookLogInsert } from "@zhblogs/schemas/github-webhook-logs";
+import { GithubWebhookLogInsert } from "@zhblogs/schemas/db/github-webhook-logs";
 import { FastifyBaseLogger } from "fastify";
 
 /**
