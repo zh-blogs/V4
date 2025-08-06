@@ -46,6 +46,50 @@ const app = Fastify({
   trustProxy: true,
 });
 
+const rateLimitOptions: RateLimitPluginOptions = {
+  max: 120,
+  ban: 3,
+  timeWindow: "1 minute",
+  continueExceeding: true,
+  exponentialBackoff: true,
+  skipOnError: true,
+  enableDraftSpec: true,
+  allowList(req, key) {
+    if (req.headers["x-rate-limit-test"]) {
+      return false;
+    }
+    return env === "development";
+  },
+  onExceeding(request, key) {
+    app.log.warn(
+      `Rate limit exceeding for key: ${key}, info: ${JSON.stringify({
+        ip:
+          request.headers["x-real-ip"] ||
+          request.headers["x-forwarded-for"] ||
+          request.ip,
+        clientInformation: {
+          client_session: request.cookies.client_session,
+          userAgent: request.headers["user-agent"],
+        },
+      })}`
+    );
+  },
+  onExceeded(request, key) {
+    app.log.warn(
+      `Rate limit exceeded for key: ${key}, info: ${JSON.stringify({
+        ip:
+          request.headers["x-real-ip"] ||
+          request.headers["x-forwarded-for"] ||
+          request.ip,
+        clientInformation: {
+          client_session: request.cookies.client_session,
+          userAgent: request.headers["user-agent"],
+        },
+      })}`
+    );
+  },
+};
+
 // Register plugins
 await app.register(import("@fastify/env"), {
   dotenv:
@@ -77,7 +121,6 @@ await app.register(import("@fastify/redis"), {
 
 await app.register(import("@fastify/cookie"), {
   secret: process.env.COOKIE_SECRET!,
-  hook: "onRequest",
   algorithm: "sha512-256",
   parseOptions: {
     secure: true,
@@ -85,51 +128,24 @@ await app.register(import("@fastify/cookie"), {
 } as FastifyCookieOptions);
 
 await app.register(import("@fastify/rate-limit"), {
-  max: 20,
-  ban: 3,
-  timeWindow: "1 minute",
+  ...rateLimitOptions,
   redis: app.redis,
-  nameSpace: "rate-limit:",
-  continueExceeding: true,
-  exponentialBackoff: true,
-  skipOnError: true,
-  enableDraftSpec: true,
-  allowList: env === "development" ? ["127.0.0.1", "::1"] : [],
+  nameSpace: "rate-limit:ip:",
   keyGenerator(request) {
     return (
       request.headers["x-real-ip"] ||
-      request.cookies.client_session ||
       request.headers["x-forwarded-for"] ||
       request.ip
     );
   },
-  onExceeding(request, key) {
-    app.log.warn(
-      `Rate limit exceeded for key: ${key}, more info: ${JSON.stringify({
-        ip:
-          request.headers["x-real-ip"] ||
-          request.headers["x-forwarded-for"] ||
-          request.ip,
-        clientInformation: {
-          client_session: request.cookies.client_session,
-          userAgent: request.headers["user-agent"],
-        },
-      })}`
-    );
-  },
-  onExceeded(request, key) {
-    app.log.warn(
-      `Rate limit exceeded for key: ${key}, more info: ${JSON.stringify({
-        ip:
-          request.headers["x-real-ip"] ||
-          request.headers["x-forwarded-for"] ||
-          request.ip,
-        clientInformation: {
-          client_session: request.cookies.client_session,
-          userAgent: request.headers["user-agent"],
-        },
-      })}`
-    );
+} as RateLimitPluginOptions);
+
+await app.register(import("@fastify/rate-limit"), {
+  ...rateLimitOptions,
+  redis: app.redis,
+  nameSpace: "rate-limit:client_session:",
+  keyGenerator(request) {
+    return request.cookies.client_session;
   },
 } as RateLimitPluginOptions);
 
@@ -169,7 +185,7 @@ if (env === "development") {
 
 // Add hook
 app.addHook("onRequest", async (request, reply) => {
-  const client_session = request.cookies.client_session;
+  let { client_session } = request.cookies;
   let valid: boolean = false;
   if (client_session) {
     const session_data = !!(await app.redis.get(
@@ -179,18 +195,16 @@ app.addHook("onRequest", async (request, reply) => {
     valid = session_data && unsigned_cookie.valid;
   }
   if (!valid) {
-    const new_ookie = app.signCookie(
+    client_session = app.signCookie(
       createHash("sha512").update(v7()).digest("hex").toUpperCase()
     );
-    reply.setCookie("client_session", new_ookie, {
+    reply.setCookie("client_session", client_session, {
       maxAge: 60 * 60 * 24,
       httpOnly: true,
     });
-    app.redis.set(`client_session:${new_ookie}`, "1", "EX", 60 * 60 * 24);
-    request.client_session = new_ookie;
-  } else {
-    request.client_session = client_session;
+    app.redis.set(`client_session:${client_session}`, "1", "EX", 60 * 60 * 24);
   }
+  request.client_session = client_session!;
 });
 
 // Add global error handler
