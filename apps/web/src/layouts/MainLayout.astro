@@ -1,0 +1,69 @@
+---
+import { NavigationMenu, type NavigationMenuProps } from "@web/components/NavigationMenu";
+
+const leftNav: NavigationMenuProps = [
+  {
+    name: "博客列表",
+    href: "/list"
+  },
+  {
+    name: "数据统计",
+    href: "/charts"
+  },
+  {
+    name: "项目文档",
+    href: "/docs"
+  },
+  {
+    name: "项目博客",
+    href: "/blog"
+  },
+];
+
+const rightNav: NavigationMenuProps = [
+  {
+    name: "提交博客",
+    href: "/new"
+  },
+  {
+    name: "反馈",
+    subList: [
+      {
+        name: "博客问题反馈",
+        href: "https://github.com/zh-blogs/blog-daohang/issues/new?template=03-Blog+Information+Report.yml",
+        newPage: true
+      },
+      {
+        name: "修改博客信息",
+        href: "https://github.com/zh-blogs/blog-daohang/issues/new?template=04-Modify+%26+Improve+Blog+Information+Report.yml",
+        newPage: true
+      },
+      {
+        name: "精选博客推荐",
+        href: "https://github.com/zh-blogs/blog-daohang/issues/new?template=05-Selected+Blog+Application.yml",
+        newPage: true
+      }
+    ]
+  },
+  {
+    name: "关于",
+    href: "/about"
+  },
+];
+---
+
+<html lang="zh-cn">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+    <main>
+      <NavigationMenu leftSplit={leftNav} rightSplit={rightNav}/>
+      <slot class="h-full"/>
+    </main>
+	</body>
+</html>
