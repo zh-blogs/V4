@@ -3,7 +3,7 @@ import {
   GithubWebhookLogInsert,
   GithubWebhookLogInsertSchema,
   GithubWebhookLogs,
-} from "@zhblogs/schemas/github-webhook-logs";
+} from "@zhblogs/schemas/db/github-webhook-logs";
 import { FastifyBaseLogger } from "fastify";
 
 export async function insertGithubWebhookLog(

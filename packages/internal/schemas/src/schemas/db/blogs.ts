@@ -37,7 +37,7 @@ export const Blogs = pgTable(
     name: varchar({ length: 64 }).notNull(),
     url: varchar({ length: 128 }).notNull(),
     sign: varchar({ length: 256 }),
-    feed: jsonb().$type<FeedInfo>(),
+    feed: jsonb().$type<FeedInfo[]>(),
     sitemap: varchar({ length: 256 }),
     link_page: varchar({ length: 256 }),
     architecture: integer().references(() => Architectures.id, {

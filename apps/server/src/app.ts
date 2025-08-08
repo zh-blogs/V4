@@ -9,9 +9,11 @@ import { format } from "date-fns";
 import { FastifyRedisPluginOptions } from "@fastify/redis";
 import { FastifyEnvOptions } from "@fastify/env";
 import { FastifyCookieOptions } from "@fastify/cookie";
-import { v7 } from "uuid";
-import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
+import { ZodError } from "zod/v4";
+import { createHash } from "node:crypto";
+import { v7 } from "uuid";
+import { RateLimitPluginOptions } from "@fastify/rate-limit";
 
 const env: string = process.env.NODE_ENV!;
 
@@ -41,16 +43,59 @@ const envToLogger: Record<
 // Create Fastify instance with configuration
 const app = Fastify({
   logger: envToLogger[env],
+  trustProxy: true,
 });
+
+const rateLimitOptions: RateLimitPluginOptions = {
+  max: 120,
+  ban: 3,
+  timeWindow: "1 minute",
+  continueExceeding: true,
+  exponentialBackoff: true,
+  skipOnError: true,
+  enableDraftSpec: true,
+  allowList(req, key) {
+    if (req.headers["x-rate-limit-test"]) {
+      return false;
+    }
+    return env === "development";
+  },
+  onExceeding(request, key) {
+    app.log.warn(
+      `Rate limit exceeding for key: ${key}, info: ${JSON.stringify({
+        ip:
+          request.headers["x-real-ip"] ||
+          request.headers["x-forwarded-for"] ||
+          request.ip,
+        clientInformation: {
+          client_session: request.cookies.client_session,
+          userAgent: request.headers["user-agent"],
+        },
+      })}`
+    );
+  },
+  onExceeded(request, key) {
+    app.log.warn(
+      `Rate limit exceeded for key: ${key}, info: ${JSON.stringify({
+        ip:
+          request.headers["x-real-ip"] ||
+          request.headers["x-forwarded-for"] ||
+          request.ip,
+        clientInformation: {
+          client_session: request.cookies.client_session,
+          userAgent: request.headers["user-agent"],
+        },
+      })}`
+    );
+  },
+};
 
 // Register plugins
 await app.register(import("@fastify/env"), {
   dotenv:
     env === "development"
       ? {
-          path: fileURLToPath(
-            new URL("../../../.env", import.meta.url)
-          ),
+          path: fileURLToPath(new URL("../../../.env", import.meta.url)),
         }
       : true,
   schema: {
@@ -76,16 +121,37 @@ await app.register(import("@fastify/redis"), {
 
 await app.register(import("@fastify/cookie"), {
   secret: process.env.COOKIE_SECRET!,
-  hook: "onRequest",
   algorithm: "sha512-256",
   parseOptions: {
     secure: true,
   },
 } as FastifyCookieOptions);
 
-await app.register(import("@fastify/sensible"));
+await app.register(import("@fastify/rate-limit"), {
+  ...rateLimitOptions,
+  redis: app.redis,
+  nameSpace: "rate-limit:ip:",
+  keyGenerator(request) {
+    return (
+      request.headers["x-real-ip"] ||
+      request.headers["x-forwarded-for"] ||
+      request.ip
+    );
+  },
+} as RateLimitPluginOptions);
+
+await app.register(import("@fastify/rate-limit"), {
+  ...rateLimitOptions,
+  redis: app.redis,
+  nameSpace: "rate-limit:client_session:",
+  keyGenerator(request) {
+    return request.cookies.client_session;
+  },
+} as RateLimitPluginOptions);
 
 await app.register(import("./plugins/drizzle"));
+
+await app.register(import("./plugins/result"));
 
 if (env === "development") {
   await app.register(import("@fastify/swagger"), {
@@ -117,28 +183,46 @@ if (env === "development") {
   } as FastifySwaggerUiOptions);
 }
 
-// Register routes
-await app.register(import("./routes"));
-
 // Add hook
 app.addHook("onRequest", async (request, reply) => {
-  const client_session = request.cookies.client_session;
-  const redis_session_name = `client_session:${client_session}`;
+  let { client_session } = request.cookies;
   let valid: boolean = false;
   if (client_session) {
-    valid = !!(await app.redis.exists(redis_session_name));
+    const session_data = !!(await app.redis.get(
+      `client_session:${client_session}`
+    ));
+    const unsigned_cookie = app.unsignCookie(client_session);
+    valid = session_data && unsigned_cookie.valid;
   }
   if (!valid) {
-    reply.setCookie(
-      "client_session",
-      createHash("sha512").update(v7()).digest("hex").toUpperCase(),
-      {
-        maxAge: 60 * 60 * 24,
-        httpOnly: true,
-      }
+    client_session = app.signCookie(
+      createHash("sha512").update(v7()).digest("hex").toUpperCase()
     );
-    app.redis.set(redis_session_name, "1", "EX", 60 * 60 * 24);
+    reply.setCookie("client_session", client_session, {
+      maxAge: 60 * 60 * 24,
+      httpOnly: true,
+    });
+    app.redis.set(`client_session:${client_session}`, "1", "EX", 60 * 60 * 24);
+  }
+  request.client_session = client_session!;
+});
+
+// Add global error handler
+app.setNotFoundHandler((request, reply) => {
+  reply.error("Not Found", "NOT_FOUND");
+});
+
+app.setErrorHandler((error, request, reply) => {
+  if (error instanceof ZodError) {
+    reply.error(`Invalid request parameters: ${error.message}`, "BAD_REQUEST");
+  } else if (error.validation) {
+    reply.error(`Validation error: ${error.message}`, "BAD_REQUEST");
+  } else if (error.statusCode) {
+    reply.error(error.message, error.statusCode);
   }
 });
+
+// Register routes
+await app.register(import("./routes"));
 
 export default app;

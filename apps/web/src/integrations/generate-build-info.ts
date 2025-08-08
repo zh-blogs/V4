@@ -2,13 +2,13 @@ import * as fs from "fs";
 import { execSync } from "child_process";
 import type { AstroIntegration, AstroIntegrationLogger } from "astro";
 
-type BuildInfo = {
+interface BuildInfo {
   version: string;
   commitTime: string;
   commitHash: string;
   commitLink: string;
   buildTime: string;
-};
+}
 
 const getLastCommitHash = (
   logger: AstroIntegrationLogger

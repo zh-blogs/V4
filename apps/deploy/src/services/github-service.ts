@@ -1,7 +1,7 @@
 import { WebhookEventDefinition } from "@octokit/webhooks/types";
 import { insertGithubWebhookLog } from "@server/db/github-webhook-logs";
 import { handleReload } from "@server/utils/github-webhook-deploy";
-import { GithubWebhookLogInsert } from "@zhblogs/schemas/github-webhook-logs";
+import { GithubWebhookLogInsert } from "@zhblogs/schemas/db/github-webhook-logs";
 import { FastifyBaseLogger } from "fastify";
 
 /**
@@ -16,7 +16,7 @@ import { FastifyBaseLogger } from "fastify";
  * It saves the webhook event log to the database,
  * and finally removes the task after completion.
  */
-export async function deployService(
+export async function deploy(
   body: WebhookEventDefinition<"workflow-run-completed">,
   headers: any,
   logger: FastifyBaseLogger
