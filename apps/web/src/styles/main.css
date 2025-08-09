@@ -115,7 +115,22 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
+  html {
+    @apply w-full h-full;
+    body {
+      @apply w-full h-full bg-background text-foreground;
+      button {
+        @apply cursor-pointer;
+      }
+    }
+  }
+}
+
+@layer components {
+  .nav-padding {
+    @apply px-56 max-xl:px-36 max-lg:px-20 max-md:px-7 max-sm:px-4;
+  }
+  .page-padding {
+    @apply px-96 max-xl:px-96 max-lg:px-20 max-md:px-11;
   }
 }
