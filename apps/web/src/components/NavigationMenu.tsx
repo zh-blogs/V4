@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import {
   NavigationMenu as BaseNavigationMenu,
   NavigationMenuContent,
@@ -6,9 +7,6 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger
 } from "@web/components/ui/navigation-menu";
-import type { LucideIcon } from "lucide-react";
-import type { ReactNode } from "react";
-import { Link } from "./Link";
 
 export type NavigationMenuProps = {
   name: string
@@ -79,7 +77,7 @@ export function NavigationMenu({ leftSplit, rightSplit }: {
                 <>
                   <NavigationMenuTrigger>{name}</NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <ul>
+                    <ul className="w-40">
                       {subList?.map(({ name, href, newPage = false }, j) => (
                         <li key={j}>
                           <NavigationMenuLink

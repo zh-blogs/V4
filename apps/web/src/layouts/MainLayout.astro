@@ -54,15 +54,15 @@ const rightNav: NavigationMenuProps = [
 
 <html lang="zh-cn">
 	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
+		<meta charset="utf-8"/>
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+		<meta name="viewport" content="width=device-width"/>
+		<meta name="generator" content={Astro.generator}/>
 		<title>Astro</title>
 	</head>
 	<body>
     <main>
-      <NavigationMenu leftSplit={leftNav} rightSplit={rightNav}/>
+      <NavigationMenu leftSplit={leftNav} rightSplit={rightNav} client:load/>
       <slot class="h-full"/>
     </main>
 	</body>
