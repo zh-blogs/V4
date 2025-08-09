@@ -1,17 +1,26 @@
-import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@web/components/ui/button";
+import { getTheme, setTheme } from "@web/lib/themes";
+import { useCallback, useEffect, useState } from "react";
+import type { Theme } from "astro-themes";
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const [themeAttr, setThemeAttr] = useState<Theme>("light");
 
-  const handleClick = () => {
-    if(theme === "dark") {
+  const handleClick = useCallback(() => {
+    if(themeAttr === "dark") {
       setTheme("light");
     } else {
       setTheme("dark");
     }
-  };
+  }, [themeAttr]);
+
+  useEffect(() => {
+    setThemeAttr(getTheme());
+    document.addEventListener("set-theme", (e) => {
+      setThemeAttr(e.detail ?? "light");
+    });
+  }, []);
 
   return (
     <Button
@@ -20,7 +29,7 @@ export function ThemeToggle() {
       className="cursor-pointer"
       onClick={() => handleClick()}>
       {
-        theme === "dark"
+        themeAttr === "dark"
         ? <Moon />
         : <Sun />
       }

@@ -1,6 +1,6 @@
 ---
 import { NavigationMenu, type NavigationMenuProps } from "@web/components/NavigationMenu";
-import { ThemeProvider } from "next-themes";
+import Themes from "astro-themes";
 
 const leftNav: NavigationMenuProps = [
   {
@@ -60,13 +60,12 @@ const rightNav: NavigationMenuProps = [
 		<meta name="viewport" content="width=device-width"/>
 		<meta name="generator" content={Astro.generator}/>
 		<title>Astro</title>
+    <Themes defaultTheme="light"/>
 	</head>
 	<body>
-    <ThemeProvider themes={["light", "dark"]} defaultTheme="light">
-      <main>
-        <NavigationMenu leftSplit={leftNav} rightSplit={rightNav} client:load/>
-        <slot class="h-full"/>
-      </main>
-    </ThemeProvider>
+    <main>
+      <NavigationMenu leftSplit={leftNav} rightSplit={rightNav} client:only="react"/>
+      <slot class="h-full"/>
+    </main>
 	</body>
 </html>
