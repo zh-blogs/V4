@@ -7,6 +7,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger
 } from "@web/components/ui/navigation-menu";
+import { ThemeToggle } from "./ThemeToggle";
 
 export type NavigationMenuProps = {
   name: string
@@ -94,6 +95,9 @@ export function NavigationMenu({ leftSplit, rightSplit }: {
             }
           </NavigationMenuItem>
         ))}
+        <NavigationMenuItem>
+          <ThemeToggle />
+        </NavigationMenuItem>
       </NavigationMenuList>
     </BaseNavigationMenu>
   );

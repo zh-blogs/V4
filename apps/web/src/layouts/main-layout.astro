@@ -1,5 +1,6 @@
 ---
 import { NavigationMenu, type NavigationMenuProps } from "@web/components/NavigationMenu";
+import { ThemeProvider } from "next-themes";
 
 const leftNav: NavigationMenuProps = [
   {
@@ -61,9 +62,11 @@ const rightNav: NavigationMenuProps = [
 		<title>Astro</title>
 	</head>
 	<body>
-    <main>
-      <NavigationMenu leftSplit={leftNav} rightSplit={rightNav} client:load/>
-      <slot class="h-full"/>
-    </main>
+    <ThemeProvider themes={["light", "dark"]} defaultTheme="light">
+      <main>
+        <NavigationMenu leftSplit={leftNav} rightSplit={rightNav} client:load/>
+        <slot class="h-full"/>
+      </main>
+    </ThemeProvider>
 	</body>
 </html>
