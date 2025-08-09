@@ -13,6 +13,9 @@ export function useTheme() {
 
   return {
     theme: themeAttr,
+    getTheme() {
+      return themeAttr;
+    },
     setTheme(theme: Theme) {
       document.dispatchEvent(new CustomEvent("set-theme", { detail: theme }));
     }

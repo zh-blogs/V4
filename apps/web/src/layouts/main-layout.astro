@@ -1,6 +1,7 @@
 ---
 import { NavigationMenu, type NavigationMenuProps } from "@web/components/NavigationMenu";
 import Themes from "astro-themes";
+import { Footer } from "@web/components/Footer";
 
 const leftNav: NavigationMenuProps = [
   {
@@ -63,9 +64,10 @@ const rightNav: NavigationMenuProps = [
     <Themes defaultTheme="light"/>
 	</head>
 	<body>
-    <main>
+    <main class="flex flex-col gap-5">
       <NavigationMenu leftSplit={leftNav} rightSplit={rightNav} client:only="react"/>
       <slot class="h-full"/>
+      <Footer client:only="react"/>
     </main>
 	</body>
 </html>

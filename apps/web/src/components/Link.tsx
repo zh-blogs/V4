@@ -7,7 +7,7 @@ export function Link({
   ...props
 }: ComponentProps<"a">) {
   return (
-    <a {...props} className={cn(children, "")}>
+    <a {...props} className={cn(children, "hover:underline")}>
       {children}
     </a>
   );
