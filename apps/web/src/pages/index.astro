@@ -2,37 +2,99 @@
 import MainLayout from "@web/layouts/main-layout.astro";
 import "@web/styles/main.css";
 import Section from "./section.astro";
+import "@web/styles/blog-carousel.css";
+
+type BlogList = {
+  name: string
+  url: string
+  avatar: string
+}[];
+
+const exampleBlogs: BlogList = new Array(30).fill({
+  name: "Test 测试",
+  url: "https://zhblogs.net",
+  avatar: "/static/logo-light.webp",
+});
 ---
 
 <MainLayout>
   <div class="w-full flex flex-col gap-4">
-    <Section class="pt-16 h-[100vh] flex flex-col justify-center items-center gap-10">
-      <div class="w-full pb-10 flex flex-col text-center gap-6 border-b">
-        <h1 class="text-5xl font-bold border-8 border-x-zhblogs-red border-y-0">集博栈</h1>
-        <span class="text-lg text-muted-foreground">尝试链接几乎所有的中文博客</span>
+    <Section class="pt-40 h-[100vh] flex flex-col gap-28">
+      {/** Header */}
+      <div class="flex flex-col justify-center items-center gap-10">
+        <div class="w-full pb-10 flex flex-col text-center gap-6 border-b">
+          <h1 class="text-5xl font-bold">集博栈</h1>
+          <span class="text-2xl text-muted-foreground font-semibold">尝试链接几乎所有的中文博客</span>
+        </div>
+        <div class="flex gap-14 [&>*]:flex [&>*]:flex-col [&>*]:items-center [&>*]:gap-3 [&_h3]:text-3xl [&_h3]:font-semibold [&_h3]:font-[Consolas] [&_span]:text-sm [&_span]:text-muted-foreground">
+          <div>
+            <h3>0</h3>
+            <span>巡检正常博客数量</span>
+          </div>
+          <div>
+            <h3>0</h3>
+            <span>总博客数量</span>
+          </div>
+          <div>
+            <h3>0</h3>
+            <span>审核通过博客数量</span>
+          </div>
+          <div>
+            <h3>0</h3>
+            <span>精选博客数量</span>
+          </div>
+        </div>
       </div>
-      {/** @todo */}
-      <div class="flex gap-14 [&>*]:flex [&>*]:flex-col [&>*]:items-center [&>*]:gap-3 [&_h3]:text-3xl [&_h3]:font-semibold [&_h3]:font-[Consolas] [&_span]:text-sm [&_span]:text-muted-foreground">
-        <div>
-          <h3>0</h3>
-          <span>巡检正常博客数量</span>
+      {/** Random blog carousel */}
+      <div class="relative overflow-x-hidden">
+        <div class="carousel-left-shadow"/>
+        <div class="carousel">
+          {new Array(3).fill(null).map(() => (
+            <div class="sub-carousel">
+              {exampleBlogs.map((blog, i) => (
+                (i <= 9 && <div class="px-4 py-3 min-w-fit rounded-md border bg-card shadow-md inline-flex gap-4">
+                  <img src={blog.avatar} alt={blog.name} class="aspect-square w-14"/>
+                  <div class="h-full flex flex-col justify-center gap-1">
+                    <h2 class="text-md font-semibold">{blog.name}</h2>
+                    <span class="text-sm text-muted-foreground hover:underline">{blog.url}</span>
+                  </div>
+                </div>)
+              ))}
+            </div>
+          ))}
         </div>
-        <div>
-          <h3>0</h3>
-          <span>总博客数量</span>
+        <div class="carousel">
+          {new Array(3).fill(null).map(() => (
+            <div class="sub-carousel carousel-reverse">
+              {exampleBlogs.map((blog, i) => (
+                ((10 <= i && i <= 19) && <div class="px-4 py-3 min-w-fit rounded-md border bg-card shadow-md inline-flex gap-4">
+                  <img src={blog.avatar} alt={blog.name} class="aspect-square w-14"/>
+                  <div class="h-full flex flex-col justify-center gap-1">
+                    <h2 class="text-md font-semibold">{blog.name}</h2>
+                    <span class="text-sm text-muted-foreground hover:underline">{blog.url}</span>
+                  </div>
+                </div>)
+              ))}
+            </div>
+          ))}
         </div>
-        <div>
-          <h3>0</h3>
-          <span>审核通过博客数量</span>
+        <div class="carousel">
+          {new Array(3).fill(null).map(() => (
+            <div class="sub-carousel">
+              {exampleBlogs.map((blog, i) => (
+                (i <= 9 && <div class="px-4 py-3 min-w-fit rounded-md border bg-card shadow-md inline-flex gap-4">
+                  <img src={blog.avatar} alt={blog.name} class="aspect-square w-14"/>
+                  <div class="h-full flex flex-col justify-center gap-1">
+                    <h2 class="text-md font-semibold">{blog.name}</h2>
+                    <span class="text-sm text-muted-foreground hover:underline">{blog.url}</span>
+                  </div>
+                </div>)
+              ))}
+            </div>
+          ))}
         </div>
-        <div>
-          <h3>0</h3>
-          <span>精选博客数量</span>
-        </div>
+        <div class="carousel-right-shadow"/>
       </div>
-    </Section>
-    <Section title="随机博客" description="点击卡片查看博客详情">
-      {/** @todo */}
     </Section>
     <Section title="近期动态">
       {/** @todo */}

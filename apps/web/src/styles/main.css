@@ -121,7 +121,7 @@
   html {
     @apply w-full h-full;
     body {
-      @apply w-full h-full text-foreground;
+      @apply w-full h-full text-foreground overflow-x-hidden;
       main {
         @apply bg-background;
       }

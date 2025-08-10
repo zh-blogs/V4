@@ -69,7 +69,7 @@ const rightNav: NavigationMenuProps = [
     <Themes defaultTheme="light"/>
 	</head>
 	<body>
-    <main class="w-full page-padding flex flex-col items-center gap-5">
+    <main class="w-full page-padding flex flex-col items-center gap-5 overflow-x-hidden">
       <NavigationMenu leftSplit={leftNav} rightSplit={rightNav} client:only="react"/>
       <slot class="w-full h-full"/>
       <Footer client:only="react"/>
