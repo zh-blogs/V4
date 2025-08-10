@@ -178,6 +178,9 @@ importers:
       '@astrojs/vue':
         specifier: ^5.1.0
         version: 5.1.0(@types/node@24.1.0)(astro@5.11.1(@types/node@24.1.0)(ioredis@5.6.1)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.46.0)(terser@5.43.1)(tsx@4.20.3)(typescript@5.8.3)(yaml@2.8.0))(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.46.0)(terser@5.43.1)(tsx@4.20.3)(vue@3.5.17(typescript@5.8.3))(yaml@2.8.0)
+      '@lucide/astro':
+        specifier: ^0.539.0
+        version: 0.539.0(astro@5.11.1(@types/node@24.1.0)(ioredis@5.6.1)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.46.0)(terser@5.43.1)(tsx@4.20.3)(typescript@5.8.3)(yaml@2.8.0))
       '@radix-ui/react-navigation-menu':
         specifier: ^1.2.13
         version: 1.2.13(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -212,8 +215,8 @@ importers:
         specifier: ^5.0.46
         version: 5.0.46
       lucide-react:
-        specifier: ^0.525.0
-        version: 0.525.0(react@19.1.0)
+        specifier: ^0.539.0
+        version: 0.539.0(react@19.1.0)
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -1155,6 +1158,11 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.29':
     resolution: {integrity: sha512-uw6guiW/gcAGPDhLmd77/6lW8QLeiV5RUTsAX46Db6oLhGaVj4lhnPwb184s1bkc8kdVg/+h988dro8GRDpmYQ==}
+
+  '@lucide/astro@0.539.0':
+    resolution: {integrity: sha512-PCAo48RsERkmyWX+bmssGlu0mb84cP8kLMyc1JuW5pRY4zkx7cnyZMr3RkfPFvDKJZf2/2KPoaZz8j6BjXaXcA==}
+    peerDependencies:
+      astro: ^4 || ^5
 
   '@lukeed/ms@2.0.2':
     resolution: {integrity: sha512-9I2Zn6+NJLfaGoz9jN3lpwDgAYvfGeNYdbAIjJOqzs4Tpc+VU3Jqq4IofSUBKajiDS8k9fZIg18/z13mpk1bsA==}
@@ -3176,8 +3184,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.525.0:
-    resolution: {integrity: sha512-Tm1txJ2OkymCGkvwoHt33Y2JpN5xucVq1slHcgE6Lk0WjDfjgKWor5CdVER8U6DvcfMwh4M8XxmpTiyzfmfDYQ==}
+  lucide-react@0.539.0:
+    resolution: {integrity: sha512-VVISr+VF2krO91FeuCrm1rSOLACQUYVy7NQkzrOty52Y8TlTPcXcMdQFj9bYzBgXbWCiywlwSZ3Z8u6a+6bMlg==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -5526,6 +5534,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.4
 
+  '@lucide/astro@0.539.0(astro@5.11.1(@types/node@24.1.0)(ioredis@5.6.1)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.46.0)(terser@5.43.1)(tsx@4.20.3)(typescript@5.8.3)(yaml@2.8.0))':
+    dependencies:
+      astro: 5.11.1(@types/node@24.1.0)(ioredis@5.6.1)(jiti@2.4.2)(lightningcss@1.30.1)(rollup@4.46.0)(terser@5.43.1)(tsx@4.20.3)(typescript@5.8.3)(yaml@2.8.0)
+
   '@lukeed/ms@2.0.2': {}
 
   '@mdx-js/mdx@3.1.0(acorn@8.15.0)':
@@ -7629,7 +7641,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.525.0(react@19.1.0):
+  lucide-react@0.539.0(react@19.1.0):
     dependencies:
       react: 19.1.0
 

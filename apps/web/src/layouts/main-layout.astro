@@ -25,6 +25,7 @@ const leftNav: NavigationMenuProps = [
 const rightNav: NavigationMenuProps = [
   {
     name: "提交博客",
+    icon: "plus",
     href: "/new"
   },
   {
@@ -32,16 +33,19 @@ const rightNav: NavigationMenuProps = [
     subList: [
       {
         name: "博客问题反馈",
+        icon: "message-square-warning",
         href: "https://github.com/zh-blogs/blog-daohang/issues/new?template=03-Blog+Information+Report.yml",
         newPage: true
       },
       {
         name: "修改博客信息",
+        icon: "pencil-line",
         href: "https://github.com/zh-blogs/blog-daohang/issues/new?template=04-Modify+%26+Improve+Blog+Information+Report.yml",
         newPage: true
       },
       {
         name: "精选博客推荐",
+        icon: "badge-check",
         href: "https://github.com/zh-blogs/blog-daohang/issues/new?template=05-Selected+Blog+Application.yml",
         newPage: true
       }
@@ -49,6 +53,7 @@ const rightNav: NavigationMenuProps = [
   },
   {
     name: "关于",
+    icon: "info",
     href: "/about"
   },
 ];
@@ -64,10 +69,19 @@ const rightNav: NavigationMenuProps = [
     <Themes defaultTheme="light"/>
 	</head>
 	<body>
-    <main class="flex flex-col gap-5">
+    <main class="w-full page-padding flex flex-col items-center gap-5">
       <NavigationMenu leftSplit={leftNav} rightSplit={rightNav} client:only="react"/>
-      <slot class="h-full"/>
+      <slot class="w-full h-full"/>
       <Footer client:only="react"/>
     </main>
+    <script>
+      // Apply theme class name
+      document.documentElement.className = (
+        document.documentElement.attributes.getNamedItem("data-theme")?.value ?? "light"
+      );
+      document.addEventListener("set-theme", (e) => {
+        document.documentElement.className = e.detail ?? "light";
+      });
+    </script>
 	</body>
 </html>

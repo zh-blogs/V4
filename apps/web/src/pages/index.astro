@@ -1,10 +1,41 @@
 ---
 import MainLayout from "@web/layouts/main-layout.astro";
 import "@web/styles/main.css";
+import Section from "./section.astro";
 ---
 
 <MainLayout>
-  <div>
-
+  <div class="w-full flex flex-col gap-4">
+    <Section class="pt-16 h-[100vh] flex flex-col justify-center items-center gap-10">
+      <div class="w-full pb-10 flex flex-col text-center gap-6 border-b">
+        <h1 class="text-5xl font-bold border-8 border-x-zhblogs-red border-y-0">集博栈</h1>
+        <span class="text-lg text-muted-foreground">尝试链接几乎所有的中文博客</span>
+      </div>
+      {/** @todo */}
+      <div class="flex gap-14 [&>*]:flex [&>*]:flex-col [&>*]:items-center [&>*]:gap-3 [&_h3]:text-3xl [&_h3]:font-semibold [&_h3]:font-[Consolas] [&_span]:text-sm [&_span]:text-muted-foreground">
+        <div>
+          <h3>0</h3>
+          <span>巡检正常博客数量</span>
+        </div>
+        <div>
+          <h3>0</h3>
+          <span>总博客数量</span>
+        </div>
+        <div>
+          <h3>0</h3>
+          <span>审核通过博客数量</span>
+        </div>
+        <div>
+          <h3>0</h3>
+          <span>精选博客数量</span>
+        </div>
+      </div>
+    </Section>
+    <Section title="随机博客" description="点击卡片查看博客详情">
+      {/** @todo */}
+    </Section>
+    <Section title="近期动态">
+      {/** @todo */}
+    </Section>
   </div>
 </MainLayout>

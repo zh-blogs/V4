@@ -1,4 +1,5 @@
-import type { LucideIcon } from "lucide-react";
+import type { LucideIconName } from "@web/lib/types";
+import { DynamicIcon } from "lucide-react/dynamic";
 import {
   NavigationMenu as BaseNavigationMenu,
   NavigationMenuContent,
@@ -8,15 +9,16 @@ import {
   NavigationMenuTrigger
 } from "@web/components/ui/navigation-menu";
 import { ThemeToggle } from "./ThemeToggle";
+import { Logo } from "./Logo";
 
 export type NavigationMenuProps = {
   name: string
-  icon?: LucideIcon
+  icon?: LucideIconName
   href?: string
   newPage?: boolean
   subList?: {
     name: string
-    icon?: LucideIcon
+    icon?: LucideIconName
     href: string
     newPage?: boolean
   }[]
@@ -27,17 +29,20 @@ export function NavigationMenu({ leftSplit, rightSplit }: {
   rightSplit: NavigationMenuProps
 }) {
   return (
-    <BaseNavigationMenu className="nav-padding w-full max-w-full py-4 flex justify-between">
+    <BaseNavigationMenu className="bg-background dark:bg-card border rounded-xl shadow-md mt-4 mx-auto px-4 w-fit h-12 max-w-full py-4 flex gap-48 fixed">
       <NavigationMenuList>
-        {leftSplit.map(({ name, href, newPage = false, subList }, i) => (
+        <Logo className="w-10 h-10"/>
+        {leftSplit.map(({ name, icon, href, newPage = false, subList }, i) => (
           <NavigationMenuItem key={i}>
             {
               href
               ? (
                 <NavigationMenuLink
+                  className="flex flex-row items-center gap-2"
                   href={href}
                   target={newPage ? "_blank" : "_self"}>
-                  {name}
+                  {icon && <DynamicIcon name={icon}/>}
+                  <span>{name}</span>
                 </NavigationMenuLink>
               )
               : (
@@ -45,12 +50,14 @@ export function NavigationMenu({ leftSplit, rightSplit }: {
                   <NavigationMenuTrigger>{name}</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul>
-                      {subList?.map(({ name, href, newPage = false }, j) => (
+                      {subList?.map(({ name, icon, href, newPage = false }, j) => (
                         <li key={j}>
                           <NavigationMenuLink
+                            className="flex flex-row items-center gap-2"
                             href={href}
                             target={newPage ? "_blank" : "_self"}>
-                            {name}
+                            {icon && <DynamicIcon name={icon}/>}
+                            <span>{name}</span>
                           </NavigationMenuLink>
                         </li>
                       ))}
@@ -63,15 +70,17 @@ export function NavigationMenu({ leftSplit, rightSplit }: {
         ))}
       </NavigationMenuList>
       <NavigationMenuList>
-        {rightSplit.map(({ name, href, newPage = false, subList }, i) => (
+        {rightSplit.map(({ name, icon, href, newPage = false, subList }, i) => (
           <NavigationMenuItem key={i}>
             {
               href
               ? (
                 <NavigationMenuLink
+                  className="flex flex-row items-center gap-2"
                   href={href}
                   target={newPage ? "_blank" : "_self"}>
-                  {name}
+                  {icon && <DynamicIcon name={icon}/>}
+                  <span>{name}</span>
                 </NavigationMenuLink>
               )
               : (
@@ -79,12 +88,14 @@ export function NavigationMenu({ leftSplit, rightSplit }: {
                   <NavigationMenuTrigger>{name}</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <ul className="w-40">
-                      {subList?.map(({ name, href, newPage = false }, j) => (
+                      {subList?.map(({ name, icon, href, newPage = false }, j) => (
                         <li key={j}>
                           <NavigationMenuLink
+                            className="flex flex-row items-center gap-2"
                             href={href}
                             target={newPage ? "_blank" : "_self"}>
-                            {name}
+                            {icon && <DynamicIcon name={icon}/>}
+                            <span>{name}</span>
                           </NavigationMenuLink>
                         </li>
                       ))}
