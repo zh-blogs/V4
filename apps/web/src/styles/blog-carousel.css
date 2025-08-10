@@ -12,11 +12,10 @@
 }
 
 .carousel {
-  @apply w-fit overflow-x-visible mb-3;
+  @apply w-fit overflow-x-visible mb-3 hover:[&>*]:!paused;
   .sub-carousel {
     @apply w-max ml-3 inline-flex gap-3;
     animation: carousel linear 35s infinite;
-    animation-play-state: running;
   }
   .sub-carousel.carousel-reverse {
     @apply direction-reverse;

@@ -1,16 +1,11 @@
 ---
+import type { Blog } from "@web/lib/types";
 import MainLayout from "@web/layouts/main-layout.astro";
-import "@web/styles/main.css";
 import Section from "./section.astro";
+import { BlogCard } from "@web/components/blog-card";
 import "@web/styles/blog-carousel.css";
 
-type BlogList = {
-  name: string
-  url: string
-  avatar: string
-}[];
-
-const exampleBlogs: BlogList = new Array(30).fill({
+const exampleBlogs: Blog[] = new Array(30).fill({
   name: "Test 测试",
   url: "https://zhblogs.net",
   avatar: "/static/logo-light.webp",
@@ -52,13 +47,7 @@ const exampleBlogs: BlogList = new Array(30).fill({
           {new Array(3).fill(null).map(() => (
             <div class="sub-carousel">
               {exampleBlogs.map((blog, i) => (
-                (i <= 9 && <div class="px-4 py-3 min-w-fit rounded-md border bg-card shadow-md inline-flex gap-4">
-                  <img src={blog.avatar} alt={blog.name} class="aspect-square w-14"/>
-                  <div class="h-full flex flex-col justify-center gap-1">
-                    <h2 class="text-md font-semibold">{blog.name}</h2>
-                    <span class="text-sm text-muted-foreground hover:underline">{blog.url}</span>
-                  </div>
-                </div>)
+                (i <= 9 && <BlogCard {...blog} client:idle/>)
               ))}
             </div>
           ))}
@@ -67,13 +56,7 @@ const exampleBlogs: BlogList = new Array(30).fill({
           {new Array(3).fill(null).map(() => (
             <div class="sub-carousel carousel-reverse">
               {exampleBlogs.map((blog, i) => (
-                ((10 <= i && i <= 19) && <div class="px-4 py-3 min-w-fit rounded-md border bg-card shadow-md inline-flex gap-4">
-                  <img src={blog.avatar} alt={blog.name} class="aspect-square w-14"/>
-                  <div class="h-full flex flex-col justify-center gap-1">
-                    <h2 class="text-md font-semibold">{blog.name}</h2>
-                    <span class="text-sm text-muted-foreground hover:underline">{blog.url}</span>
-                  </div>
-                </div>)
+                ((10 <= i && i <= 19) && <BlogCard {...blog} client:idle/>)
               ))}
             </div>
           ))}
@@ -82,13 +65,7 @@ const exampleBlogs: BlogList = new Array(30).fill({
           {new Array(3).fill(null).map(() => (
             <div class="sub-carousel">
               {exampleBlogs.map((blog, i) => (
-                (i <= 9 && <div class="px-4 py-3 min-w-fit rounded-md border bg-card shadow-md inline-flex gap-4">
-                  <img src={blog.avatar} alt={blog.name} class="aspect-square w-14"/>
-                  <div class="h-full flex flex-col justify-center gap-1">
-                    <h2 class="text-md font-semibold">{blog.name}</h2>
-                    <span class="text-sm text-muted-foreground hover:underline">{blog.url}</span>
-                  </div>
-                </div>)
+                ((20 <= i && i <= 29) && <BlogCard {...blog} client:idle/>)
               ))}
             </div>
           ))}

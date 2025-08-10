@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 export function Footer() {
   return (
     <footer className="h-60 flex flex-col justify-center items-center gap-2 [&_a]:text-sm">
-      <div className="flex items-center gap-10 [&>div]:flex [&>div]:items-center [&>div]:gap-4">
+      <div className="flex items-center gap-10 [&>div]:flex [&>div]:items-center">
         <div>
           <Logo />
           <Button
@@ -26,7 +26,7 @@ export function Footer() {
             </Link>
           </Button>
         </div>
-        <div>
+        <div className="gap-4">
           <Link href="/list">
             博客列表
           </Link>
