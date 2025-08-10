@@ -1,6 +1,6 @@
 import { Github, Mail } from "lucide-react";
-import { Link } from "./Link";
-import { Logo } from "./Logo";
+import { Link } from "./link";
+import { Logo } from "./logo";
 import { Button } from "./ui/button";
 
 export function Footer() {

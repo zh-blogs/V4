@@ -8,8 +8,8 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger
 } from "@web/components/ui/navigation-menu";
-import { ThemeToggle } from "./ThemeToggle";
-import { Logo } from "./Logo";
+import { ThemeToggle } from "./theme-toggle";
+import { Logo } from "./logo";
 
 export type NavigationMenuProps = {
   name: string
