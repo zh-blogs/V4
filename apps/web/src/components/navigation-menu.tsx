@@ -10,6 +10,7 @@ import {
 } from "@web/components/ui/navigation-menu";
 import { ThemeToggle } from "./theme-toggle";
 import { Logo } from "./logo";
+import { Link } from "./link";
 
 export type NavigationMenuProps = {
   name: string
@@ -31,7 +32,9 @@ export function NavigationMenu({ leftSplit, rightSplit }: {
   return (
     <BaseNavigationMenu className="bg-background dark:bg-card border rounded-xl shadow-md mt-4 mx-auto px-4 w-fit h-12 max-w-full py-4 flex gap-48 fixed">
       <NavigationMenuList>
-        <Logo className="w-10 h-10"/>
+        <Link href="/">
+          <Logo className="w-10 h-10"/>
+        </Link>
         {leftSplit.map(({ name, icon, href, newPage = false, subList }, i) => (
           <NavigationMenuItem key={i}>
             {
