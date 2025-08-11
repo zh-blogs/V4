@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 
 export function Footer() {
   return (
-    <footer className="h-60 flex flex-col justify-center items-center gap-2 [&_a]:text-sm">
+    <footer className="w-full h-52 border-t flex flex-col justify-center items-center gap-2 [&_a]:text-sm">
       <div className="flex items-center gap-10 [&>div]:flex [&>div]:items-center">
         <div>
           <Logo />

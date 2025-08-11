@@ -3,6 +3,8 @@ import type { Blog } from "@web/lib/types";
 import MainLayout from "@web/layouts/main-layout.astro";
 import Section from "./section.astro";
 import { BlogCard } from "@web/components/blog-card";
+import { ButtonLink } from "@web/components/link";
+import { Plus } from "lucide-react";
 import "@web/styles/blog-carousel.css";
 
 const exampleBlogs: Blog[] = new Array(30).fill({
@@ -18,8 +20,19 @@ const exampleBlogs: Blog[] = new Array(30).fill({
       {/** Header */}
       <div class="flex flex-col justify-center items-center gap-10">
         <div class="w-full pb-10 flex flex-col text-center gap-6 border-b">
-          <h1 class="text-5xl font-bold">集博栈</h1>
+          <h1 class="text-5xl font-bold underline decoration-[8px] decoration-zhblogs-red">集博栈</h1>
           <span class="text-2xl text-muted-foreground font-semibold">尝试链接几乎所有的中文博客</span>
+          <div class="flex justify-center gap-3">
+            <ButtonLink href="/new">
+              <Plus />
+              提交博客
+            </ButtonLink>
+            <ButtonLink
+              href="/about"
+              variant="outline">
+              关于我们
+            </ButtonLink>
+          </div>
         </div>
         <div class="flex gap-14 [&>*]:flex [&>*]:flex-col [&>*]:items-center [&>*]:gap-3 [&_h3]:text-3xl [&_h3]:font-semibold [&_h3]:font-[Consolas] [&_span]:text-sm [&_span]:text-muted-foreground">
           <div>
