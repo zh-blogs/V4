@@ -14,5 +14,13 @@
     "group": ["TECH", "DOCS", "DATA", "OUTREACH"],
     "identity": "LEADER",
     "description": "项目负责人。目前承担项目的开发、运维和管理工作。"
+  },
+  {
+    "id": "NriotHrreion",
+    "nickname": "Norcleeh",
+    "url": "https://nocp.space",
+    "group": ["TECH", "DOCS"],
+    "identity": "CORE",
+    "description": "核心贡献者。目前承担项目的开发与文档编写工作。"
   }
 ]
